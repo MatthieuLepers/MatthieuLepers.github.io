@@ -1,0 +1,85 @@
+section#stats {
+	display: block;
+	width: 50%;
+	margin: auto;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	height: calc(90% - 20px);
+	border: 1px solid #222;
+	background-color: #000;
+	position: relative;
+	bottom: 530px;
+	z-index: 10;
+}
+
+article#main {
+	display: block;
+	padding: 5px;
+	color: white;
+	height: calc(100% - 10px);
+	overflow: auto;
+}
+
+article#main h2 {
+	text-align: center;
+}
+
+div.cell {
+	display: block;
+	border: 1px #222 solid;
+	border-bottom: none;
+	padding: 0;
+	margin: 0;
+	width: calc(100% - 2px);
+	margin-top: 10px;
+}
+
+div.cell h3 {
+	text-align: center;
+	margin: 0;
+	padding: 0;
+	border-bottom: 1px solid #222;
+	background-color: #222;
+}
+
+dl {
+	display: block;
+	width: 100%;
+	margin: 0;
+	padding: 2px;
+	width: calc(100% - 4px);
+	border-bottom: 1px solid #222;
+}
+
+dl dd {
+	margin: 0;
+	display: block;
+	float: left;
+	width: 80%;
+}
+
+dl dt {
+	display: inline-block;
+	text-align: right;
+	width: calc(20% - 5px);
+}
+
+button#close {
+	position: absolute;
+	top: 4px;
+	right: 25px;
+	background-color: transparent;
+	border: none;
+	padding: 5px;
+	margin: 0;
+	width: 24px;
+	height: 24px;
+	text-align: center;
+	color: red;
+	background-color: black;
+	border-radius: 50px;
+}
+
+button#close:hover {
+	cursor: pointer;
+}
