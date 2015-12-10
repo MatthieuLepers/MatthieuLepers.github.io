@@ -190,7 +190,7 @@ Module.prototype.goMiddle = function(params)
 		for (var i of module.ship.game.registeredEnnemies.keys())
 		{
 			var ennemy = module.ship.game.registeredEnnemies.get(i);
-			if (ennemy.id != 'module' && !ennemy.isDead && module.getHitbox().isHovering(ennemy.getHitbox()))
+			if (ennemy != null && ennemy.id != 'module' && !ennemy.isDead && module.getHitbox().isHovering(ennemy.getHitbox()))
 			{
 				ennemy.destroy();
 			}
