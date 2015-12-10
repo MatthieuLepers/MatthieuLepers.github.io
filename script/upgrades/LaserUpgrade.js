@@ -1,6 +1,6 @@
 function LaserUpgrade(powarmor)
 {
-	this.id = 'upgradelaser_' + powarmor.getId();
+	this.id = 'upgradelaser_' + powarmor.id;
 	this.listeners = new Array();
 	this.powarmor = powarmor;
 	this.top = powarmor.getHitbox().boxOrigin.getY() + 7;
