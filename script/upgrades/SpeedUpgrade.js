@@ -77,6 +77,16 @@ SpeedUpgrade.prototype.pickup = function()
 	var ship = this.powarmor.game.ship;
 	if (ship.speed < 4)
 		ship.speed = ship.speed + 0.5;
+	
+	document.getElementById('moduleBack').style.backgroundImage = 'url("' + ship.game.textures.texturesLocation + ship.game.textures.ship_acceleration.getPath() + '")';
+	
+	var f = function()
+	{
+		window.clearTimeout(timerX);
+		document.getElementById('moduleBack').style.backgroundImage = 'none';
+	};
+	
+	var timerX = window.setTimeout(f, 1000);
 }
 
 SpeedUpgrade.prototype.destroy = function()
