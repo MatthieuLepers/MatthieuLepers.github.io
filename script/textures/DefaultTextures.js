@@ -53,6 +53,7 @@ function DefaultTextures()
 	//Ennemies
 	this.patapata = new Texture('patapata.gif', 21, 24);
 	this.mid = new Texture('mid.gif', 32, 22);
+	this.cancer = new Texture('cancer.gif', 31, 32);
 	this.powarmor_fly = new Texture('powarmor_fly.gif', 32, 32);
 	
 	//Explosions

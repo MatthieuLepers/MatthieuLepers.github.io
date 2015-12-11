@@ -78,6 +78,7 @@ Rocket.prototype.launch = function(id)
 
 Rocket.prototype.destroy = function()
 {
+	this.onDestroyed()
 	this.ship.game.scheduler.removeTask(this.id);
 	//this.ship.getRegisteredBullets().delete(this.id);
 	

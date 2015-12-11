@@ -241,7 +241,7 @@ Module.prototype.anim = function(params)
 		for (var i of module.ship.game.registeredEnnemies.keys())
 		{
 			var ennemy = module.ship.game.registeredEnnemies.get(i);
-			if (ennemy.id != 'module' && !ennemy.isDead && module.getHitbox().isHovering(ennemy.getHitbox()))
+			if (ennemy != null && ennemy.id != 'module' && !ennemy.isDead && module.getHitbox().isHovering(ennemy.getHitbox()))
 			{
 				ennemy.destroy();
 			}
@@ -260,7 +260,7 @@ Module.prototype.anim2 = function(params)
 	for (var i of module.ship.game.registeredEnnemies.keys())
 	{
 		var ennemy = module.ship.game.registeredEnnemies.get(i);
-		if (ennemy.id != 'module' && !ennemy.isDead && module.getHitbox().isHovering(ennemy.getHitbox()))
+		if (ennemy != null && ennemy.id != 'module' && !ennemy.isDead && module.getHitbox().isHovering(ennemy.getHitbox()))
 		{
 			ennemy.destroy();
 		}
@@ -296,7 +296,7 @@ Module.prototype.anim3 = function(params)
 		for (var i of module.ship.game.registeredEnnemies.keys())
 		{
 			var ennemy = module.ship.game.registeredEnnemies.get(i);
-			if (ennemy.id != 'module' && !ennemy.isDead && module.getHitbox().isHovering(ennemy.getHitbox()))
+			if (ennemy != null && ennemy.id != 'module' && !ennemy.isDead && module.getHitbox().isHovering(ennemy.getHitbox()))
 			{
 				ennemy.destroy();
 			}

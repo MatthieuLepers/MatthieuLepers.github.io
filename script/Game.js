@@ -98,6 +98,10 @@ function Game()
 				g.spawnPOWArmor(g.getRandomUpdate());
 				g.hasSpawn = true;
 			}
+			if (g.waveNumber >= 20 && !g.hasSpawn)
+			{
+				g.spawnCancerEnnemy();
+			}
 		}
 	}
 	
@@ -214,6 +218,12 @@ Game.prototype.spawnMidEnnemy = function()
 	this.registeredEnnemies.set(ennemy.id, ennemy);
 }
 
+Game.prototype.spawnCancerEnnemy = function()
+{
+	var ennemy = new CancerEnnemy(this, 'cancer' + this.registeredEnnemies.size);
+	this.registeredEnnemies.set(ennemy.id, ennemy);
+}
+
 Game.prototype.spawnPOWArmor = function(upgradeType)
 {
 	var ennemy = new POWArmorEnnemy(this, 'POWArmor' + this.registeredEnnemies.size, upgradeType);
@@ -224,7 +234,7 @@ Game.prototype.spawnModule = function()
 {
 	var module = new Module(this.ship);
 	this.registeredEnnemies.set(module.id, module);
-	this.ship.setModule(module);
+	this.ship.module = module;
 }
 
 /* ----- Printers ----- */

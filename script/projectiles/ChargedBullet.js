@@ -9,6 +9,8 @@ function ChargedBullet(ship, id, scheduler, img, width, height, speed)
 	this.height = height;
 	this.top = ship.getHitbox().boxOrigin.getY() + 6;
 	this.left = ship.getHitbox().boxOrigin.getX() + ship.getHitbox().getWidth() + 5;
+	this.hasHit = false;
+	
 	this.launch(id);
 	this.printBullet(id);
 }
@@ -68,7 +70,8 @@ ChargedBullet.prototype.anim = function(params)
 		scheduler.removeTask(id);
 		var b = document.getElementById(""+id);
 		b.parentNode.removeChild(b);
-		this.ship.game.stats.chargedShotFails++;
+		if (!this.hasHit)
+			this.ship.game.stats.chargedShotFails++;
 	}
 	else
 	{
@@ -82,6 +85,7 @@ ChargedBullet.prototype.anim = function(params)
 			{
 				ennemy.destroy();
 				this.ship.game.stats.chargedShotHits++;
+				this.hasHit = true;
 			}
 		}
 	}

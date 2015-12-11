@@ -95,7 +95,7 @@ ModuleAngleBullet.prototype.anim = function(params)
 		for (var i of bullet.ship.game.registeredEnnemies.keys())
 		{
 			var ennemy = bullet.ship.game.registeredEnnemies.get(i);
-			if (ennemy != null && !ennemy.isDead && bullet.getHitbox().isHovering(ennemy.getHitbox()))
+			if (ennemy != null && ennemy.id != 'module' && !ennemy.isDead && bullet.getHitbox().isHovering(ennemy.getHitbox()))
 			{
 				bullet.destroy();
 				ennemy.destroy();

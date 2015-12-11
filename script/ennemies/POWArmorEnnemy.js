@@ -106,7 +106,7 @@ POWArmorEnnemy.prototype.destroy = function()
 			new DnaUpgrade(this);
 			break;
 		case 'fire':
-			//new FireUpgrade(this);
+			new FireUpgrade(this);
 			break;
 		case 'rockets':
 			new RocketsUpgrade(this);
