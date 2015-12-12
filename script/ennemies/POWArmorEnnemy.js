@@ -111,8 +111,8 @@ POWArmorEnnemy.prototype.destroy = function()
 		case 'rockets':
 			new RocketsUpgrade(this);
 			break;
-		case 'bit':
-			//new BitModuleUpgrade(this);
+		case 'bitmodule':
+			new BitModuleUpgrade(this);
 			break;
 	}
 }

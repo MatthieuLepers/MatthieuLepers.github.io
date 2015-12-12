@@ -3,7 +3,7 @@ function Rocket(ship, id, direction)
 	this.listeners = new Array();
 	this.id = id;
 	this.ship = ship;
-	this.speed =6.5;
+	this.speed = 6.5;
 	this.direction = direction;
 	this.target = null;
 	this.angle = 0;
@@ -101,8 +101,9 @@ Rocket.prototype.anim = function(params)
 		b.parentNode.removeChild(b);
 		this.ship.game.stats.rocketFails++;
 	}
-	else if (rocket.target == null)
+	else if (rocket.target == null || rocket.target.isDead)
 	{
+		rocket.angle = 0;
 		for (var key of rocket.ship.game.registeredEnnemies.keys())
 		{
 			var ennemy = rocket.ship.game.registeredEnnemies.get(key);
@@ -111,25 +112,26 @@ Rocket.prototype.anim = function(params)
 				var distanceX = ennemy.left - rocket.left;
 				var distanceY = rocket.top - ennemy.top;
 				
-				if (rocket.target == null)
-					rocket.target = ennemy;
-				
 				if (rocket.direction == 'up')
 				{
-					if (distanceX > 0 && distanceY > 0 && rocket.target.left > ennemy.left)
+					if (distanceX > 0 && distanceY > 0)
 					{
 						rocket.target = ennemy;
+						break;
 					}
 				}
 				else
 				{
-					if (distanceX > 0 && distanceY < 0 && rocket.target.left > ennemy.left)
+					if (distanceX > 0 && distanceY < 0)
 					{
 						rocket.target = ennemy;
+						break;
 					}
 				}
 			}
 		}
+		rocket.left += rocket.speed;
+		rocket.printRocket(id);
 	}
 	else
 	{
@@ -138,19 +140,84 @@ Rocket.prototype.anim = function(params)
 			var targetPoint = new Point(rocket.target.left + (rocket.target.width / 2), rocket.target.top + (rocket.target.height / 2));
 			var rocketPoint = new Point(rocket.left, rocket.top);
 			
-			if (rocket.direction == 'up')
+			var distanceX = targetPoint.getX() - rocketPoint.getX();
+			var distanceY = targetPoint.getY() - rocketPoint.getY();
+			
+			if (distanceX < 0)
 			{
-				//rocket.top -=
+				if (rocket.direction == 'up')
+				{
+					if (distanceY > 0)
+					{
+						if (parseInt(Math.floor(rocket.top)) != 0)
+							rocket.top += -(distanceY / rocket.top) + (rocket.speed / 3);
+					}
+					else
+					{
+						if (parseInt(Math.floor(rocket.top)) != 0)
+							rocket.top -= -(distanceY / rocket.top) + (rocket.speed / 3);
+					}
+					rocket.left -= (distanceX / rocket.left) + (rocket.speed / 2);
+					
+					rocket.angle = parseInt((Math.atan2(distanceY,distanceX) / Math.PI) * 180);
+				}
+				else
+				{
+					if (distanceY > 0)
+					{
+						if (parseInt(Math.floor(rocket.top)) != 0)
+							rocket.top += (distanceY / rocket.top) + (rocket.speed / 3);
+					}
+					else
+					{
+						if (parseInt(Math.floor(rocket.top)) != 0)
+							rocket.top -= (distanceY / rocket.top) + (rocket.speed / 3);
+					}
+					rocket.left -= (distanceX / rocket.left) + (rocket.speed / 2);
+					
+					rocket.angle = parseInt((Math.atan2(distanceY,distanceX) / Math.PI) * 180);
+				}
 			}
 			else
 			{
-				//rocket.top +=
+				if (rocket.direction == 'up')
+				{
+					if (distanceY > 0)
+					{
+						if (parseInt(Math.floor(rocket.top)) != 0)
+							rocket.top += -(distanceY / rocket.top) + (rocket.speed / 3);
+					}
+					else
+					{
+						if (parseInt(Math.floor(rocket.top)) != 0)
+							rocket.top -= -(distanceY / rocket.top) + (rocket.speed / 3);
+					}
+					rocket.left += (distanceX / rocket.left) + (rocket.speed / 2);
+					
+					rocket.angle = parseInt((Math.atan2(distanceY,distanceX) / Math.PI) * 180);
+				}
+				else
+				{
+					if (distanceY > 0)
+					{
+						if (parseInt(Math.floor(rocket.top)) != 0)
+							rocket.top += (distanceY / rocket.top) + (rocket.speed / 3);
+					}
+					else
+					{
+						if (parseInt(Math.floor(rocket.top)) != 0)
+							rocket.top -= (distanceY / rocket.top) + (rocket.speed / 3);
+					}
+					rocket.left += (distanceX / rocket.left) + (rocket.speed / 2);
+					
+					rocket.angle = parseInt((Math.atan2(distanceY,distanceX) / Math.PI) * 180);
+				}
 			}
-			rocket.left += rocket.speed;
 		}
 		else
 		{
 			rocket.left += rocket.speed;
+			rocket.angle = 0;
 		}
 		
 		rocket.printRocket(id);
@@ -197,6 +264,8 @@ Rocket.prototype.printRocket = function(id)
 		rocketi.style.width = this.width + 'px';
 		rocketi.style.height = this.height + 'px';
 		
+		rocket.style.transform = 'rotate(' + this.angle + 'deg)';
+		
 		rocket.appendChild(trail);
 		rocket.appendChild(rocketi);
 		
@@ -214,5 +283,6 @@ Rocket.prototype.printRocket = function(id)
 		theRocket[0].children[1].style.height = this.height + 'px';
 		if (!theRocket[0].children[1].src.contains(texloc + this.img))
 			theRocket[0].children[1].src = texloc + this.img;
+		theRocket[0].style.transform = 'rotate(' + this.angle + 'deg)';
 	}
 }

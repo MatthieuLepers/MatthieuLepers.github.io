@@ -23,6 +23,9 @@ function Ship(game)
 	this.chargeLeft = 33;
 	this.chargeTop = -5;
 	this.charge;
+	
+	this.bitModule = 0;
+	this.bitModules = new Map();
 }
 
 /* ----- Getters ----- */
@@ -136,6 +139,16 @@ Ship.prototype.shoot = function()
 				this.registeredBullets.set(DANRed.id, DANRed);
 				this.registeredBullets.set(DANblue.id, DANblue);
 			}
+		}
+		
+		if (this.bitModule == 1)
+		{
+			this.bitModules.get('top').shoot();
+		}
+		else if (this.bitModule == 2)
+		{
+			this.bitModules.get('top').shoot();
+			this.bitModules.get('bottom').shoot();
 		}
 		
 		if (document.querySelectorAll('body img[id="module"]').length == 1 && this.module.position == '')
@@ -303,6 +316,13 @@ Ship.prototype.move = function(xPos, yPos)
 		this.printShip();
 		if (this.module != null)
 			this.module.printModule(this.module.id);
+		if (this.bitModule == 1)
+			this.bitModules.get('top').printBitModule(this.bitModules.get('top').id);
+		if (this.bitModule == 2)
+		{
+			this.bitModules.get('top').printBitModule(this.bitModules.get('top').id);
+			this.bitModules.get('bottom').printBitModule(this.bitModules.get('bottom').id);
+		}
 	}
 }
 
@@ -494,20 +514,36 @@ Ship.prototype.printShip = function()
 		charge.style.left = this.chargeLeft + 'px';
 		charge.style.top = this.chargeTop + 'px';
 		
+		//Module Front
 		var moduleFront = document.createElement('div');
 		moduleFront.id = 'moduleFront';
 		moduleFront.className = 'modulePosition';
 		if (this.module != null && this.module.position == 'front')
 			this.module.printModule();
 		
+		//Module Back
 		var moduleBack = document.createElement('div');
 		moduleBack.id = 'moduleBack';
 		moduleBack.className = 'modulePosition';
 		if (this.module != null && this.module.position == 'back')
 			this.module.printModule();
 		
+		//Bit Module Top
+		var bitModuleTop = document.createElement('div');
+		bitModuleTop.className = 'bitmodule top';
+		if (this.bitModule == 1)
+			this.bitModules.get('top').printBitModule();
+		
+		//Bit Module Bottom
+		var bitModuleBottom = document.createElement('div');
+		bitModuleBottom.className = 'bitmodule bottom';
+		if (this.bitModule == 2)
+			this.bitModulesget('bottom').printBitModule();
+		
 		shipDiv.appendChild(ship);
 		shipDiv.appendChild(charge);
+		shipDiv.appendChild(bitModuleTop);
+		shipDiv.appendChild(bitModuleBottom);
 		shipDiv.appendChild(moduleFront);
 		shipDiv.appendChild(moduleBack);
 		

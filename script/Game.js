@@ -118,7 +118,7 @@ function Game()
 /* ----- Getters ----- */
 Game.prototype.getRandomUpdate = function()
 {
-	var random = parseInt(Math.random() * 5);
+	var random = parseInt(Math.random() * 6);
 	var returned = '';
 	
 	switch (random)
@@ -139,7 +139,7 @@ Game.prototype.getRandomUpdate = function()
 			returned = 'rockets';
 			break;
 		case 5:
-			//returned = 'bitmodule';
+			returned = 'bitmodule';
 			break;
 	}
 	

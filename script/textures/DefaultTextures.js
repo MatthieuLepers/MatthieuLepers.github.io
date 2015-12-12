@@ -40,6 +40,8 @@ function DefaultTextures()
 	this.upgrade_dna = new Texture('upgrade_dna.gif', 20, 18);
 	this.upgrade_fire = new Texture('upgrade_fire.gif', 20, 18);
 	this.upgrade_rockets = new Texture('upgrade_rockets.gif', 21, 18);
+	this.upgrade_bit_module_top = new Texture('bit_module_top.gif', 16, 16);
+	this.upgrade_bit_module_bottom = new Texture('bit_module_bottom.gif', 16, 16);
 	
 	//Projectiles
 	this.projectile_module = new Texture('module_shot.gif', 16, 4);

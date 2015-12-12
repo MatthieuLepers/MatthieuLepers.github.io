@@ -33,6 +33,17 @@ div#ship, #charge, .bullet, .ennemy, .ennemyShot, .redlaser, .upgrade, #module, 
 	top: 4px;
 }
 
+.upgrade {
+	z-index: 1;
+}
+
+.bitmoduleanim {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 0;
+}
+
 #module1 {
 	display: block;
 	z-index: 3;
@@ -188,4 +199,21 @@ img.flip {
     transform: scaleX(-1);
     filter: FlipH;
     -ms-filter: "FlipH";
+}
+
+div.bitmodule {
+	display: block;
+	position: absolute;
+	width: 16px;
+	height: 16px;
+}
+
+div.bitmodule.top {
+	bottom: 36px;
+	left: 6px;
+}
+
+div.bitmodule.bottom {
+	top: 36px;
+	left: 6px;
 }

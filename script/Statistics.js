@@ -23,6 +23,9 @@ function Statistics(game)
 	this.moduleShots = 0;
 	this.moduleShotHits = 0;
 	this.moduleShotFails = 0;
+	this.biModuleShots = 0;
+	this.bitModuleShotHits = 0;
+	this.bitModuleShotFails = 0;
 	
 	//Kills
 	this.killedPataPata = 0;

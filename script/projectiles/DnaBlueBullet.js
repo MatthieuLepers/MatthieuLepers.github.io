@@ -12,14 +12,30 @@ function DnaBlueBullet(ship, id, sign)
 	
 	if (sign > 0)
 	{
-		this.top = ship.getHitbox().boxOrigin.getY() + 16;
-		this.left = ship.getHitbox().boxOrigin.getX() + ship.width + 5;
+		if (this.id.contains('bitmoduleblueshot'))
+		{
+			this.top = ship.top + 16 + 28;
+			this.left = ship.left + 14;
+		}
+		else
+		{
+			this.top = ship.top + 16;
+			this.left = ship.left + ship.width + 5;
+		}
 		this.className = '';
 	}
 	else
 	{
-		this.top = ship.getHitbox().boxOrigin.getY() + 16;
-		this.left = ship.getHitbox().boxOrigin.getX() - ship.width;
+		if (this.id.contains('bitmoduleblueshot'))
+		{
+			this.top = ship.top + 16 + 28;
+			this.left = ship.left + 14 - this.width;
+		}
+		else
+		{
+			this.top = ship.top + 16;
+			this.left = ship.left - ship.width;
+		}
 		this.className = 'flip';
 	}
 	
@@ -126,7 +142,7 @@ DnaBlueBullet.prototype.anim = function(params)
 			for (var i of bullet.ship.game.registeredEnnemies.keys())
 			{
 				var ennemy = bullet.ship.game.registeredEnnemies.get(i);
-				if (ennemy.id != 'module' && !ennemy.isDead && bullet.getHitbox().isHovering(ennemy.getHitbox()))
+				if (ennemy != null && ennemy.id != 'module' && !ennemy.isDead && bullet.getHitbox().isHovering(ennemy.getHitbox()))
 				{
 					ennemy.destroy();
 					this.ship.game.stats.dnaShotHits++;

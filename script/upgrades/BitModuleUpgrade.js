@@ -1,31 +1,31 @@
-function SpeedUpgrade(powarmor)
+function BitModuleUpgrade(powarmor)
 {
-	this.id = 'upgradespeed_' + powarmor.id;
+	this.id = 'upgradebitmodule_' + powarmor.id;
 	this.listeners = new Array();
 	this.powarmor = powarmor;
-	this.top = powarmor.top;
-	this.left = powarmor.left;
-	this.img = powarmor.game.textures.upgrade_speed.getPath();
-	this.width = powarmor.game.textures.upgrade_speed.getWidth();
-	this.height = powarmor.game.textures.upgrade_speed.getHeight();
+	this.img = powarmor.game.textures.upgrade_bit_module_top.getPath();
+	this.width = powarmor.game.textures.upgrade_bit_module_top.getWidth();
+	this.height = powarmor.game.textures.upgrade_bit_module_top.getHeight();
+	this.top = powarmor.top + (powarmor.height / 2) - ((this.height / 2));
+	this.left = powarmor.left + (powarmor.width / 2) - ((this.width / 2));
 	
 	this.launch(this.id);
 	this.printUpgrade(this.id);
 }
 
 /* ----- Getters ----- */
-SpeedUpgrade.prototype.getHitbox = function()
+BitModuleUpgrade.prototype.getHitbox = function()
 {
 	return new Hitbox(new Point(this.left, this.top), this.width, this.height, this);
 }
 
 /* ----- Events ----- */
-SpeedUpgrade.prototype.addEventListener = function(eventName, action)
+BitModuleUpgrade.prototype.addEventListener = function(eventName, action)
 {
 	this.listeners.push(new Array(eventName, new EventListener(action)));
 }
 
-SpeedUpgrade.prototype.removeEventListener = function(eventName, action)
+BitModuleUpgrade.prototype.removeEventListener = function(eventName, action)
 {
 	for (var i = 0; i < this.listeners.length; i++)
 	{
@@ -36,60 +36,58 @@ SpeedUpgrade.prototype.removeEventListener = function(eventName, action)
 	}
 }
 
-SpeedUpgrade.prototype.fire = function(event)
+BitModuleUpgrade.prototype.fire = function(event)
 {
 	event.dispatchEvent();
 }
 
-SpeedUpgrade.prototype.onLaunch = function()
+BitModuleUpgrade.prototype.onLaunch = function()
 {
 	this.fire(new Event('onlaunch', this));
 	this.powarmor.game.stats.spawnedUpgrade++;
 }
 
-SpeedUpgrade.prototype.onDestroyed = function()
+BitModuleUpgrade.prototype.onDestroyed = function()
 {
 	this.fire(new Event('ondestroyed', this));
 }
 
-SpeedUpgrade.prototype.onPickup = function()
+BitModuleUpgrade.prototype.onPickup = function()
 {
 	this.fire(new Event('onpickup', this));
 	this.powarmor.game.stats.pickedSpeedUpgrade++;
 }
 
-SpeedUpgrade.prototype.onHover = function()
+BitModuleUpgrade.prototype.onHover = function()
 {
 	this.fire(new Event('onhover', this));
 }
 
 /* ----- Actions ----- */
-SpeedUpgrade.prototype.launch = function(id)
+BitModuleUpgrade.prototype.launch = function(id)
 {
 	this.onLaunch();
 	this.powarmor.game.scheduler.addTask(id, this.anim, new Array(this, id, this.powarmor.game.scheduler));
 }
 
-SpeedUpgrade.prototype.pickup = function()
+BitModuleUpgrade.prototype.pickup = function()
 {
 	this.onPickup();
 	this.destroy();
 	var ship = this.powarmor.game.ship;
-	if (ship.speed < 4)
-		ship.speed = ship.speed + 0.5;
-	
-	document.getElementById('moduleBack').style.backgroundImage = 'url("' + ship.game.textures.texturesLocation + ship.game.textures.ship_acceleration.getPath() + '")';
-	
-	var f = function()
+	if (ship.bitModule == 0)
 	{
-		window.clearTimeout(timerX);
-		document.getElementById('moduleBack').style.backgroundImage = 'none';
-	};
-	
-	var timerX = window.setTimeout(f, 1000);
+		ship.bitModule = 1;
+		ship.bitModules.set('top', new BitModule(ship, 'top'));
+	}
+	else if (ship.bitModule == 1)
+	{
+		ship.bitModule = 2;
+		ship.bitModules.set('bottom', new BitModule(ship, 'bottom'));
+	}
 }
 
-SpeedUpgrade.prototype.destroy = function()
+BitModuleUpgrade.prototype.destroy = function()
 {
 	this.powarmor.game.scheduler.removeTask(this.id);
 	
@@ -99,7 +97,7 @@ SpeedUpgrade.prototype.destroy = function()
 }
 
 /* ----- Animation ----- */
-SpeedUpgrade.prototype.anim = function(params)
+BitModuleUpgrade.prototype.anim = function(params)
 {
 	var upgrade = params[0];
 	var id = params[1];
@@ -123,7 +121,7 @@ SpeedUpgrade.prototype.anim = function(params)
 }
 
 /* ----- Printers ----- */
-SpeedUpgrade.prototype.printUpgrade = function(id)
+BitModuleUpgrade.prototype.printUpgrade = function(id)
 {
 	var texloc = this.powarmor.game.textures.texturesLocation;
 	

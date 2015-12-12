@@ -7,8 +7,15 @@ version 1.0.1 (beta)
 - [Added] Ship normal shot animation
 - [Fixed] Chargement shift when the ship has module at front
 - [Fixed] Charged bullet shift when the ship has module at front
-- [Optimisation] Minimale optimisation
+- [Optimisation] Minor optimisation
 
 version 1.0.2 (beta)
 - [Added] Statistics engine
-- [Optimisation] Minimale optimisation
+- [Optimisation] Minor optimisation
+
+version 1.0.3 (beta)
+- [Added] Bit Module upgrade, the ship can have maximum 2 upgrade like that.
+          Bit module shoot only if module is on front/back of the ship and weapon type is the DNA weapon.
+- [Added] Rocket head-searching, rockets can now focus an ennemy an destroy it.
+- [Fixed] Minor bugs
+- [Optimisation] Minor optimisation
