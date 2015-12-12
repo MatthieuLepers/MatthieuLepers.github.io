@@ -8,6 +8,7 @@ var bUp;
 var bDown;
 var bRight;
 var bLeft;
+var hasPress = false;
 
 String.prototype.contains = function(s)
 {
@@ -36,24 +37,29 @@ function resetDirection(e)
 {
 	switch (e.keyCode)
 	{
-		case 37:
+		case 81:
 			bLeft = false;
 			window.clearInterval(timerLeft);
 			break;
-		case 38:
+		case 90:
 			bUp = false;
 			window.clearInterval(timerUp);
 			break;
-		case 39:
+		case 68:
 			bRight = false;
 			window.clearInterval(timerRight);
 			break;
-		case 40:
+		case 83:
 			bDown = false;
 			window.clearInterval(timerDown);
 			break;
+		case 77:
+			hasPress = false;
+			ship.launchCharge();
+			break;
 	}
 	resetAnimation();
+	console.log(e.keyCode);
 }
 
 function moveShip(e)
@@ -66,14 +72,14 @@ function moveShip(e)
 	
 	switch (e.keyCode)
 	{
-		case 37:
+		case 81:
 			if (!bLeft)
 			{
 				bLeft = true;
 				timerLeft = window.setInterval(moveTheShip, 10, ship, -ship.speed, 0, 'left');
 			}
 			break;
-		case 38:
+		case 90:
 			if (!bUp)
 			{
 				bUp = true;
@@ -85,14 +91,14 @@ function moveShip(e)
 				timerUp = window.setInterval(moveTheShip, 10, ship, 0, -ship.speed, 'up');
 			}
 			break;
-		case 39:
+		case 68:
 			if (!bRight)
 			{
 				bRight = true;
 				timerRight = window.setInterval(moveTheShip, 10, ship, ship.speed, 0, 'right');
 			}
 			break;
-		case 40:
+		case 83:
 			if (!bDown)
 			{
 				bDown = true;
@@ -125,6 +131,18 @@ function moveShip(e)
 		case 17:
 			ship.throwModule();
 			break;
+		case 76:
+			ship.shoot();
+			break;
+		case 77:
+			if (!hasPress)
+			{
+				hasPress = true;
+				ship.prepareCharge();
+			}
+			break;
+		case 116:
+			location.reload();
 	}
 }
 
@@ -165,6 +183,7 @@ function setupEvent()
 	window.addEventListener('mousedown', shoot);
 	window.addEventListener('mouseup', launchCharge);
 	window.addEventListener('contextmenu', function(e) {e.preventDefault(); return false; });
+	window.addEventListener('keypress', function(e) {e.preventDefault(); return false; });
 }
 
 window.addEventListener('load', setupEvent);

@@ -19,3 +19,16 @@ version 1.0.3 (beta)
 - [Added] Rocket head-searching, rockets can now focus an ennemy an destroy it.
 - [Fixed] Minor bugs
 - [Optimisation] Minor optimisation
+
+version 1.0.4 (beta)
+- [Modification] Changed game controls.
+                 Z -> up
+				 Q -> left
+				 S -> down
+				 D -> right
+				 L or LEFT CLICK -> shoot
+				 M or RIGHT CLICK -> charge shoot
+				 CTRL -> throw module
+				 ECHAP -> pause
+				 F5 -> retry
+- [Added] Controls for keyboard
