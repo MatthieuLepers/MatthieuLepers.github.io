@@ -59,7 +59,6 @@ function resetDirection(e)
 			break;
 	}
 	resetAnimation();
-	console.log(e.keyCode);
 }
 
 function moveShip(e)

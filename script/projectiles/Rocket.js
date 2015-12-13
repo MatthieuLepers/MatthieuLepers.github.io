@@ -7,6 +7,7 @@ function Rocket(ship, id, direction)
 	this.direction = direction;
 	this.target = null;
 	this.angle = 0;
+	this.damages = 2;
 	
 	this.img = ship.game.textures.projectile_rocket.getPath();
 	this.width = ship.game.textures.projectile_rocket.getWidth();
@@ -81,10 +82,29 @@ Rocket.prototype.destroy = function()
 	this.onDestroyed()
 	this.ship.game.scheduler.removeTask(this.id);
 	//this.ship.getRegisteredBullets().delete(this.id);
+	var texloc = this.ship.game.textures.texturesLocation;
+	var trail = document.getElementById('trail' + this.id);
+	trail.src = this.ship.game.textures.texturesLocation + this.ship.game.textures.none.getPath();
 	
 	var rocketNode = document.getElementById(this.id);
-	if (rocketNode != null)
-		rocketNode.parentNode.removeChild(rocketNode);
+	
+	this.img = this.ship.game.textures.rocket_explosion.getPath();
+	this.width = this.ship.game.textures.rocket_explosion.getWidth();
+	this.height = this.ship.game.textures.rocket_explosion.getHeight();
+	this.angle = 0;
+	this.top -= this.height / 2;
+	this.left -= this.width / 2;
+	
+	this.printRocket(this.id);
+	
+	var f = function(s)
+	{
+		window.clearTimeout(timerX);
+		if (s != null)
+			s.parentNode.removeChild(s);
+	};
+	
+	var timerX = window.setTimeout(f, 750, rocketNode);
 }
 
 /* ----- Annimations ----- */
@@ -228,7 +248,7 @@ Rocket.prototype.anim = function(params)
 			if (ennemy != null && ennemy.id != 'module' && !ennemy.isDead && rocket.getHitbox().isHovering(ennemy.getHitbox()))
 			{
 				rocket.destroy();
-				ennemy.destroy();
+				ennemy.damage(rocket.damages);
 			}
 		}
 	}
@@ -277,8 +297,6 @@ Rocket.prototype.printRocket = function(id)
 		theRocket[0].style.left = this.left + 'px';
 		theRocket[0].children[0].style.width = this.trailWidth + 'px';
 		theRocket[0].children[0].style.height = this.trailHeight + 'px';
-		if (!theRocket[0].children[0].src.contains(texloc + this.trailImg))
-			theRocket[0].children[0].src = texloc + this.trailImg;
 		theRocket[0].children[1].style.width = this.width + 'px';
 		theRocket[0].children[1].style.height = this.height + 'px';
 		if (!theRocket[0].children[1].src.contains(texloc + this.img))

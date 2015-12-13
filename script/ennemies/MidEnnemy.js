@@ -11,6 +11,7 @@ function MidEnnemy(game, id)
 	this.img = game.textures.mid.getPath();
 	this.width = game.textures.mid.getWidth();
 	this.height = game.textures.mid.getHeight();
+	this.lifePoints = 1;
 	
 	this.points = 50;
 	
@@ -85,6 +86,13 @@ MidEnnemy.prototype.shoot = function()
 		var laser = new RedLaser(this, this.id + '_shot' + this.registeredBullets.size, this.game.scheduler);
 		this.registeredBullets.set(laser.id, laser);
 	}
+}
+
+MidEnnemy.prototype.damage = function(damage)
+{
+	this.lifePoints -= damage;
+	if (this.lifePoints <= 0)
+		this.destroy();
 }
 
 MidEnnemy.prototype.destroy = function()

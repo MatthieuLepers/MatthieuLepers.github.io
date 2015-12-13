@@ -5,6 +5,8 @@ function DnaBlueBullet(ship, id, sign)
 	this.id = id;
 	this.sign = sign;
 	this.speed = sign * 8;
+	this.damages = 3;
+	this.lifePoints = 3;
 	
 	this.img = ship.game.textures.projectile_blue_dna_bullet.getPath();
 	this.width = ship.game.textures.projectile_blue_dna_bullet.getWidth();
@@ -84,6 +86,13 @@ DnaBlueBullet.prototype.launch = function(id)
 	this.ship.game.scheduler.addTask(id, this.anim, new Array(this, id, this.ship.game.scheduler));
 }
 
+DnaBlueBullet.prototype.damage = function(damage)
+{
+	this.lifePoints -= damage;
+	if (this.lifePoints <= 0)
+		this.destroy();
+}
+
 DnaBlueBullet.prototype.destroy = function()
 {
 	this.ship.game.scheduler.removeTask(this.id);
@@ -119,7 +128,8 @@ DnaBlueBullet.prototype.anim = function(params)
 				var ennemy = bullet.ship.game.registeredEnnemies.get(i);
 				if (ennemy != null && ennemy.id != 'module' && !ennemy.isDead && bullet.getHitbox().isHovering(ennemy.getHitbox()))
 				{
-					ennemy.destroy();
+					bullet.damage(ennemy.lifePoints);
+					ennemy.damage(bullet.damages);
 					this.ship.game.stats.dnaShotHits++;
 				}
 			}
@@ -144,7 +154,8 @@ DnaBlueBullet.prototype.anim = function(params)
 				var ennemy = bullet.ship.game.registeredEnnemies.get(i);
 				if (ennemy != null && ennemy.id != 'module' && !ennemy.isDead && bullet.getHitbox().isHovering(ennemy.getHitbox()))
 				{
-					ennemy.destroy();
+					bullet.damage(ennemy.lifePoints);
+					ennemy.damage(bullet.damages);
 					this.ship.game.stats.dnaShotHits++;
 				}
 			}

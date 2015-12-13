@@ -9,6 +9,7 @@ function Bullet(ship, id)
 	this.height = ship.game.textures.ship_bullet.getHeight();
 	this.top = ship.getHitbox().boxOrigin.getY() + 6;
 	this.left = ship.getHitbox().boxOrigin.getX() + ship.getHitbox().getWidth() + 5;
+	this.damages = 1;
 	
 	this.launch(id);
 	this.printBullet(id);
@@ -98,7 +99,7 @@ Bullet.prototype.anim = function(params)
 			if (ennemy != null && ennemy.id != 'module' && !ennemy.isDead && bullet.getHitbox().isHovering(ennemy.getHitbox()))
 			{
 				bullet.destroy();
-				ennemy.destroy();
+				ennemy.damage(bullet.damages);
 			}
 		}
 	}

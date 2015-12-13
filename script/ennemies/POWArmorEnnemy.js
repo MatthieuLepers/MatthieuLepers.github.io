@@ -13,6 +13,7 @@ function POWArmorEnnemy(game, id, upgrade)
 	this.img = game.textures.powarmor_fly.getPath();
 	this.width = game.textures.powarmor_fly.getWidth();
 	this.height = game.textures.powarmor_fly.getHeight();
+	this.lifePoints = 1;
 	
 	this.points = 200;
 	
@@ -69,6 +70,13 @@ POWArmorEnnemy.prototype.launch = function(id)
 {
 	this.onLaunch();
 	this.game.scheduler.addTask(id, this.anim, new Array(this, id, this.game.scheduler));
+}
+
+POWArmorEnnemy.prototype.damage = function(damage)
+{
+	this.lifePoints -= damage;
+	if (this.lifePoints <= 0)
+		this.destroy();
 }
 
 POWArmorEnnemy.prototype.destroy = function()

@@ -13,6 +13,7 @@ function PataPataEnnemy(game, id)
 	this.img = game.textures.patapata.getPath();
 	this.width = game.textures.patapata.getWidth();
 	this.height = game.textures.patapata.getHeight();
+	this.lifePoints = 1;
 	
 	this.points = 100;
 	
@@ -83,6 +84,13 @@ PataPataEnnemy.prototype.shoot = function()
 		var projectile = new Shot(this, this.id + '_shot' + this.registeredBullets.size, this.game.scheduler);
 		this.registeredBullets.set(projectile.id, projectile);
 	}
+}
+
+PataPataEnnemy.prototype.damage = function(damage)
+{
+	this.lifePoints -= damage;
+	if (this.lifePoints <= 0)
+		this.destroy();
 }
 
 PataPataEnnemy.prototype.destroy = function()

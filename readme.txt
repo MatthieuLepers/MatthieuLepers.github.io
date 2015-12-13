@@ -32,3 +32,7 @@ version 1.0.4 (beta)
 				 ECHAP -> pause
 				 F5 -> retry
 - [Added] Controls for keyboard
+
+version 1.0.5
+- [Added] When a rocket hits, she explode.
+- [Added] Ship secret skins, did you find how to play with it ?

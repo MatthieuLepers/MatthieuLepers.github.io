@@ -10,6 +10,8 @@ function ModuleAngleBullet(ship, id, angle)
 	this.height = this.ship.game.textures.projectile_module.getHeight();
 	this.top = ship.getHitbox().boxOrigin.getY() + 12;
 	this.left = ship.getHitbox().boxOrigin.getX() + ship.width + 2;
+	this.damages = 1;
+	
 	this.launch(id);
 	this.printBullet(id);
 }
@@ -98,7 +100,7 @@ ModuleAngleBullet.prototype.anim = function(params)
 			if (ennemy != null && ennemy.id != 'module' && !ennemy.isDead && bullet.getHitbox().isHovering(ennemy.getHitbox()))
 			{
 				bullet.destroy();
-				ennemy.destroy();
+				ennemy.damage(bullet.damages);
 			}
 		}
 	}

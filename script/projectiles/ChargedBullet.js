@@ -10,6 +10,8 @@ function ChargedBullet(ship, id, scheduler, img, width, height, speed)
 	this.top = ship.getHitbox().boxOrigin.getY() + 6;
 	this.left = ship.getHitbox().boxOrigin.getX() + ship.getHitbox().getWidth() + 5;
 	this.hasHit = false;
+	this.damages = parseInt(Math.ceil(speed / 2));
+	this.lifePoints = speed;
 	
 	this.launch(id);
 	this.printBullet(id);
@@ -50,6 +52,23 @@ ChargedBullet.prototype.onLaunch = function()
 }
 
 /* ----- Actions ----- */
+
+ChargedBullet.prototype.damage = function(damage)
+{
+	this.lifePoints -= damage;
+	if (this.lifePoints <= 0)
+		this.destroy();
+}
+
+ChargedBullet.prototype.destroy = function()
+{
+	this.ship.game.scheduler.removeTask(this.id);
+	
+	var bulletNode = document.getElementById(this.id);
+	if (bulletNode != null)
+		bulletNode.parentNode.removeChild(bulletNode);
+}
+
 ChargedBullet.prototype.launch = function(id)
 {
 	this.onLaunch();
@@ -83,7 +102,8 @@ ChargedBullet.prototype.anim = function(params)
 			var ennemy = bullet.ship.game.registeredEnnemies.get(i);
 			if (ennemy != null && ennemy.id != 'module' && !ennemy.isDead && bullet.getHitbox().isHovering(ennemy.getHitbox()))
 			{
-				ennemy.destroy();
+				bullet.damage(ennemy.lifePoints);
+				ennemy.damage(bullet.damages);
 				this.ship.game.stats.chargedShotHits++;
 				this.hasHit = true;
 			}

@@ -6,11 +6,25 @@ function DefaultTextures()
 	
 	//Ship
 	//new Texture(texturePath, width, height)
-	this.ship_idle = new Texture('ship_idle.gif', 32, 15);
-	this.ship_up = new Texture('ship_up.gif', 32, 15);
-	this.ship_down = new Texture('ship_down.gif', 32, 15);
-	this.ship_up_to_idle = new Texture('ship_up-to_idle.gif', 32, 15);
-	this.ship_down_to_idle = new Texture('ship_down-to_idle.gif', 32, 15);
+	
+	if (document.URL.contains('?skin='))
+	{
+		var tab = document.URL.split('=');
+		var colors = new Array('blue','darkblue','green','purple','red');
+		if (colors.indexOf(tab[1]) != -1)
+		{
+			this.ship_skin = tab[1];
+		}
+	}
+	else
+	{
+		this.ship_skin = 'blue';
+	}
+	this.ship_idle = new Texture(this.ship_skin + '_idle.gif', 32, 15);
+	this.ship_up = new Texture(this.ship_skin + '_up.gif', 32, 15);
+	this.ship_down = new Texture(this.ship_skin + '_down.gif', 32, 15);
+	this.ship_up_to_idle = new Texture(this.ship_skin + '_up-to_idle.gif', 32, 15);
+	this.ship_down_to_idle = new Texture(this.ship_skin + '_down-to_idle.gif', 32, 15);
 	this.ship_explosion = new Texture('ship_explosion.gif', 32, 28);
 	this.ship_acceleration = new Texture('acceleration.gif', 32, 32);
 	this.ship_shoot_bullet = new Texture('shoot_bullet.gif', 14, 12);
@@ -60,4 +74,5 @@ function DefaultTextures()
 	
 	//Explosions
 	this.explosion = new Texture('explosion.gif', 32, 32);
+	this.rocket_explosion = new Texture('rocket_explosion.gif', 32, 32);
 }
