@@ -81,7 +81,7 @@ ModuleAngleBullet.prototype.anim = function(params)
 	var id = params[1];
 	var scheduler = params[2];
 	
-	if (bullet.left > window.innerWidth + 10)
+	if (bullet.left > window.innerWidth + 10 || bullet.top < -10 || bullet.top > window.innerHeight + 10)
 	{
 		scheduler.removeTask(id);
 		var b = document.getElementById(""+id);

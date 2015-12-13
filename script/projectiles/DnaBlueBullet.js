@@ -109,9 +109,9 @@ DnaBlueBullet.prototype.anim = function(params)
 	var id = params[1];
 	var scheduler = params[2];
 	
-	if (this.sign > 0)
+	if (this.sign < 0)
 	{
-		if (bullet.left > window.innerWidth + 10)
+		if (bullet.left < -50)
 		{
 			scheduler.removeTask(id);
 			var b = document.getElementById(""+id);
@@ -137,7 +137,7 @@ DnaBlueBullet.prototype.anim = function(params)
 	}
 	else
 	{
-		if (bullet.left < -50)
+		if (bullet.left > window.innerWidth + 10)
 		{
 			scheduler.removeTask(id);
 			var b = document.getElementById(""+id);

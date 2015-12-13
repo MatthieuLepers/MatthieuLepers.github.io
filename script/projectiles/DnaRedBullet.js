@@ -109,33 +109,7 @@ DnaRedBullet.prototype.anim = function(params)
 	var id = params[1];
 	var scheduler = params[2];
 	
-	if (this.sign > 0)
-	{
-		if (bullet.left > window.innerWidth + 10)
-		{
-			scheduler.removeTask(id);
-			var b = document.getElementById(""+id);
-			b.parentNode.removeChild(b);
-			this.ship.game.stats.dnaShotFails++;
-		}
-		else
-		{
-			bullet.left += bullet.speed;
-			bullet.printBullet(id);
-			
-			for (var i of bullet.ship.game.registeredEnnemies.keys())
-			{
-				var ennemy = bullet.ship.game.registeredEnnemies.get(i);
-				if (ennemy != null && !ennemy.isDead && bullet.getHitbox().isHovering(ennemy.getHitbox()))
-				{
-					bullet.damage(ennemy.lifePoints);
-					ennemy.damage(bullet.damages);
-					this.ship.game.stats.dnaShotHits++;
-				}
-			}
-		}
-	}
-	else
+	if (this.sign < 0)
 	{
 		if (bullet.left < -50)
 		{
@@ -153,6 +127,32 @@ DnaRedBullet.prototype.anim = function(params)
 			{
 				var ennemy = bullet.ship.game.registeredEnnemies.get(i);
 				if (ennemy != null && ennemy.id != 'module' && !ennemy.isDead && bullet.getHitbox().isHovering(ennemy.getHitbox()))
+				{
+					bullet.damage(ennemy.lifePoints);
+					ennemy.damage(bullet.damages);
+					this.ship.game.stats.dnaShotHits++;
+				}
+			}
+		}
+	}
+	else
+	{
+		if (bullet.left > window.innerWidth + 10)
+		{
+			scheduler.removeTask(id);
+			var b = document.getElementById(""+id);
+			b.parentNode.removeChild(b);
+			this.ship.game.stats.dnaShotFails++;
+		}
+		else
+		{
+			bullet.left += bullet.speed;
+			bullet.printBullet(id);
+			
+			for (var i of bullet.ship.game.registeredEnnemies.keys())
+			{
+				var ennemy = bullet.ship.game.registeredEnnemies.get(i);
+				if (ennemy != null && !ennemy.isDead && bullet.getHitbox().isHovering(ennemy.getHitbox()))
 				{
 					bullet.damage(ennemy.lifePoints);
 					ennemy.damage(bullet.damages);
