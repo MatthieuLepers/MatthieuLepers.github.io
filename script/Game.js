@@ -133,13 +133,22 @@ Game.prototype.getRandomUpdate = function()
 			returned = 'fire';
 			break;
 		case 3:
-			returned = 'speed';
+			if (this.ship.speed < 4)
+				returned = 'speed';
+			else
+				returned = this.getRandomUpdate();
 			break;
 		case 4:
-			returned = 'rockets';
+			if (!this.ship.hasRockets)
+				returned = 'rockets';
+			else
+				returned = this.getRandomUpdate();
 			break;
 		case 5:
-			returned = 'bitmodule';
+			if (this.ship.bitModules.size < 2)
+				returned = 'bitmodule';
+			else
+				returned = this.getRandomUpdate();
 			break;
 	}
 	

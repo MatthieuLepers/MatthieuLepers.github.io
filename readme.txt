@@ -36,3 +36,6 @@ version 1.0.4 (beta)
 version 1.0.5
 - [Added] When a rocket hits, she explode.
 - [Added] Ship secret skins, did you find how to play with it ?
+- [Added] Auto-shoot when you stay on the shooting key
+- [Added] Better upgrade generation
+- [Optimisation] Minor optimisation

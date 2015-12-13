@@ -4,11 +4,17 @@ var timerUp;
 var timerDown;
 var timerLeft;
 var timerRight;
+var timerShoot;
 var bUp;
 var bDown;
 var bRight;
 var bLeft;
+var bShoot;
 var hasPress = false;
+var shipShoot = function(ship)
+{
+	ship.shoot();
+}
 
 String.prototype.contains = function(s)
 {
@@ -56,6 +62,10 @@ function resetDirection(e)
 		case 77:
 			hasPress = false;
 			ship.launchCharge();
+			break;
+		case 76:
+			bShoot = false;
+			window.clearInterval(timerShoot);
 			break;
 	}
 	resetAnimation();
@@ -131,7 +141,12 @@ function moveShip(e)
 			ship.throwModule();
 			break;
 		case 76:
-			ship.shoot();
+			if (!bShoot)
+			{
+				bShoot = true;
+				ship.shoot();
+				timerShoot = window.setInterval(shipShoot, 100, ship);
+			}
 			break;
 		case 77:
 			if (!hasPress)
@@ -151,7 +166,12 @@ function shoot(e)
 	switch (e.button)
 	{
 		case 0:
-			ship.shoot();
+			if (!bShoot)
+			{
+				bShoot = true;
+				ship.shoot();
+				timerShoot = window.setInterval(shipShoot, 100, ship);
+			}
 			break;
 		case 2:
 			ship.prepareCharge();
@@ -164,6 +184,11 @@ function launchCharge(e)
 	e.preventDefault();
 	if (e.button == 2)
 		ship.launchCharge();
+	else
+	{
+		bShoot = false;
+		window.clearInterval(timerShoot);
+	}
 }
 
 function setupEvent()
