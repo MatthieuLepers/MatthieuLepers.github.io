@@ -23,19 +23,24 @@ version 1.0.3 (beta)
 version 1.0.4 (beta)
 - [Modification] Changed game controls.
                  Z -> up
-				 Q -> left
-				 S -> down
-				 D -> right
-				 L or LEFT CLICK -> shoot
-				 M or RIGHT CLICK -> charge shoot
-				 CTRL -> throw module
-				 ECHAP -> pause
-				 F5 -> retry
+                 Q -> left
+                 S -> down
+                 D -> right
+                 L or LEFT CLICK -> shoot
+                 M or RIGHT CLICK -> charge shoot
+                 CTRL -> throw module
+                 ECHAP -> pause
+                 F5 -> retry
 - [Added] Controls for keyboard
 
-version 1.0.5
+version 1.0.5 (beta)
 - [Added] When a rocket hits, she explode.
 - [Added] Ship secret skins, did you find how to play with it ?
 - [Added] Auto-shoot when you stay on the shooting key
 - [Added] Better upgrade generation
 - [Optimisation] Minor optimisation
+
+version 1.0.6 (beta)
+- [Added] Fire weapon is now available when you pick a fire upgrade
+- [Added] Laser weapon is now available when you pick a laser upgrade, a cooldown is enabled for each uses, this reduce lags
+- [Added] Statistics for this new weapons

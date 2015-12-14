@@ -1,33 +1,46 @@
-function Bullet(ship, id)
+function Fireball(ship, id, direction)
 {
 	this.listeners = new Array(); //contains arrays looks like : Array(String eventName, Function action)
 	this.ship = ship;
 	this.id = id;
-	this.speed = 6.5;
-	this.img = ship.game.textures.ship_bullet.getPath();
-	this.width = ship.game.textures.ship_bullet.getWidth();
-	this.height = ship.game.textures.ship_bullet.getHeight();
-	this.top = ship.getHitbox().boxOrigin.getY() + 7.45;
-	this.left = ship.getHitbox().boxOrigin.getX() + ship.getHitbox().getWidth() + 5;
-	this.damages = 1;
+	this.speed = 4;
+	this.direction = direction;
+	if (this.ship.module.tier >= 1)
+	{
+		this.img = this.ship.game.textures.fireball.getPath();
+		this.width = this.ship.game.textures.fireball.getWidth();
+		this.height = this.ship.game.textures.fireball.getHeight();
+	}
+	this.top = ship.top + (ship.height / 2) + (this.height / 2);
 	
-	this.launch(id);
-	this.printBullet(id);
+	if (ship.module.position == 'front')
+	{
+		this.left = ship.left + ship.width + (this.width / 2);
+	}
+	else if (ship.module.position == 'back')
+	{
+		this.left = ship.left - (this.width / 2);
+	}
+	
+	this.damages = 3;
+	
+	this.launch(this.id);
+	this.printBullet(this.id);
 }
 
 /* ----- Getters ----- */
-Bullet.prototype.getHitbox = function()
+Fireball.prototype.getHitbox = function()
 {
 	return new Hitbox(new Point(this.left, this.top), this.width, this.height, this);
 }
 
 /* ----- Events ----- */
-Bullet.prototype.addEventListener = function(eventName, action)
+Fireball.prototype.addEventListener = function(eventName, action)
 {
 	this.listeners.push(new Array(eventName, new EventListener(action)));
 }
 
-Bullet.prototype.removeEventListener = function(eventName, action)
+Fireball.prototype.removeEventListener = function(eventName, action)
 {
 	for (var i = 0; i < this.listeners.length; i++)
 	{
@@ -38,59 +51,76 @@ Bullet.prototype.removeEventListener = function(eventName, action)
 	}
 }
 
-Bullet.prototype.fire = function(event)
+Fireball.prototype.fire = function(event)
 {
 	event.dispatchEvent();
 }
 
-Bullet.prototype.onLaunch = function()
+Fireball.prototype.onLaunch = function()
 {
 	this.fire(new Event('onlaunched', this));
-	this.ship.game.stats.shipShots++;
+	this.ship.game.stats.fireballShots++;
 }
 
-Bullet.prototype.onDestroyed = function()
+Fireball.prototype.onDestroyed = function()
 {
 	this.fire(new Event('ondestroyed', this));
-	this.ship.game.stats.shipShotHits++;
+	this.ship.game.stats.fireballShotHits++;
 }
 
 /* ----- Actions ----- */
-Bullet.prototype.launch = function(id)
+Fireball.prototype.launch = function(id)
 {
 	this.onLaunch();
-	this.ship.game.removePoints(20);
 	this.ship.game.scheduler.addTask(id, this.anim, new Array(this, id, this.ship.game.scheduler));
 }
 
-Bullet.prototype.destroy = function()
+Fireball.prototype.destroy = function()
 {
 	this.onDestroyed();
 	this.ship.game.scheduler.removeTask(this.id);
 	//this.ship.getRegisteredBullets().delete(this.id);
 	
-	var bulletNode = document.getElementById(this.id);
-	if (bulletNode != null)
-		bulletNode.parentNode.removeChild(bulletNode);
+	var s = document.getElementById(this.id);
+	this.img = this.ship.game.textures.fireball_explosion.getPath();
+	this.width = this.ship.game.textures.fireball_explosion.getWidth();
+	this.height = this.ship.game.textures.fireball_explosion.getHeight();
+	this.printBullet(this.id);
+	
+	var f = function(s)
+	{
+		window.clearTimeout(timerX);
+		if (s != null)
+			s.parentNode.removeChild(s);
+	};
+	
+	var timerX = window.setTimeout(f, 600, s);
 }
 
 /* ----- Animation ----- */
-Bullet.prototype.anim = function(params)
+Fireball.prototype.anim = function(params)
 {
 	var bullet = params[0];
 	var id = params[1];
 	var scheduler = params[2];
 	
-	if (bullet.left > window.innerWidth + 10)
+	if (bullet.top < -32 || bullet.top > window.innerHeight + 32)
 	{
 		scheduler.removeTask(id);
 		var b = document.getElementById(""+id);
 		b.parentNode.removeChild(b);
-		this.ship.game.stats.shipShotFails++;
+		bullet.ship.game.stats.fireballShotFails++;
 	}
 	else
 	{
-		bullet.left += bullet.speed;
+		var sign = 0;
+		
+		if (bullet.direction == 'up')
+			sign = -1;
+		else
+			sign = 1;
+		
+		bullet.top += sign * bullet.speed;
 		bullet.printBullet(id);
 		
 		for (var i of bullet.ship.game.registeredEnnemies.keys())
@@ -106,17 +136,17 @@ Bullet.prototype.anim = function(params)
 }
 
 /* ----- Printers ----- */
-Bullet.prototype.printBullet = function(id)
+Fireball.prototype.printBullet = function(id)
 {
-	var texloc = ship.game.textures.texturesLocation;
+	var texloc = this.ship.game.textures.texturesLocation;
 	
 	var theBullet = document.querySelectorAll('img[id="' + id + '"]');
 	if (theBullet.length == 0)
 	{
 		var bullet = document.createElement('img');
 		bullet.id = id;
-		bullet.className = 'bullet';
-		bullet.src = texloc + this.img;
+		bullet.className = 'bullet fire';
+		bullet.src = texloc + this.img
 		bullet.alt = 'bullet';
 		bullet.style.width = this.width + 'px';
 		bullet.style.height = this.height + 'px';
@@ -127,11 +157,11 @@ Bullet.prototype.printBullet = function(id)
 	}
 	else
 	{
-		if (!theBullet[0].src.contains(texloc + this.img))
-			theBullet[0].src = texloc + this.img;
 		theBullet[0].style.width = this.width + 'px';
 		theBullet[0].style.height = this.height + 'px';
 		theBullet[0].style.top = this.top + 'px';
 		theBullet[0].style.left = this.left + 'px';
+		if (!theBullet[0].src.contains(texloc + this.img))
+			theBullet[0].src = texloc + this.img;
 	}
 }

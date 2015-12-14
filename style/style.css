@@ -217,3 +217,7 @@ div.bitmodule.bottom {
 	top: 36px;
 	left: 6px;
 }
+
+.laser {
+	z-index: 0;
+}

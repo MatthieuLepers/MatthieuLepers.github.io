@@ -11,6 +11,12 @@ function Statistics(game)
 	this.dnaShots = 0;
 	this.dnaShotHits = 0;
 	this.dnaShotFails = 0;
+	this.bluelaserShots = 0;
+	this.bluelaserShotHits = 0;
+	this.bluelaserShotFails = 0;
+	this.fireballShots = 0;
+	this.fireballShotHits = 0;
+	this.fireballShotFails = 0;
 	
 	//Rockets
 	this.rocketLaunched = 0;
@@ -118,7 +124,7 @@ Statistics.prototype.printStatistics = function()
 	globalStats.appendChild(createCellSection(new Array('Score:',this.game.score)));
 	globalStats.appendChild(createCellSection(new Array('Maximum score:',this.maximumScore)));
 	globalStats.appendChild(createCellSection(new Array('Wave:',this.game.waveNumber)));
-	globalStats.appendChild(createCellSection(new Array('Global accuracy:',calculPercentage(this.shipShotHits + this.chargedShotHits + this.dnaShotHits + this.rocketHits + this.moduleShotHits,this.shipShots + this.chargedShots + this.dnaShots + this.rocketLaunched + this.moduleShots) + '%')));	
+	globalStats.appendChild(createCellSection(new Array('Global accuracy:',calculPercentage(this.shipShotHits + this.chargedShotHits + this.dnaShotHits + this.rocketHits + this.moduleShotHits + this.bluelaserShotHits + this.fireballShotHits,this.shipShots + this.chargedShots + this.dnaShots + this.rocketLaunched + this.moduleShots + this.bluelaserShots + this.fireballShots) + '%')));	
 	article.appendChild(globalStats);
 	
 	//Create Kills statistics
@@ -161,6 +167,22 @@ Statistics.prototype.printStatistics = function()
 			'Rockets hits:',this.rocketHits,
 			'Rockets fails:',this.rocketFails,
 			'Accuracy:',calculPercentage(this.rocketHits,this.rocketLaunched) + '%'
+		)
+	));
+	shipStats.appendChild(createCellSection(
+		new Array(
+			'Laser shoot:',this.bluelaserShots,
+			'Laser hits:',this.bluelaserShotHits,
+			'Laser fails:',this.bluelaserShotFails,
+			'Accuracy:',calculPercentage(this.bluelaserShotHits,this.bluelaserShots) + '%'
+		)
+	));
+	shipStats.appendChild(createCellSection(
+		new Array(
+			'Firball shoot:',this.fireballShots,
+			'Firball hits:',this.fireballShotHits,
+			'Firball fails:',this.fireballShotFails,
+			'Accuracy:',calculPercentage(this.fireballShotHits,this.fireballShots) + '%'
 		)
 	));
 	article.appendChild(shipStats);

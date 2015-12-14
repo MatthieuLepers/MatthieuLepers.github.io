@@ -52,7 +52,6 @@ ChargedBullet.prototype.onLaunch = function()
 }
 
 /* ----- Actions ----- */
-
 ChargedBullet.prototype.damage = function(damage)
 {
 	this.lifePoints -= damage;

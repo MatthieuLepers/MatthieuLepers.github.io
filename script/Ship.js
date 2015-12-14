@@ -24,6 +24,8 @@ function Ship(game)
 	this.chargeTop = -5;
 	this.charge;
 	
+	this.cooldown = false;
+	
 	this.bitModule = 0;
 	this.bitModules = new Map();
 }
@@ -111,7 +113,7 @@ Ship.prototype.shoot = function()
 			ship.chargeHeight = ship.game.textures.none.getHeight();
 			ship.printShip();
 			window.clearTimeout(timer);
-		}
+		};
 		
 		var timerZ;
 		
@@ -138,6 +140,46 @@ Ship.prototype.shoot = function()
 				var DANblue = new DnaBlueBullet(this, 'shipbluereverseshot' + this.registeredBullets.size, -1);
 				this.registeredBullets.set(DANRed.id, DANRed);
 				this.registeredBullets.set(DANblue.id, DANblue);
+			}
+		}
+		else if (this.module != null && this.module.tier >= 1 && this.module.type == 'laser' && !this.cooldown)
+		{
+			if (this.module.position == 'front')
+			{
+				var bluelaser45 = new BlueLaser(this, 'shipbluelaser' + this.registeredBullets.size, 45, 1);
+				var bluelaser0 = new BlueLaser(this, 'shipbluelaser' + this.registeredBullets.size + 1, 0, 1);
+				var bluelaser_45 = new BlueLaser(this, 'shipbluelaser' + this.registeredBullets.size + 2, -45, 1);
+				this.registeredBullets.set(bluelaser45.id, bluelaser45);
+				this.registeredBullets.set(bluelaser0.id, bluelaser0);
+				this.registeredBullets.set(bluelaser_45.id, bluelaser_45);
+			}
+			else if (this.module.position == 'back')
+			{
+				var bluelaser45 = new BlueLaser(this, 'shipbluelaser' + this.registeredBullets.size, 45, -1);
+				var bluelaser0 = new BlueLaser(this, 'shipbluelaser' + this.registeredBullets.size + 1, 0, -1);
+				var bluelaser_45 = new BlueLaser(this, 'shipbluelaser' + this.registeredBullets.size + 2, -45, -1);
+				this.registeredBullets.set(bluelaser45.id, bluelaser45);
+				this.registeredBullets.set(bluelaser0.id, bluelaser0);
+				this.registeredBullets.set(bluelaser_45.id, bluelaser_45);
+			}
+			
+			this.cooldown = true;
+			
+			var clearCoolDown = function(ship)
+			{
+				ship.cooldown = false;
+			}
+			
+			window.setTimeout(clearCoolDown, 1000, this);
+		}
+		else if (this.module != null && this.module.tier >= 1 && this.module.type == 'fire')
+		{
+			if (this.module.position != '')
+			{
+				var fireball = new Fireball(ship, 'fireballup' + this.registeredBullets.size, 'up');
+				this.registeredBullets.set(fireball.id, fireball);
+				var fireball1 = new Fireball(ship, 'fireballdown' + this.registeredBullets.size, 'down');
+				this.registeredBullets.set(fireball1.id, fireball1);
 			}
 		}
 		

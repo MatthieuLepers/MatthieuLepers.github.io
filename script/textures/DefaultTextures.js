@@ -57,14 +57,22 @@ function DefaultTextures()
 	this.upgrade_bit_module_top = new Texture('bit_module_top.gif', 16, 16);
 	this.upgrade_bit_module_bottom = new Texture('bit_module_bottom.gif', 16, 16);
 	
-	//Projectiles
+	//Projectiles tier 0
 	this.projectile_module = new Texture('module_shot.gif', 16, 4);
-	this.projectile_blue_dna_bullet = new Texture('dna_blue.gif', 32, 4);
-	this.projectile_red_dna_bullet = new Texture('dna_red.gif', 32, 4);
 	this.projectile_rocket = new Texture('rocket.gif', 12, 4);
 	this.projectile_rocket_trail = new Texture('rocket_trail.gif', 14, 12);
 	this.projectile_red_laser = new Texture('red_laser.gif', 48, 4);
 	this.projectile_shot = new Texture('shot.gif', 7, 6);
+	
+	//Shoot tier 1
+	this.projectile_blue_dna_bullet = new Texture('dna_blue.gif', 32, 4);
+	this.projectile_red_dna_bullet = new Texture('dna_red.gif', 32, 4);
+	this.blue_laser_1 = new Texture('blue_laser_1.gif', 64, 3);
+	this.fireball = new Texture('fireball.gif', 16, 16);
+	
+	//Shoot tier 2
+	this.blue_laser_2 = new Texture('blue_laser_2.gif', 128, 3);
+	this.blue_laser_2_idle = new Texture('blue_laser_2_idle.gif', 128, 3);
 	
 	//Ennemies
 	this.patapata = new Texture('patapata.gif', 21, 24);
@@ -75,4 +83,5 @@ function DefaultTextures()
 	//Explosions
 	this.explosion = new Texture('explosion.gif', 32, 32);
 	this.rocket_explosion = new Texture('rocket_explosion.gif', 32, 32);
+	this.fireball_explosion = new Texture('fireball_explosion.gif', 32, 32);
 }

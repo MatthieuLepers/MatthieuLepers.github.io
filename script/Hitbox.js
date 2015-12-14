@@ -1,7 +1,7 @@
-function Hitbox(boxOrigin, boxWidth, boxHeight, object)
+function Hitbox(boxOrigin, boxWidth, boxHeight, theObject)
 {
 	this.listeners = new Array();
-	this.object = object;
+	this.theObject = theObject;
 	this.boxOrigin = boxOrigin;
 	this.boxWidth = boxWidth;
 	this.boxHeight = boxHeight;
