@@ -41,6 +41,7 @@ version 1.0.5 (beta)
 - [Optimisation] Minor optimisation
 
 version 1.0.6 (beta)
-- [Added] Fire weapon is now available when you pick a fire upgrade
-- [Added] Laser weapon is now available when you pick a laser upgrade, a cooldown is enabled for each uses, this reduce lags
+- [Added] Fire weapon is now available when you pick a fire upgrade, a cooldown is enabled for each use, this reduce lags and ennemy spawn kill
+- [Added] Laser weapon is now available when you pick a laser upgrade, a cooldown is enabled for each uses, this reduce lags and ennemy spawn kill
 - [Added] Statistics for this new weapons
+- [Fixed] Minor bugs

@@ -124,6 +124,11 @@ Ship.prototype.shoot = function()
 		var bullet = new Bullet(this, 'shipshot' + this.registeredBullets.size);
 		this.registeredBullets.set(bullet.id, bullet);
 		
+		var clearCoolDown = function(ship)
+		{
+			ship.cooldown = false;
+		}
+		
 		//TODO
 		if (this.module != null && this.module.tier >= 1 && this.module.type == 'dna')
 		{
@@ -164,23 +169,52 @@ Ship.prototype.shoot = function()
 			}
 			
 			this.cooldown = true;
-			
-			var clearCoolDown = function(ship)
-			{
-				ship.cooldown = false;
-			}
-			
-			window.setTimeout(clearCoolDown, 1000, this);
+			window.setTimeout(clearCoolDown, (this.module.tier == 1 ? 1000 : 850), this);
 		}
-		else if (this.module != null && this.module.tier >= 1 && this.module.type == 'fire')
+		else if (this.module != null && this.module.tier >= 1 && this.module.type == 'fire' && !this.cooldown)
 		{
 			if (this.module.position != '')
 			{
-				var fireball = new Fireball(ship, 'fireballup' + this.registeredBullets.size, 'up');
-				this.registeredBullets.set(fireball.id, fireball);
-				var fireball1 = new Fireball(ship, 'fireballdown' + this.registeredBullets.size, 'down');
-				this.registeredBullets.set(fireball1.id, fireball1);
+				var fireLaunch = function(ship, direction)
+				{
+					var fireball = new Fireball(ship, 'fireball' + direction + ship.registeredBullets.size, direction);
+					ship.registeredBullets.set(fireball.id, fireball);
+				}
+				
+				if (this.module.tier == 1)
+				{
+					var fireball = new Fireball(ship, 'fireballup' + this.registeredBullets.size, 'up');
+					this.registeredBullets.set(fireball.id, fireball);
+					var fireball1 = new Fireball(ship, 'fireballdown' + this.registeredBullets.size, 'down');
+					this.registeredBullets.set(fireball1.id, fireball1);
+					window.setTimeout(fireLaunch, 100, this, 'up');
+					window.setTimeout(fireLaunch, 100, this, 'down');
+					window.setTimeout(fireLaunch, 200, this, 'up');
+					window.setTimeout(fireLaunch, 200, this, 'down');
+					window.setTimeout(fireLaunch, 300, this, 'up');
+					window.setTimeout(fireLaunch, 300, this, 'down');
+				}
+				else if (this.module.tier == 2)
+				{
+					var fireball = new Fireball(ship, 'fireballup' + this.registeredBullets.size, 'up');
+					this.registeredBullets.set(fireball.id, fireball);
+					var fireball1 = new Fireball(ship, 'fireballdown' + this.registeredBullets.size, 'down');
+					this.registeredBullets.set(fireball1.id, fireball1);
+					window.setTimeout(fireLaunch, 100, this, 'up');
+					window.setTimeout(fireLaunch, 100, this, 'down');
+					window.setTimeout(fireLaunch, 200, this, 'up');
+					window.setTimeout(fireLaunch, 200, this, 'down');
+					window.setTimeout(fireLaunch, 300, this, 'up');
+					window.setTimeout(fireLaunch, 300, this, 'down');
+					window.setTimeout(fireLaunch, 400, this, 'up');
+					window.setTimeout(fireLaunch, 400, this, 'down');
+					window.setTimeout(fireLaunch, 500, this, 'up');
+					window.setTimeout(fireLaunch, 500, this, 'down');
+				}
 			}
+			
+			this.cooldown = true;
+			window.setTimeout(clearCoolDown, (this.module.tier == 1 ? 1000 : 850), this);
 		}
 		
 		if (this.bitModule == 1)

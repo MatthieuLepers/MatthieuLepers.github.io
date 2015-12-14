@@ -151,6 +151,11 @@ POWArmorEnnemy.prototype.anim = function(params)
 			ennemy.destroy();
 			ennemy.game.ship.destroy();
 		}
+		
+		if (!ennemy.isDead && !ennemy.game.ship.isDead && ennemy.game.ship.module != null && ennemy.getHitbox().isHovering(ennemy.game.ship.module.getHitbox()))
+		{
+			ennemy.destroy();
+		}
 	}
 }
 
