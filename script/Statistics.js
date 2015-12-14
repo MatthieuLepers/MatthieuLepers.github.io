@@ -116,7 +116,7 @@ Statistics.prototype.printStatistics = function()
 	button.id = 'close';
 	button.textContent = 'X';
 	
-	h2.textContent = 'Total score: ' + this.game.score + '/' + this.maximumScore + ' (' + (""+calculPercentage(this.maximumScore - this.game.score,this.maximumScore)).substr(0, 5) + '%)';
+	h2.textContent = 'Total score: ' + this.game.score + '/' + this.maximumScore + ' (' + (""+calculPercentage(this.game.score,this.maximumScore)).substr(0, 5) + '%)';
 	article.appendChild(h2);
 	
 	//Create Global statistics
