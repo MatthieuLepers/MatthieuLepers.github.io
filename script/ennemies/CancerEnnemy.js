@@ -76,7 +76,7 @@ CancerEnnemy.prototype.shoot = function()
 	var d = this.left - this.game.ship.left;
 	var distance = this.top - this.game.ship.top;
 	var p = Math.random() * 100;
-	if (p > this.game.shootingProba - 5 && !this.game.ship.isDead && distance < 150 && distance > -150 && (d > 100 || d < -100))
+	if (p > this.game.shootingProba - 0.5 && !this.game.ship.isDead && distance < 150 && distance > -150 && (d > 100 || d < -100))
 	{
 		this.onShoot();
 		var projectile = new Shot(this, this.id + '_shot' + this.registeredBullets.size, this.game.scheduler);
