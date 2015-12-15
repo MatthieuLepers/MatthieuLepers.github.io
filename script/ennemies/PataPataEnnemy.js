@@ -74,7 +74,7 @@ PataPataEnnemy.prototype.launch = function(id)
 
 PataPataEnnemy.prototype.shoot = function()
 {
-	var d = this.getHitbox().left - this.game.ship.left;
+	var d = this.left - this.game.ship.left;
 	var distance = this.top - this.game.ship.top;
 	var p = Math.random() * 100;
 	
