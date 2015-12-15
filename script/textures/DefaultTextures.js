@@ -10,7 +10,7 @@ function DefaultTextures()
 	if (document.URL.contains('skin='))
 	{
 		var tab = document.URL.split('=');
-		var colors = new Array('blue','darkblue','green','purple','red');
+		var colors = new Array('blue','darkblue','green','purple','red','yellow');
 		if (colors.indexOf(tab[1]) != -1)
 		{
 			this.ship_skin = tab[1];

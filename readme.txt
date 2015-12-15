@@ -21,7 +21,7 @@ version 1.0.3 (beta)
 - [Optimisation] Minor optimisation
 
 version 1.0.4 (beta)
-- [Modification] Changed game controls.
+- [Modificated] Changed game controls.
                  Z -> up
                  Q -> left
                  S -> down
@@ -49,3 +49,6 @@ version 1.0.6 (beta)
 version 1.0.7 (beta)
 - [Added] New ennemy, the Cancer is a bio-machanical robot who follow and shoot after spawning, he give 150 points when killed.
           He can spawn behind you and at front of you. He spawn at wave 20 and more.
+- [Added] New secret ship skin
+- [Fixed] Minor bug
+- [Optimisation] Minor optimisation
