@@ -221,8 +221,8 @@ Module.prototype.anim = function(params)
 	}
 	else
 	{
-		var runner = new Point(module.getHitbox().boxOrigin.getX(), module.getHitbox().boxOrigin.getY());
-		var target = new Point(module.ship.getHitbox().boxOrigin.getX() + (module.ship.getHitbox().getWidth() / 2) - (module.width / 2), module.ship.getHitbox().boxOrigin.getY() + (module.ship.getHitbox().getHeight() / 2) - (module.height / 2));
+		var runner = new Point(module.left, module.top);
+		var target = new Point(module.ship.left + (module.ship.width / 2) - (module.width / 2), module.ship.top + (module.ship.height / 2) - (module.height / 2));
 		
 		var distanceX = runner.getX() - target.getX();
 		var distanceY = runner.getY() - target.getY();
