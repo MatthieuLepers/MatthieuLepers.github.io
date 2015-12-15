@@ -96,7 +96,7 @@ Shot.prototype.anim = function(params)
 	else
 	{
 		projectile.left -= projectile.sign * 3;
-		projectile.top = (projectile.staticTop - 2 * projectile.coef) - (projectile.ship.game.ship.getHitbox().getHeight() / 2);
+		projectile.top = (projectile.staticTop - 2 * projectile.coef) - (projectile.ship.game.ship.height / 2);
 		projectile.staticTop -= 2 * projectile.coef;
 		projectile.printBullet(id);
 		
