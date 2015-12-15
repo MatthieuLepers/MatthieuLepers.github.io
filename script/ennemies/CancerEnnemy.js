@@ -1,19 +1,18 @@
-function PataPataEnnemy(game, id)
+function CancerEnnemy(game, id)
 {
 	this.listeners = new Array();
 	this.id = id;
-	this.speed = 1;
+	this.speed = 0.5;
 	this.top = 100 + (Math.random() * (parseInt(window.innerHeight) - 250));
-	this.left = window.innerWidth + 50;
+	this.left = (Math.random() > 0.6 ? - 10 : window.innerWidth + 10);
 	this.isDead = false;
 	this.game = game;
 	this.registeredBullets = new Map();
-	this.staticTop = this.top;
-	this.staticDeg = 0.1;
-	this.img = game.textures.patapata.getPath();
-	this.width = game.textures.patapata.getWidth();
-	this.height = game.textures.patapata.getHeight();
+	this.img = game.textures.cancer.getPath();
+	this.width = game.textures.cancer.getWidth();
+	this.height = game.textures.cancer.getHeight();
 	this.lifePoints = 1;
+	this.className = '';
 	
 	this.points = 100;
 	
@@ -22,18 +21,18 @@ function PataPataEnnemy(game, id)
 }
 
 /* ----- Getters ----- */
-PataPataEnnemy.prototype.getHitbox = function()
+CancerEnnemy.prototype.getHitbox = function()
 {
 	return new Hitbox(new Point(this.left, this.top), this.width, this.height, this);
 }
 
 /* ----- Events ----- */
-PataPataEnnemy.prototype.addEventListener = function(eventName, action)
+CancerEnnemy.prototype.addEventListener = function(eventName, action)
 {
 	this.listeners.push(new Array(eventName, new EventListener(action)));
 }
 
-PataPataEnnemy.prototype.removeEventListener = function(eventName, action)
+CancerEnnemy.prototype.removeEventListener = function(eventName, action)
 {
 	for (var i = 0; i < this.listeners.length; i++)
 	{
@@ -44,41 +43,41 @@ PataPataEnnemy.prototype.removeEventListener = function(eventName, action)
 	}
 }
 
-PataPataEnnemy.prototype.fire = function(event)
+CancerEnnemy.prototype.fire = function(event)
 {
 	event.dispatchEvent();
 }
 
-PataPataEnnemy.prototype.onShoot = function()
+CancerEnnemy.prototype.onShoot = function()
 {
 	this.fire(new Event('onshoot', this));
 }
 
-PataPataEnnemy.prototype.onDestroyed = function()
+CancerEnnemy.prototype.onDestroyed = function()
 {
 	this.fire(new Event('ondestroyed', this));
 	this.game.stats.killedPataPata++;
 }
 
-PataPataEnnemy.prototype.onLaunch = function()
+CancerEnnemy.prototype.onLaunch = function()
 {
 	this.fire(new Event('onlaunched', this));
 }
 
 /* ----- Actions ----- */
-PataPataEnnemy.prototype.launch = function(id)
+CancerEnnemy.prototype.launch = function(id)
 {
 	this.onLaunch();
 	this.game.scheduler.addTask(id, this.anim, new Array(this, id, this.game.scheduler));
 }
 
-PataPataEnnemy.prototype.shoot = function()
+CancerEnnemy.prototype.shoot = function()
 {
-	var d = this.getHitbox().left - this.game.ship.left > 100;
+	var d = this.left - this.game.ship.left;
 	var distance = this.top - this.game.ship.top;
 	var p = Math.random() * 100;
 	
-	if (p > this.game.shootingProba && !this.game.ship.isDead && distance < 150 && distance > -150 && d)
+	if (p > this.game.shootingProba - 0.1 && !this.game.ship.isDead && distance < 150 && distance > -150 && d > 100 || d < -100)
 	{
 		this.onShoot();
 		var projectile = new Shot(this, this.id + '_shot' + this.registeredBullets.size, this.game.scheduler);
@@ -86,14 +85,14 @@ PataPataEnnemy.prototype.shoot = function()
 	}
 }
 
-PataPataEnnemy.prototype.damage = function(damage)
+CancerEnnemy.prototype.damage = function(damage)
 {
 	this.lifePoints -= damage;
 	if (this.lifePoints <= 0)
 		this.destroy();
 }
 
-PataPataEnnemy.prototype.destroy = function()
+CancerEnnemy.prototype.destroy = function()
 {
 	this.onDestroyed();
 	this.game.scheduler.removeTask(this.id);
@@ -118,13 +117,13 @@ PataPataEnnemy.prototype.destroy = function()
 }
 
 /* ----- Animation ----- */
-PataPataEnnemy.prototype.anim = function(params)
+CancerEnnemy.prototype.anim = function(params)
 {
 	var ennemy = params[0];
 	var id = params[1];
 	var scheduler = params[2];
 	
-	if (ennemy.left < - 50)
+	if (ennemy.left < - ennemy.width || ennemy.left > window.innerWidth + ennemy.width)
 	{
 		scheduler.removeTask(id);
 		ennemy.game.registeredEnnemies.set(id, null);
@@ -133,9 +132,43 @@ PataPataEnnemy.prototype.anim = function(params)
 	}
 	else
 	{
-		ennemy.top = ennemy.staticTop + Math.sin(ennemy.staticDeg) * 40;
-		ennemy.staticDeg += 0.03;
-		ennemy.left -= ennemy.speed;
+		var p = Math.random() * 100;
+		var distanceShipX = ennemy.game.ship.left - ennemy.left;
+		var distanceShipY = ennemy.game.ship.top - ennemy.top;
+		if (p <= 30)
+		{
+			if (distanceShipX > 0)
+			{
+				ennemy.left += ennemy.speed;
+				ennemy.className = 'ennemy';
+			}
+			else
+			{
+				ennemy.left -= ennemy.speed;
+				ennemy.className = 'ennemy flip';
+			}
+			if (distanceShipY > 0)
+			{
+				ennemy.top += ennemy.speed;
+			}
+			else
+			{
+				ennemy.top -= ennemy.speed;
+			}
+		}
+		else
+		{
+			if (distanceShipX > 0)
+			{
+				ennemy.left += ennemy.speed;
+				ennemy.className = 'ennemy';
+			}
+			else 
+			{
+				ennemy.left -= ennemy.speed;
+				ennemy.className = 'ennemy flip';
+			}
+		}
 		ennemy.printEnnemy(id);
 		
 		if (!ennemy.isDead)
@@ -157,7 +190,7 @@ PataPataEnnemy.prototype.anim = function(params)
 }
 
 /* ----- Printers ----- */
-PataPataEnnemy.prototype.printEnnemy = function(id)
+CancerEnnemy.prototype.printEnnemy = function(id)
 {
 	var texloc = this.game.textures.texturesLocation;
 	
@@ -166,9 +199,9 @@ PataPataEnnemy.prototype.printEnnemy = function(id)
 	{
 		var ennemy = document.createElement('img');
 		ennemy.id = id;
-		ennemy.className = 'ennemy';
+		ennemy.className = this.className;
 		ennemy.src = texloc + this.img;
-		ennemy.alt = 'patapata';
+		ennemy.alt = 'cancer';
 		ennemy.style.width = this.width + 'px';
 		ennemy.style.height = this.height + 'px';
 		ennemy.style.top = this.top + 'px';
@@ -184,5 +217,6 @@ PataPataEnnemy.prototype.printEnnemy = function(id)
 		theEnnemy[0].style.height = this.height + 'px';
 		theEnnemy[0].style.top = this.top + 'px';
 		theEnnemy[0].style.left = this.left + 'px';
+		theEnnemy[0].className = this.className;
 	}
 }

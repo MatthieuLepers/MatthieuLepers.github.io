@@ -10,6 +10,10 @@ function Shot(ship, id)
 	this.height = ship.game.textures.projectile_shot.getHeight();
 	this.top = this.shooter.getY();
 	this.left = this.shooter.getX();
+	if (ship.game.ship.left - ship.left > 0)
+		this.sign = -1;
+	else
+		this.sign = 1;
 	this.coef = (this.shooter.getY() - this.target.getY()) / (this.shooter.getX() - this.target.getX());
 	this.staticTop = this.shooter.getY();
 	this.launch(id);
@@ -86,7 +90,7 @@ Shot.prototype.anim = function(params)
 	}
 	else
 	{
-		projectile.left -= 3;
+		projectile.left -= projectile.sign * 3;
 		projectile.top = (projectile.staticTop - 2 * projectile.coef) - (projectile.ship.game.ship.getHitbox().getHeight() / 2);
 		projectile.staticTop -= 2 * projectile.coef;
 		projectile.printBullet(id);

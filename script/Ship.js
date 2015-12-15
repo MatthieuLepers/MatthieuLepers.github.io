@@ -187,12 +187,12 @@ Ship.prototype.shoot = function()
 					this.registeredBullets.set(fireball.id, fireball);
 					var fireball1 = new Fireball(ship, 'fireballdown' + this.registeredBullets.size, 'down');
 					this.registeredBullets.set(fireball1.id, fireball1);
-					window.setTimeout(fireLaunch, 100, this, 'up');
-					window.setTimeout(fireLaunch, 100, this, 'down');
-					window.setTimeout(fireLaunch, 200, this, 'up');
-					window.setTimeout(fireLaunch, 200, this, 'down');
-					window.setTimeout(fireLaunch, 300, this, 'up');
-					window.setTimeout(fireLaunch, 300, this, 'down');
+					window.setTimeout(fireLaunch, 70, this, 'up');
+					window.setTimeout(fireLaunch, 70, this, 'down');
+					window.setTimeout(fireLaunch, 140, this, 'up');
+					window.setTimeout(fireLaunch, 140, this, 'down');
+					window.setTimeout(fireLaunch, 210, this, 'up');
+					window.setTimeout(fireLaunch, 210, this, 'down');
 				}
 				else if (this.module.tier == 2)
 				{
@@ -200,16 +200,16 @@ Ship.prototype.shoot = function()
 					this.registeredBullets.set(fireball.id, fireball);
 					var fireball1 = new Fireball(ship, 'fireballdown' + this.registeredBullets.size, 'down');
 					this.registeredBullets.set(fireball1.id, fireball1);
-					window.setTimeout(fireLaunch, 100, this, 'up');
-					window.setTimeout(fireLaunch, 100, this, 'down');
-					window.setTimeout(fireLaunch, 200, this, 'up');
-					window.setTimeout(fireLaunch, 200, this, 'down');
-					window.setTimeout(fireLaunch, 300, this, 'up');
-					window.setTimeout(fireLaunch, 300, this, 'down');
-					window.setTimeout(fireLaunch, 400, this, 'up');
-					window.setTimeout(fireLaunch, 400, this, 'down');
-					window.setTimeout(fireLaunch, 500, this, 'up');
-					window.setTimeout(fireLaunch, 500, this, 'down');
+					window.setTimeout(fireLaunch, 70, this, 'up');
+					window.setTimeout(fireLaunch, 70, this, 'down');
+					window.setTimeout(fireLaunch, 140, this, 'up');
+					window.setTimeout(fireLaunch, 140, this, 'down');
+					window.setTimeout(fireLaunch, 210, this, 'up');
+					window.setTimeout(fireLaunch, 210, this, 'down');
+					window.setTimeout(fireLaunch, 280, this, 'up');
+					window.setTimeout(fireLaunch, 280, this, 'down');
+					window.setTimeout(fireLaunch, 350, this, 'up');
+					window.setTimeout(fireLaunch, 350, this, 'down');
 				}
 			}
 			

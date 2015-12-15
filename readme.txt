@@ -45,3 +45,7 @@ version 1.0.6 (beta)
 - [Added] Laser weapon is now available when you pick a laser upgrade, a cooldown is enabled for each uses, this reduce lags and ennemy spawn kill
 - [Added] Statistics for this new weapons
 - [Fixed] Minor bugs
+
+version 1.0.7 (beta)
+- [Added] New ennemy, the Cancer is a bio-machanical robot who follow and shoot after spawning, he give 150 points when killed.
+          He can spawn behind you and at front of you. He spawn at wave 20 and more.

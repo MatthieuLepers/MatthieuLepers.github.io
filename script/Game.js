@@ -17,6 +17,9 @@ function Game()
 	this.waveTimer;
 	this.gameSchedulerTimer;
 	
+	this.stopCancerSpawn = false;
+	this.spawnedCancer = 0;
+	
 	this.printScore();
 	
 	this.f = function(s)
@@ -98,9 +101,15 @@ function Game()
 				g.spawnPOWArmor(g.getRandomUpdate());
 				g.hasSpawn = true;
 			}
-			if (g.waveNumber >= 20 && !g.hasSpawn)
+			if (g.waveNumber >= 20 && !g.stopCancerSpawn)
 			{
+				g.spawnedCancer++;
 				g.spawnCancerEnnemy();
+				if (g.spawnedCancer == g.maxEnnemyPerWave - 15)
+				{
+					g.stopCancerSpawn = true;
+					g.spawnedCancer = 0;
+				}
 			}
 		}
 	}
