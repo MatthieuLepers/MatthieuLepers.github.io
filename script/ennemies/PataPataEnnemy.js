@@ -24,7 +24,7 @@ function PataPataEnnemy(game, id)
 /* ----- Getters ----- */
 PataPataEnnemy.prototype.getHitbox = function()
 {
-	return new Hitbox(new Point(this.left, this.top), this.width, this.height, this);
+	return new Hitbox(new Point(this.left, this.top), this.width, this.height);
 }
 
 /* ----- Events ----- */
@@ -74,11 +74,11 @@ PataPataEnnemy.prototype.launch = function(id)
 
 PataPataEnnemy.prototype.shoot = function()
 {
-	var d = this.getHitbox().left - this.game.ship.left > 100;
+	var d = this.getHitbox().left - this.game.ship.left;
 	var distance = this.top - this.game.ship.top;
 	var p = Math.random() * 100;
 	
-	if (p > this.game.shootingProba && !this.game.ship.isDead && distance < 150 && distance > -150 && d)
+	if (p > this.game.shootingProba && !this.game.ship.isDead && distance < 150 && distance > -150 && (d > 100 || d < -100))
 	{
 		this.onShoot();
 		var projectile = new Shot(this, this.id + '_shot' + this.registeredBullets.size, this.game.scheduler);

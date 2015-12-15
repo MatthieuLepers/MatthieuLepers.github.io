@@ -14,7 +14,7 @@ function CancerEnnemy(game, id)
 	this.lifePoints = 1;
 	this.className = '';
 	
-	this.points = 100;
+	this.points = 150;
 	
 	this.launch(id);
 	this.printEnnemy(id);
@@ -23,7 +23,7 @@ function CancerEnnemy(game, id)
 /* ----- Getters ----- */
 CancerEnnemy.prototype.getHitbox = function()
 {
-	return new Hitbox(new Point(this.left, this.top), this.width, this.height, this);
+	return new Hitbox(new Point(this.left, this.top), this.width, this.height);
 }
 
 /* ----- Events ----- */
@@ -56,7 +56,7 @@ CancerEnnemy.prototype.onShoot = function()
 CancerEnnemy.prototype.onDestroyed = function()
 {
 	this.fire(new Event('ondestroyed', this));
-	this.game.stats.killedPataPata++;
+	this.game.stats.killedCancer++;
 }
 
 CancerEnnemy.prototype.onLaunch = function()
@@ -76,8 +76,7 @@ CancerEnnemy.prototype.shoot = function()
 	var d = this.left - this.game.ship.left;
 	var distance = this.top - this.game.ship.top;
 	var p = Math.random() * 100;
-	
-	if (p > this.game.shootingProba - 0.1 && !this.game.ship.isDead && distance < 150 && distance > -150 && d > 100 || d < -100)
+	if (p > this.game.shootingProba - 5 && !this.game.ship.isDead && distance < 150 && distance > -150 && (d > 100 || d < -100))
 	{
 		this.onShoot();
 		var projectile = new Shot(this, this.id + '_shot' + this.registeredBullets.size, this.game.scheduler);

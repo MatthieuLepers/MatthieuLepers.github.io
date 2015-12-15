@@ -7,8 +7,8 @@ function ChargedBullet(ship, id, scheduler, img, width, height, speed)
 	this.img = img;
 	this.width = width;
 	this.height = height;
-	this.top = ship.getHitbox().boxOrigin.getY() + 6;
-	this.left = ship.getHitbox().boxOrigin.getX() + ship.getHitbox().getWidth() + 5;
+	this.top = ship.top + 6;
+	this.left = ship.left + ship.width + 5;
 	this.hasHit = false;
 	this.damages = parseInt(Math.ceil(speed / 2));
 	this.lifePoints = speed;
@@ -20,7 +20,7 @@ function ChargedBullet(ship, id, scheduler, img, width, height, speed)
 /* ----- Getters ----- */
 ChargedBullet.prototype.getHitbox = function()
 {
-	return new Hitbox(new Point(this.left, this.top), this.width, this.height, this);
+	return new Hitbox(new Point(this.left, this.top), this.width, this.height);
 }
 
 /* ----- Events ----- */

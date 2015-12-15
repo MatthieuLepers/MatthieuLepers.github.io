@@ -22,7 +22,7 @@ function MidEnnemy(game, id)
 /* ----- Getters ----- */
 MidEnnemy.prototype.getHitbox = function()
 {
-	return new Hitbox(new Point(this.left, this.top), this.width, this.height, this);
+	return new Hitbox(new Point(this.left, this.top), this.width, this.height);
 }
 
 /* ----- Events ----- */
@@ -77,7 +77,7 @@ MidEnnemy.prototype.launch = function(id)
 
 MidEnnemy.prototype.shoot = function()
 {
-	var distance = window.innerWidth - this.getHitbox().getOrigin().getX();
+	var distance = window.innerWidth - this.left;
 	var p = Math.random() * 100;
 	
 	if (p > this.game.shootingProba - 0.5 && !this.game.ship.isDead && distance >= 120)

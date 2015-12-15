@@ -3,17 +3,22 @@ function Shot(ship, id)
 	this.listeners = new Array();
 	this.ship = ship;
 	this.id = id;
-	this.shooter = new Point(ship.getHitbox().boxOrigin.getX(), ship.getHitbox().boxOrigin.getY() + (ship.getHitbox().getHeight() / 2));
-	this.target = new Point(ship.game.ship.getHitbox().boxOrigin.getX() + (ship.getHitbox().getWidth() / 2), ship.game.ship.getHitbox().boxOrigin.getY() + (ship.getHitbox().getHeight() / 2));
+	this.shooter = new Point(ship.left, ship.top + (ship.height / 2));
+	this.target = new Point(ship.game.ship.left + (ship.width / 2), ship.game.ship.top + (ship.height / 2));
 	this.img = ship.game.textures.projectile_shot.getPath();
 	this.width = ship.game.textures.projectile_shot.getWidth();
 	this.height = ship.game.textures.projectile_shot.getHeight();
 	this.top = this.shooter.getY();
-	this.left = this.shooter.getX();
 	if (ship.game.ship.left - ship.left > 0)
+	{
 		this.sign = -1;
+		this.left = this.shooter.getX();
+	}
 	else
+	{
 		this.sign = 1;
+		this.left = this.shooter.getX() + this.width;
+	}
 	this.coef = (this.shooter.getY() - this.target.getY()) / (this.shooter.getX() - this.target.getX());
 	this.staticTop = this.shooter.getY();
 	this.launch(id);
@@ -23,7 +28,7 @@ function Shot(ship, id)
 /* ----- Getters ----- */
 Shot.prototype.getHitbox = function()
 {
-	return new Hitbox(new Point(this.left, this.top), this.width, this.height, this);
+	return new Hitbox(new Point(this.left, this.top), this.width, this.height);
 }
 
 /* ----- Events ----- */
@@ -82,7 +87,7 @@ Shot.prototype.anim = function(params)
 	var id = params[1];
 	var scheduler = params[2];
 	
-	if (projectile.left < -50)
+	if (projectile.left < -projectile.width || projectile.left > window.innerWidth + projectile.width)
 	{
 		scheduler.removeTask(id);
 		var b = document.getElementById(""+id);

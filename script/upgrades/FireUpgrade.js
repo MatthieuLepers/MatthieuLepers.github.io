@@ -16,7 +16,7 @@ function FireUpgrade(powarmor)
 /* ----- Getters ----- */
 FireUpgrade.prototype.getHitbox = function()
 {
-	return new Hitbox(new Point(this.left, this.top), this.width, this.height, this);
+	return new Hitbox(new Point(this.left, this.top), this.width, this.height);
 }
 
 /* ----- Events ----- */

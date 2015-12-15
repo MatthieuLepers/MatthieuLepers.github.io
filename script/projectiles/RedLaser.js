@@ -4,7 +4,7 @@ function RedLaser(ship, id)
 	this.ship = ship;
 	this.id = id;
 	this.speed = 6;
-	this.shooter = new Point(ship.getHitbox().boxOrigin.getX(), ship.getHitbox().boxOrigin.getY() + (ship.getHitbox().getHeight() / 2));
+	this.shooter = new Point(ship.left, ship.top + (ship.height / 2));
 	this.img = ship.game.textures.projectile_red_laser.getPath();
 	this.width = ship.game.textures.projectile_red_laser.getWidth();
 	this.height = ship.game.textures.projectile_red_laser.getHeight();
@@ -17,7 +17,7 @@ function RedLaser(ship, id)
 /* ----- Getters ----- */
 RedLaser.prototype.getHitbox = function()
 {
-	return new Hitbox(new Point(this.left, this.top), this.width, this.height, this);
+	return new Hitbox(new Point(this.left, this.top), this.width, this.height);
 }
 
 /* ----- Events ----- */

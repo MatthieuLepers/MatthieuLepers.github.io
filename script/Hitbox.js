@@ -1,50 +1,8 @@
-function Hitbox(boxOrigin, boxWidth, boxHeight, theObject)
+function Hitbox(boxOrigin, boxWidth, boxHeight)
 {
-	this.listeners = new Array();
-	this.theObject = theObject;
 	this.boxOrigin = boxOrigin;
 	this.boxWidth = boxWidth;
 	this.boxHeight = boxHeight;
-	this.cTopLeft = new Point(this.boxOrigin.getX(), this.boxOrigin.getY());
-	this.cTopRight = new Point(this.boxOrigin.getX() + this.boxWidth, this.boxOrigin.getY());
-	this.cBottomLeft = new Point(this.boxOrigin.getX(), this.boxOrigin.getY() + this.boxHeight);
-	this.cBottomRight = new Point(this.boxOrigin.getX() + this.boxWidth, this.boxOrigin.getY() + this.boxHeight);
-}
-
-/* ----- Getters ----- */
-Hitbox.prototype.getListeners = function()
-{
-	return this.listeners;
-}
-
-Hitbox.prototype.getOrigin = function()
-{
-	return this.boxOrigin;
-}
-
-Hitbox.prototype.getWidth = function()
-{
-	return this.boxWidth;
-}
-
-Hitbox.prototype.getHeight = function()
-{
-	return this.boxHeight;
-}
-
-/* ----- Setters ----- */
-Hitbox.prototype.setWidth = function(width)
-{
-	this.boxWidth = width;
-	this.cTopLeft = new Point(this.boxOrigin.getX(), this.boxOrigin.getY());
-	this.cTopRight = new Point(this.boxOrigin.getX() + this.boxWidth, this.boxOrigin.getY());
-	this.cBottomLeft = new Point(this.boxOrigin.getX(), this.boxOrigin.getY() + this.boxHeight);
-	this.cBottomRight = new Point(this.boxOrigin.getX() + this.boxWidth, this.boxOrigin.getY() + this.boxHeight);
-}
-
-Hitbox.prototype.setHeight = function(height)
-{
-	this.boxHeight = height;
 	this.cTopLeft = new Point(this.boxOrigin.getX(), this.boxOrigin.getY());
 	this.cTopRight = new Point(this.boxOrigin.getX() + this.boxWidth, this.boxOrigin.getY());
 	this.cBottomLeft = new Point(this.boxOrigin.getX(), this.boxOrigin.getY() + this.boxHeight);
@@ -73,31 +31,4 @@ Hitbox.prototype.isHovering = function(hitbox)
 		return true;
 	
 	return false;
-}
-
-/* ----- Events ----- */
-Hitbox.prototype.addEventListener = function(eventName, action)
-{
-	this.listeners.push(new Array(eventName, new EventListener(action)));
-}
-
-Hitbox.prototype.removeEventListener = function(eventName, action)
-{
-	for (var i = 0; i < this.listeners.length; i++)
-	{
-		if (this.listeners[i][0] == eventName && this.listeners[i][1].equals(new EventListener(action)))
-		{
-			this.listeners[i] = null;
-		}
-	}
-}
-
-Hitbox.prototype.fire = function(event)
-{
-	event.dispatchEvent();
-}
-
-Hitbox.prototype.onHover = function()
-{
-	this.fire(new Event('onhover', this));
 }

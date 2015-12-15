@@ -7,8 +7,8 @@ function Bullet(ship, id)
 	this.img = ship.game.textures.ship_bullet.getPath();
 	this.width = ship.game.textures.ship_bullet.getWidth();
 	this.height = ship.game.textures.ship_bullet.getHeight();
-	this.top = ship.getHitbox().boxOrigin.getY() + 7.45;
-	this.left = ship.getHitbox().boxOrigin.getX() + ship.getHitbox().getWidth() + 5;
+	this.top = ship.top + 7.45;
+	this.left = ship.left + ship.width + 5;
 	this.damages = 1;
 	
 	this.launch(id);
@@ -18,7 +18,7 @@ function Bullet(ship, id)
 /* ----- Getters ----- */
 Bullet.prototype.getHitbox = function()
 {
-	return new Hitbox(new Point(this.left, this.top), this.width, this.height, this);
+	return new Hitbox(new Point(this.left, this.top), this.width, this.height);
 }
 
 /* ----- Events ----- */

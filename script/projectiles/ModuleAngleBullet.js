@@ -8,8 +8,8 @@ function ModuleAngleBullet(ship, id, angle)
 	this.img = this.ship.game.textures.projectile_module.getPath();
 	this.width = this.ship.game.textures.projectile_module.getWidth();
 	this.height = this.ship.game.textures.projectile_module.getHeight();
-	this.top = ship.getHitbox().boxOrigin.getY() + 12;
-	this.left = ship.getHitbox().boxOrigin.getX() + ship.width + 2;
+	this.top = ship.top + 12;
+	this.left = ship.left + ship.width + 2;
 	this.damages = 1;
 	
 	this.launch(id);
@@ -19,7 +19,7 @@ function ModuleAngleBullet(ship, id, angle)
 /* ----- Getters ----- */
 ModuleAngleBullet.prototype.getHitbox = function()
 {
-	return new Hitbox(new Point(this.left, this.top), this.width, this.height, this);
+	return new Hitbox(new Point(this.left, this.top), this.width, this.height);
 }
 
 /* ----- Events ----- */

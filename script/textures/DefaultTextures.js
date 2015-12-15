@@ -7,7 +7,7 @@ function DefaultTextures()
 	//Ship
 	//new Texture(texturePath, width, height)
 	
-	if (document.URL.contains('?skin='))
+	if (document.URL.contains('skin='))
 	{
 		var tab = document.URL.split('=');
 		var colors = new Array('blue','darkblue','green','purple','red');
