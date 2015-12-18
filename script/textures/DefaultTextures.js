@@ -7,14 +7,36 @@ function DefaultTextures()
 	//Ship
 	//new Texture(texturePath, width, height)
 	
-	if (document.URL.contains('skin='))
+	var parseParamsUrl = function(paramsUrl)
 	{
-		var tab = document.URL.split('=');
-		var colors = new Array('blue','darkblue','green','purple','red','yellow');
-		if (colors.indexOf(tab[1]) != -1)
+		var map = new Map();
+		var params = paramsUrl.split('&');
+		
+		for (var i = 0; i < params.length; i++)
 		{
-			this.ship_skin = tab[1];
+			var tmp = params[i].split('=');
+			map.set(tmp[0], tmp[1]);
 		}
+		
+		return map;
+	}
+	
+	if (document.URL.contains('?'))
+	{
+		var colors = new Array('blue','darkblue','green','purple','red','yellow');
+		var paramsMap = parseParamsUrl(document.URL.split('?')[1]);
+		var skin = 'blue';
+		var skinParams = paramsMap.get('skin');
+		
+		if (skinParams != null)
+		{
+			if (colors.indexOf(skinParams) != -1)
+			{
+				skin = skinParams;
+			}
+		}
+		
+		this.ship_skin = skin;
 	}
 	else
 	{
@@ -73,6 +95,8 @@ function DefaultTextures()
 	//Shoot tier 2
 	this.blue_laser_2 = new Texture('blue_laser_2.gif', 128, 3);
 	this.blue_laser_2_idle = new Texture('blue_laser_2_idle.gif', 128, 3);
+	this.dna_bullet_part1 = new Texture('dna_part1.gif', 120, 56);
+	this.dna_bullet_part2 = new Texture('dna_part2.gif', 59, 32);
 	
 	//Ennemies
 	this.patapata = new Texture('patapata.gif', 21, 24);

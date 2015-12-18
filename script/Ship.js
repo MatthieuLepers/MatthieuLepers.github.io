@@ -130,21 +130,35 @@ Ship.prototype.shoot = function()
 		}
 		
 		//TODO
-		if (this.module != null && this.module.tier >= 1 && this.module.type == 'dna')
+		if (this.module != null && this.module.tier >= 1 && this.module.type == 'dna' && !this.cooldown)
 		{
-			if (this.module.position == 'front')
+			if (this.module.tier == 1)
 			{
-				var DANRed = new DnaRedBullet(this, 'shipredshot' + this.registeredBullets.size, 1);
-				var DANblue = new DnaBlueBullet(this, 'shipblueshot' + this.registeredBullets.size, 1);
-				this.registeredBullets.set(DANRed.id, DANRed);
-				this.registeredBullets.set(DANblue.id, DANblue);
+				if (this.module.position == 'front')
+				{
+					var DANRed = new DnaRedBullet(this, 'shipredshot' + this.registeredBullets.size, 1);
+					var DANblue = new DnaBlueBullet(this, 'shipblueshot' + this.registeredBullets.size, 1);
+					this.registeredBullets.set(DANRed.id, DANRed);
+					this.registeredBullets.set(DANblue.id, DANblue);
+				}
+				else if (this.module.position == 'back')
+				{
+					var DANRed = new DnaRedBullet(this, 'shipredreverseshot' + this.registeredBullets.size, -1);
+					var DANblue = new DnaBlueBullet(this, 'shipbluereverseshot' + this.registeredBullets.size, -1);
+					this.registeredBullets.set(DANRed.id, DANRed);
+					this.registeredBullets.set(DANblue.id, DANblue);
+				}
 			}
-			else if (this.module.position == 'back')
+			else
 			{
-				var DANRed = new DnaRedBullet(this, 'shipredreverseshot' + this.registeredBullets.size, -1);
-				var DANblue = new DnaBlueBullet(this, 'shipbluereverseshot' + this.registeredBullets.size, -1);
-				this.registeredBullets.set(DANRed.id, DANRed);
-				this.registeredBullets.set(DANblue.id, DANblue);
+				if (this.module.position != '')
+				{
+					var DANBeam = new DnaBeam(this, 'shipdnabeam' + this.registeredBullets.size);
+					this.registeredBullets.set(DANBeam.id, DANBeam);
+				}
+				
+				this.cooldown = true;
+				window.setTimeout(clearCoolDown, 600, this);
 			}
 		}
 		else if (this.module != null && this.module.tier >= 1 && this.module.type == 'laser' && !this.cooldown)

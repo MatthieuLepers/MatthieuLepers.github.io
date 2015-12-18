@@ -109,7 +109,7 @@ DnaRedBullet.prototype.anim = function(params)
 	var id = params[1];
 	var scheduler = params[2];
 	
-	if (this.sign < 0)
+	if (bullet.sign < 0)
 	{
 		if (bullet.left < -50)
 		{

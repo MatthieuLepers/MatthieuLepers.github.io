@@ -208,6 +208,11 @@ function setupEvent()
 	window.addEventListener('mouseup', launchCharge);
 	window.addEventListener('contextmenu', function(e) {e.preventDefault(); return false; });
 	window.addEventListener('keypress', function(e) {e.preventDefault(); return false; });
+	
+	if (document.URL.contains('&assist=true') || document.URL.contains('?assist=true'))
+	{
+		new IA(ship);
+	}
 }
 
 window.addEventListener('load', setupEvent);

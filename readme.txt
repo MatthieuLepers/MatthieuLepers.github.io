@@ -52,3 +52,10 @@ version 1.0.7 (beta)
 - [Added] New secret ship skin
 - [Fixed] Minor bug
 - [Optimisation] Minor optimisation
+
+version 1.0.8 (beta)
+- [Added] Dna Beam weapon is now available when you pick a dna upgrade, a cooldown is enabled for each use, this reduce lags, ennemy spawn kill and animation bug
+- [Added] Help IA, you just have to move the ship, the computer is shooting for you
+          You can activate it by add in url the following parameter:
+          Your URL not contains a '?' in the end, place '?assist=true' else place '&assist=true'
+- [Fixed] Minor bug
