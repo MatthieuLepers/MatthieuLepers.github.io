@@ -79,6 +79,49 @@ function moveShip(e)
 		ship.move(x, y);
 	}
 	
+	var changeSelectedSpanName = function()
+	{
+		if (document.getElementById('saveScreen') != null)
+		{
+			var selectedOld = document.getElementsByClassName('selected')[0];
+			selectedOld.className = 'name';
+			var spanNames = document.querySelectorAll('span.name');
+			var selectedNew = spanNames[parseInt(selectedOld.id) % spanNames.length];
+			selectedNew.className = 'name selected';
+		}
+	}
+	
+	var changeLetterInSpanName = function(direction)
+	{
+		if (document.getElementById('saveScreen') != null)
+		{
+			var alpha = new Array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
+			var selectedSpan = document.getElementsByClassName('selected')[0];
+			if (direction == 'up')
+			{
+				var letter = 'A';
+				
+				if (alpha.indexOf(selectedSpan.textContent) + 1 < alpha.length)
+				{
+					letter = alpha[alpha.indexOf(selectedSpan.textContent) + 1 % alpha.length];
+				}
+				
+				selectedSpan.textContent = letter;
+			}
+			else
+			{
+				var letter = 'Z';
+				
+				if (alpha.indexOf(selectedSpan.textContent) - 1 >= 0)
+				{
+					letter = alpha[alpha.indexOf(selectedSpan.textContent) - 1 % alpha.length];
+				}
+				
+				selectedSpan.textContent = letter;
+			}
+		}
+	}
+	
 	switch (e.keyCode)
 	{
 		case 81:
@@ -157,6 +200,16 @@ function moveShip(e)
 			break;
 		case 116:
 			location.reload();
+			break;
+		case 38:
+			changeLetterInSpanName('up');
+			break;
+		case 40:
+			changeLetterInSpanName('down');
+			break;
+		case 39:
+			changeSelectedSpanName();
+			break;
 	}
 }
 
@@ -191,6 +244,28 @@ function launchCharge(e)
 	}
 }
 
+function getBestScore()
+{
+	var p_ip = myip;
+	
+	var xhr = new XMLHttpRequest();
+	var param = new FormData();
+	
+	xhr.open("POST", "http://hackromproject.craym.eu/JSGame/ajax/bestScore.php", true);
+	param.append('p_ip', p_ip);
+	
+	xhr.onload = function()
+	{
+		var hightScore = document.createElement('div');
+		hightScore.innerHTML = this.responseText;
+		hightScore.id = 'hightScore';
+		
+		document.getElementById('scoreboard').appendChild(hightScore);
+	}
+	
+	xhr.send(param);
+}
+
 function setupEvent()
 {
 	game = new Game();
@@ -213,6 +288,8 @@ function setupEvent()
 	{
 		new IA(ship);
 	}
+	
+	getBestScore();
 }
 
 window.addEventListener('load', setupEvent);

@@ -59,3 +59,7 @@ version 1.0.8 (beta)
           You can activate it by add in url the following parameter:
           Your URL not contains a '?' in the end, place '?assist=true' else place '&assist=true'
 - [Fixed] Minor bug
+
+version 1.0.9 (beta)
+- [Added] Score saving like arcade game. Use arrow keys to change letters and slot.
+- [Added] High score for local ip and for global.

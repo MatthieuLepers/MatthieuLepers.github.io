@@ -80,6 +80,7 @@ function Game()
 			document.getElementById('openStats').addEventListener('click', displayStats);
 			document.getElementById('retry').addEventListener('click', function() { location.reload(); });
 			window.addEventListener('keyup', function(e) { if (e.keyCode == 13) location.reload(); });
+			new SaveScoreScreen(g);
 		}
 	}
 	

@@ -85,11 +85,11 @@ div#gameOver {
 	display: block;
 	width: 25%;
 	margin: auto;
-	margin-top: 20%;
+	margin-top: 10%;
 	color: white;
 	text-align: center;
 	background-color: black;
-	z-index: 99;
+	z-index: 9;
 	border: 1px solid white;
 }
 
@@ -220,4 +220,59 @@ div.bitmodule.bottom {
 
 .laser {
 	z-index: 0;
+}
+
+div#saveScreen {
+	padding-bottom: 10px;
+}
+
+div#saveScreen span.name {
+	display: inline;
+	margin: 0px;
+	margin-top: 2px;
+	padding: 2px;
+	border: 1px solid black;
+}
+
+div#saveScreen span.name.selected {
+	border: 1px solid #DDD;
+}
+
+button#savescore span[class] {
+	margin: 0;
+	width: 100%;
+}
+
+span.green {
+	color: green;
+}
+
+span.red {
+	color: red;
+}
+
+div#hightScore {
+	display: block;
+	margin-top: 18px;
+	margin-left: 45%;
+}
+
+div#hightScore span {
+	display: block;
+	width: 100%;
+	font-size: 13px;
+}
+
+div#hightScore span#local:before {
+	content: 'LOCAL HIGH- ';
+	color: #0FF;
+	font-weight: bold;
+	font-size: 13px;
+}
+
+div#hightScore span#global:before {
+	content: 'GLOBAL HIGH- ';
+	color: #0FF;
+	font-weight: bold;
+	font-size: 13px;
 }

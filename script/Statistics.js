@@ -17,6 +17,9 @@ function Statistics(game)
 	this.fireballShots = 0;
 	this.fireballShotHits = 0;
 	this.fireballShotFails = 0;
+	this.dnaBeamShots = 0;
+	this.dnaBeamShotHits = 0;
+	this.dnaBeamShotFails = 0;
 	
 	//Rockets
 	this.rocketLaunched = 0;
@@ -50,6 +53,19 @@ function Statistics(game)
 	
 	this.maximumScore;
 	this.maximumShootedBullets = this.maximumScore / 20;
+}
+
+function getMaxScore(waves)
+{
+	if (waves == 1)
+	{
+		return 935;
+	}
+	else
+	{
+		var w = (waves * 5 > 30 ? 30 : waves * 5);
+		return ((w * 50) + (w * 100) - 35 + (w * 10) + (waves * 10)) + getMaxScore(waves - 1);
+	}
 }
 
 function createCell(title)
@@ -90,21 +106,115 @@ function calculPercentage(hits, total)
 	return (!isNaN(a) ? (""+a).substr(0, 5) : '0.00');
 }
 
-Statistics.prototype.printStatistics = function()
+Statistics.prototype.getJSON = function()
 {
-	var getMaxScore = function(waves)
-	{
-		if (waves == 1)
-		{
-			return 935;
-		}
-		else
-		{
-			var w = (waves * 5 > 30 ? 30 : waves * 5);
-			return ((w * 50) + (w * 100) - 35 + (w * 10) + (waves * 10)) + getMaxScore(waves - 1);
-		}
-	}
+	var global = {
+		score: this.game.score,
+		maxScore: getMaxScore(this.game.waveNumber),
+		wave: this.game.waveNumber - 1,
+		assisted: (document.URL.contains('?assist=true') || document.URL.contains('&assist=true')),
+		globalAccuracy: calculPercentage(this.shipShotHits + this.chargedShotHits + this.dnaShotHits + this.rocketHits + this.moduleShotHits + this.bluelaserShotHits + this.fireballShotHits + this.dnaBeamShotHits,this.shipShots + this.chargedShots + this.dnaShots + this.rocketLaunched + this.moduleShots + this.bluelaserShots + this.fireballShots + this.dnaBeamShots) + '%'
+	};
 	
+	var kills = {
+		patapata: this.killedPataPata,
+		mid: this.killedMid,
+		cancer: this.killedCancer,
+		powarmor: this.killedPowArmor
+	};
+	
+	var bullets = {
+		shoot: this.shipShots,
+		hits: this.shipShotHits,
+		fails: this.shipShotFails,
+		accuracy: calculPercentage(this.shipShotHits,this.shipShots) + '%'
+	};
+	
+	var chargedBullets = {
+		shoot: this.chargedShots,
+		hits: this.chargedShotHits,
+		fails: this.chargedShotFails,
+		accuracy: calculPercentage(this.chargedShotHits,this.chargedShots) + '%'
+	};
+	
+	var dnaBullets = {
+		shoot: this.dnaShots,
+		hits: this.dnaShotHits,
+		fails: this.dnaShotFails,
+		accuracy: calculPercentage(this.dnaShotHits,this.dnaShots) + '%'
+	};
+	
+	var rockets = {
+		shoot: this.rocketLaunched,
+		hits: this.rocketHits,
+		fails: this.rocketFails,
+		accuracy: calculPercentage(this.rocketHits,this.rocketLaunched) + '%'
+	};
+	
+	var lasers = {
+		shoot: this.bluelaserShots,
+		hits: this.bluelaserShotHits,
+		fails: this.bluelaserShotFails,
+		accuracy: calculPercentage(this.bluelaserShotHits,this.bluelaserShots) + '%'
+	};
+	
+	var fireballs = {
+		shoot: this.fireballShots,
+		hits: this.fireballShotHits,
+		fails: this.fireballShotFails,
+		accuracy: calculPercentage(this.fireballShotHits,this.fireballShots) + '%'
+	};
+	
+	var dnaBeams = {
+		shoot: this.dnaBeamShot,
+		hits: this.dnaBeamShotHits,
+		fails: this.dnaBeamShotFails,
+		accuracy: calculPercentage(this.dnaBeamShotHits,this.dnaBeamShot) + '%'
+	};
+	
+	var ship = {
+		bullets,
+		chargedBullets,
+		dnaBullets,
+		rockets,
+		lasers,
+		fireballs,
+		dnaBeams
+	};
+	
+	var module = {
+		tier: (this.game.ship.module != null ? this.game.ship.module.tier : 0),
+		absorbed: this.moduleAbsorbedShot,
+		shoot: this.moduleShots,
+		hits: this.moduleShotHits,
+		fails: this.moduleShotFails,
+		accuracy: calculPercentage(this.moduleShotHits,this.moduleShots) + '%'
+	};
+	
+	var upgrades = {
+		spawned: this.spawnedUpgrade,
+		picked: this.pickedBitModuleUpgrade + this.pickedDnaUpgrade + this.pickedFireUpgrade + this.pickedLaserUpgrade + this.pickedRocketsUpgrade + this.pickedSpeedUpgrade,
+		pickedDna: this.pickedDnaUpgrade,
+		pickedLaser: this.pickedLaserUpgrade,
+		pickedFire: this.pickedFireUpgrade,
+		pickedRockets: this.pickedRocketsUpgrade,
+		pickedSpeed: this.pickedSpeedUpgrade,
+		pickedBitModule: this.pickedBitModuleUpgrade
+	};
+	
+	var stats = {
+		global,
+		kills,
+		ship,
+		module,
+		upgrades
+	};
+	
+	return JSON.stringify(stats);
+}
+
+Statistics.prototype.printStatistics = function()
+{	
 	this.maximumScore = getMaxScore(this.game.waveNumber);
 	
 	var section = document.createElement('section');
