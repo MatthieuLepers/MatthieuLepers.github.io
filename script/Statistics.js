@@ -27,7 +27,6 @@ function Statistics(game)
 	this.rocketFails = 0;
 	
 	//Module Stats
-	this.moduleTier = 0;
 	this.moduleAbsorbedShot = 0;
 	this.moduleShots = 0;
 	this.moduleShotHits = 0;
@@ -57,7 +56,7 @@ function Statistics(game)
 
 function getMaxScore(waves)
 {
-	if (waves == 1)
+	if (waves == 0)
 	{
 		return 935;
 	}
@@ -110,7 +109,7 @@ Statistics.prototype.getJSON = function()
 {
 	var global = {
 		score: this.game.score,
-		maxScore: getMaxScore(this.game.waveNumber),
+		maxScore: getMaxScore(this.game.waveNumber - 1),
 		wave: this.game.waveNumber - 1,
 		assisted: (document.URL.contains('?assist=true') || document.URL.contains('&assist=true')),
 		globalAccuracy: calculPercentage(this.shipShotHits + this.chargedShotHits + this.dnaShotHits + this.rocketHits + this.moduleShotHits + this.bluelaserShotHits + this.fireballShotHits + this.dnaBeamShotHits,this.shipShots + this.chargedShots + this.dnaShots + this.rocketLaunched + this.moduleShots + this.bluelaserShots + this.fireballShots + this.dnaBeamShots) + '%'
@@ -183,7 +182,9 @@ Statistics.prototype.getJSON = function()
 	};
 	
 	var module = {
-		tier: (this.game.ship.module != null ? this.game.ship.module.tier : 0),
+		tier: (this.game.ship.module != null ? this.game.ship.module.tier : -1),
+		type: (this.game.ship.module != null ? this.game.ship.module.type : 'none'),
+		bitModules: this.game.ship.bitModules.size,
 		absorbed: this.moduleAbsorbedShot,
 		shoot: this.moduleShots,
 		hits: this.moduleShotHits,
@@ -215,7 +216,7 @@ Statistics.prototype.getJSON = function()
 
 Statistics.prototype.printStatistics = function()
 {	
-	this.maximumScore = getMaxScore(this.game.waveNumber);
+	this.maximumScore = getMaxScore(this.game.waveNumber - 1);
 	
 	var section = document.createElement('section');
 	var article = document.createElement('article');
@@ -233,7 +234,7 @@ Statistics.prototype.printStatistics = function()
 	var globalStats = createCell('Global statistics');
 	globalStats.appendChild(createCellSection(new Array('Score:',this.game.score)));
 	globalStats.appendChild(createCellSection(new Array('Maximum score:',this.maximumScore)));
-	globalStats.appendChild(createCellSection(new Array('Wave:',this.game.waveNumber)));
+	globalStats.appendChild(createCellSection(new Array('Wave:',this.game.waveNumber - 1)));
 	globalStats.appendChild(createCellSection(new Array('Global accuracy:',calculPercentage(this.shipShotHits + this.chargedShotHits + this.dnaShotHits + this.rocketHits + this.moduleShotHits + this.bluelaserShotHits + this.fireballShotHits,this.shipShots + this.chargedShots + this.dnaShots + this.rocketLaunched + this.moduleShots + this.bluelaserShots + this.fireballShots) + '%')));	
 	article.appendChild(globalStats);
 	
@@ -295,11 +296,19 @@ Statistics.prototype.printStatistics = function()
 			'Accuracy:',calculPercentage(this.fireballShotHits,this.fireballShots) + '%'
 		)
 	));
+	shipStats.appendChild(createCellSection(
+		new Array(
+			'Dna Beam shoot:',this.dnaBeamShots,
+			'Dna Beam  hits:',this.dnaBeamShotHits,
+			'Dna Beam  fails:',this.dnaBeamShotFails,
+			'Accuracy:',calculPercentage(this.dnaBeamShotHits,this.fdnaBeamShots) + '%'
+		)
+	));
 	article.appendChild(shipStats);
 	
 	//Create Module statistics
 	var moduleStats = createCell('Module statistics');
-	moduleStats.appendChild(createCellSection(new Array('Module tier:',this.moduleTier)));
+	moduleStats.appendChild(createCellSection(new Array('Module tier:',(this.game.ship.module != null ? this.game.ship.module.tier : 0))));
 	moduleStats.appendChild(createCellSection(new Array('Shots absorbed:',this.moduleAbsorbedShot)));
 	moduleStats.appendChild(createCellSection(new Array('Bullets shooted:',this.moduleShots)));
 	moduleStats.appendChild(createCellSection(new Array('Bullets hits:',this.moduleShotHits)));
