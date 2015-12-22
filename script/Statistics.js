@@ -107,6 +107,25 @@ function calculPercentage(hits, total)
 
 Statistics.prototype.getJSON = function()
 {
+	var ship_skin = 'blue';
+	if (document.URL.contains('?'))
+	{
+		var colors = new Array('blue','darkblue','green','purple','red','yellow');
+		var paramsMap = parseParamsUrl(document.URL.split('?')[1]);
+		var skin = 'blue';
+		var skinParams = paramsMap.get('skin');
+		
+		if (skinParams != null)
+		{
+			if (colors.indexOf(skinParams) != -1)
+			{
+				skin = skinParams;
+			}
+		}
+		
+		ship_skin = skin;
+	}
+	
 	var global = {
 		score: this.game.score,
 		maxScore: getMaxScore(this.game.waveNumber - 1),
@@ -172,6 +191,9 @@ Statistics.prototype.getJSON = function()
 	};
 	
 	var ship = {
+		skin: ship_skin,
+		speed: (this.game.ship.speed - 2) / 0.5,
+		rockets: this.game.ship.hasRockets,
 		bullets,
 		chargedBullets,
 		dnaBullets,
