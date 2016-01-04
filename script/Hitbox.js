@@ -1,8 +1,8 @@
-function Hitbox(boxOrigin, boxWidth, boxHeight)
+function Hitbox(origin, width, height)
 {
-	this.boxOrigin = boxOrigin;
-	this.boxWidth = boxWidth;
-	this.boxHeight = boxHeight;
+	this.boxOrigin = origin;
+	this.boxWidth = width;
+	this.boxHeight = height;
 	this.cTopLeft = new Point(this.boxOrigin.getX(), this.boxOrigin.getY());
 	this.cTopRight = new Point(this.boxOrigin.getX() + this.boxWidth, this.boxOrigin.getY());
 	this.cBottomLeft = new Point(this.boxOrigin.getX(), this.boxOrigin.getY() + this.boxHeight);
