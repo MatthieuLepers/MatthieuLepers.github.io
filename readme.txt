@@ -63,3 +63,5 @@ version 1.0.8 (beta)
 version 1.0.9 (beta)
 - [Added] Score saving like arcade game. Use arrow keys to change letters and slot.
 - [Added] High score for local ip and for global.
+- [Fixed] No more IP blocked by VPN.
+- [Fixed] Hitbox will now work with Linux OS.

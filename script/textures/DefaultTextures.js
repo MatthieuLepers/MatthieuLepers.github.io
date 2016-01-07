@@ -7,20 +7,6 @@ function DefaultTextures()
 	//Ship
 	//new Texture(texturePath, width, height)
 	
-	var parseParamsUrl = function(paramsUrl)
-	{
-		var map = new Map();
-		var params = paramsUrl.split('&');
-		
-		for (var i = 0; i < params.length; i++)
-		{
-			var tmp = params[i].split('=');
-			map.set(tmp[0], tmp[1]);
-		}
-		
-		return map;
-	}
-	
 	if (document.URL.contains('?'))
 	{
 		var colors = new Array('blue','darkblue','green','purple','red','yellow');

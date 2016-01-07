@@ -244,9 +244,23 @@ function launchCharge(e)
 	}
 }
 
+function parseParamsUrl(paramsUrl)
+{
+	var map = new Map();
+	var params = paramsUrl.split('&');
+	
+	for (var i = 0; i < params.length; i++)
+	{
+		var tmp = params[i].split('=');
+		map.set(tmp[0], tmp[1]);
+	}
+	
+	return map;
+}
+
 function getBestScore()
 {
-	var p_ip = myip;
+	var p_ip = document.querySelectorAll('body')[0].dataset.ip;
 	
 	var xhr = new XMLHttpRequest();
 	var param = new FormData();
@@ -264,6 +278,21 @@ function getBestScore()
 	}
 	
 	xhr.send(param);
+}
+
+function getIp()
+{
+	var xhr = new XMLHttpRequest();
+	
+	xhr.open('GET', 'https://api.ipify.org?format=json', true);
+	
+	xhr.onload = function()
+	{
+		document.querySelectorAll('body')[0].dataset.ip = JSON.parse(this.responseText).ip;
+		getBestScore();
+	}
+	
+	xhr.send(null);
 }
 
 function setupEvent()
@@ -289,7 +318,7 @@ function setupEvent()
 		new IA(ship);
 	}
 	
-	getBestScore();
+	getIp();
 }
 
 window.addEventListener('load', setupEvent);

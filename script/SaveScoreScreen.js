@@ -49,7 +49,7 @@ SaveScoreScreen.prototype.printScreen = function()
 SaveScoreScreen.prototype.save = function(game)
 {
 	var spanNames = document.getElementsByClassName('name');
-	var p_ip = myip;
+	var p_ip = document.querySelectorAll('body')[0].dataset.ip;
 	var p_name = spanNames[0].textContent + spanNames[1].textContent + spanNames[2].textContent;
 	var stats = game.stats.getJSON();
 	

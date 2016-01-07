@@ -75,7 +75,7 @@ function Game()
 			
 			var div = document.createElement('div');
 			div.id = 'gameOver';
-			div.innerHTML = '<h2>GAME OVER</h2><span>You survived ' + g.waveNumber + ' wave' + (g.waveNumber > 1 ? 's' : '') + '</span><span>Your score: ' + g.score + '</span><button id="retry" autofocus="autofocus">Retry (Enter)</button><button id="openStats">Show statistics</button>';
+			div.innerHTML = '<h2>GAME OVER</h2><span>You survived ' + (g.waveNumber - 1) + ' wave' + ((g.waveNumber - 1) > 1 ? 's' : '') + '</span><span>Your score: ' + g.score + '</span><button id="retry" autofocus="autofocus">Retry (Enter)</button><button id="openStats">Show statistics</button>';
 			document.getElementsByTagName('body')[0].appendChild(div);
 			document.getElementById('openStats').addEventListener('click', displayStats);
 			document.getElementById('retry').addEventListener('click', function() { location.reload(); });
@@ -264,7 +264,7 @@ Game.prototype.printScore = function()
 	{
 		var scoreboard = document.createElement('div');
 		scoreboard.id = 'scoreboard';
-		scoreboard.innerHTML = '<span class="score">Score: ' + this.score + '<span>Current wave: ' + this.waveNumber + '</span></span><span class="label">BEAM- </span><span id="powerBar" class="power"><span style="width: 0px;"></span></span>';
+		scoreboard.innerHTML = '<span class="score">Score: ' + this.score + '<span>Current wave: ' + (this.waveNumber - 1) + '</span></span><span class="label">BEAM- </span><span id="powerBar" class="power"><span style="width: 0px;"></span></span>';
 		
 		document.getElementsByTagName('body')[0].appendChild(scoreboard);
 	}
@@ -273,7 +273,7 @@ Game.prototype.printScore = function()
 		var score = document.querySelectorAll('div[id="scoreboard"] span.score');
 		if (score.length == 1)
 		{
-			score[0].innerHTML = 'Score: ' + this.score + '<span>Current wave: ' + this.waveNumber + '</span>';
+			score[0].innerHTML = 'Score: ' + this.score + '<span>Current wave: ' + (this.waveNumber - 1) + '</span>';
 		}
 	}
 }
