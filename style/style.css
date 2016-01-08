@@ -83,6 +83,7 @@ div#ship, #charge, .bullet, .ennemy, .ennemyShot, .redlaser, .upgrade, #module, 
 
 div#gameOver {
 	display: block;
+	position: relative;
 	width: 25%;
 	margin: auto;
 	margin-top: 10%;
