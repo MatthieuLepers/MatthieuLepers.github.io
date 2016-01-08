@@ -276,3 +276,73 @@ div#hightScore span#global:before {
 	font-weight: bold;
 	font-size: 13px;
 }
+
+div#scoreboard div#help {
+	display: block;
+	position: absolute;
+	top: 4px;
+	right: 2px;
+	border: 1px solid white;
+	border-radius: 45px;
+	height: 40px;
+	width: 40px;
+	cursor: pointer;
+	background-image: url('../images/help.png');
+	background-size: cover;
+}
+
+body>div#helpMenu {
+	display: block;
+	position: absolute;
+	bottom: 54px;
+	right: 3px;
+	border: 1px solid white;
+	background-color: black;
+	z-index: 9;
+	width: 200px;
+	height: 420px;
+	color: white;
+	padding: 5px;
+}
+
+body>div#helpMenu h2 {
+	text-align: center;
+	margin: 5px;
+	padding: 0;
+	border-bottom: 1px solid white;
+}
+
+body>div#helpMenu h2.border {
+	margin-top: 12px;
+}
+
+body>div#helpMenu dl  {
+	border: none;
+}
+
+body>div#helpMenu dl dd {
+	width: 20%;
+}
+
+body>div#helpMenu dl dt {
+	width: 80%;
+}
+
+body>div#helpMenu span {
+	display: block;
+	width: 100%;
+	text-align: center;
+}
+
+body>div#helpMenu div#skins {
+	display: block;
+	width: 100%;
+	text-align: inherit;
+}
+
+body>div#helpMenu div#skins span.skin {
+	display: inline-block;
+	width: 33%;
+	height: 16px;
+	margin-bottom: 2px;
+}

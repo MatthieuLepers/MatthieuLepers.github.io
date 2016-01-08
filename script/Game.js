@@ -266,6 +266,26 @@ Game.prototype.printScore = function()
 		scoreboard.id = 'scoreboard';
 		scoreboard.innerHTML = '<span class="score">Score: ' + this.score + '<span>Current wave: ' + (this.waveNumber - 1) + '</span></span><span class="label">BEAM- </span><span id="powerBar" class="power"><span style="width: 0px;"></span></span>';
 		
+		var help = document.createElement('div');
+		help.id = 'help';
+		help.title = 'Help';
+		
+		scoreboard.appendChild(help);
+		
+		var display = function()
+		{
+			var helpmenu = new HelpMenu();
+			
+			var menu = document.querySelectorAll('div[id="helpMenu"]');
+			
+			if (menu.length == 0)
+				helpmenu.display();
+			else
+				menu[0].parentNode.removeChild(menu[0]);
+		}
+		
+		help.addEventListener('click', display);
+		
 		document.getElementsByTagName('body')[0].appendChild(scoreboard);
 	}
 	else

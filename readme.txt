@@ -65,3 +65,6 @@ version 1.0.9 (beta)
 - [Added] High score for local ip and for global.
 - [Fixed] No more IP blocked by VPN.
 - [Fixed] Hitbox will now work with Linux OS.
+
+version 1.1.0 (beta)
+- [Added] Help menu on the bottom-right corner.
