@@ -97,12 +97,12 @@ function Game()
 			g.displayedEnnemies++;
 			g.spawnPataPataEnnemy();
 			g.spawnMidEnnemy();
-			if (g.waveNumber % 5 == 0 && g.waveNumber > 0 && !g.hasSpawn)
+			if ((g.waveNumber - 1) % 5 == 0 && (g.waveNumber - 1) > 0 && !g.hasSpawn)
 			{
 				g.spawnPOWArmor(g.getRandomUpdate());
 				g.hasSpawn = true;
 			}
-			if (g.waveNumber >= 20 && !g.stopCancerSpawn)
+			if ((g.waveNumber - 1) >= 20 && !g.stopCancerSpawn)
 			{
 				g.spawnedCancer++;
 				g.spawnCancerEnnemy();
