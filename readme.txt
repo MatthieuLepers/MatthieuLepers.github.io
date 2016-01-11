@@ -68,3 +68,4 @@ version 1.0.9 (beta)
 
 version 1.1.0 (beta)
 - [Added] Help menu on the bottom-right corner.
+- [Added] World scoreboard with the top 30th score.
