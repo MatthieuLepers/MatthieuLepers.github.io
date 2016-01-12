@@ -4,6 +4,7 @@ function DnaBeam(ship, id)
 	this.ship = ship;
 	this.id = id;
 	this.damages = 5;
+	this.hasHit = false;
 	
 	this.img = ship.game.textures.dna_bullet_part1.getPath();
 	this.width = ship.game.textures.dna_bullet_part1.getWidth();
@@ -62,7 +63,7 @@ DnaBeam.prototype.fire = function(event)
 DnaBeam.prototype.onLaunch = function()
 {
 	this.fire(new Event('onlaunched', this));
-	this.ship.game.stats.dnaBeam++;
+	this.ship.game.stats.dnaBeamShot++;
 }
 
 /* ----- Actions ----- */
@@ -142,7 +143,8 @@ DnaBeam.prototype.anim = function(params)
 			scheduler.removeTask(id);
 			var b = document.getElementById(""+id);
 			b.parentNode.removeChild(b);
-			this.ship.game.stats.dnaBeamFails++;
+			if (!this.hasHit)
+				this.ship.game.stats.dnaBeamShotFails++;
 		}
 		else
 		{
@@ -155,7 +157,8 @@ DnaBeam.prototype.anim = function(params)
 				if (ennemy != null && ennemy.id != 'module' && !ennemy.isDead && bullet.getHitbox().isHovering(ennemy.getHitbox()))
 				{
 					ennemy.damage(bullet.damages);
-					this.ship.game.stats.dnaBeamHits++;
+					this.ship.game.stats.dnaBeamShotHits++;
+					this.hasHit = true;
 				}
 			}
 		}
@@ -167,7 +170,8 @@ DnaBeam.prototype.anim = function(params)
 			scheduler.removeTask(id);
 			var b = document.getElementById(""+id);
 			b.parentNode.removeChild(b);
-			this.ship.game.stats.dnaBeamFails++;
+			if (!this.hasHit)
+				this.ship.game.stats.dnaBeamShotFails++;
 		}
 		else
 		{
@@ -181,7 +185,8 @@ DnaBeam.prototype.anim = function(params)
 				{
 					bullet.damage(ennemy.lifePoints);
 					ennemy.damage(bullet.damages);
-					this.ship.game.stats.dnaBeamHits++;
+					this.ship.game.stats.dnaBeamShotHits++;
+					this.hasHit = true;
 				}
 			}
 		}
