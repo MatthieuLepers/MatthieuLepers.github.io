@@ -55,7 +55,7 @@ BitModuleUpgrade.prototype.onDestroyed = function()
 BitModuleUpgrade.prototype.onPickup = function()
 {
 	this.fire(new Event('onpickup', this));
-	this.powarmor.game.stats.pickedSpeedUpgrade++;
+	this.powarmor.game.stats.pickedBitModuleUpgrade++;
 }
 
 BitModuleUpgrade.prototype.onHover = function()
