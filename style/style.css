@@ -347,3 +347,64 @@ body>div#helpMenu div#skins span.skin {
 	height: 16px;
 	margin-bottom: 2px;
 }
+
+.pad {
+	display: block;
+	border: 1px solid grey;
+	border-radius: 50px;
+	opacity: 0.50;
+	position: absolute;
+	width: 64px;
+	height: 64px;
+	z-index: 99;
+}
+
+span#padUp {
+	left: 96px;
+	bottom: 228px;
+	background-image: url('../images/up.png');
+}
+
+span#padLeft {
+	left: 32px;
+	bottom: 160px;
+	background-image: url('../images/left.png');
+}
+
+span#padDown {
+	left: 96px;
+	bottom: 96px;
+	background-image: url('../images/down.png');
+}
+
+span#padRight {
+	left: 160px;
+	bottom: 160px;
+	background-image: url('../images/right.png');
+}
+
+span#shoot {
+	right: 32px;
+	bottom: 96px;
+	background-image: url('../images/bullet.png');
+}
+
+span#charge {
+	right: 118px;
+	bottom: 96px;
+	background-image: url('../images/charged_beam.png');
+}
+
+span#throw {
+	right: 32px;
+	bottom: 180px;
+	background-image: url('../images/module.png');
+}
+
+span#pause {
+	right: 32px;
+	top: 32px;
+	width: 48px;
+	height: 48px;
+	background-image: url('../images/pause.png');
+}

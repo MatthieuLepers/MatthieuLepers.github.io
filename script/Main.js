@@ -71,114 +71,140 @@ function resetDirection(e)
 	resetAnimation();
 }
 
+/* ----- Movement ----- */
+var moveTheShip = function(ship, x, y, direction)
+{
+	ship.direction = direction;
+	ship.move(x, y);
+}
+
+function moveUp()
+{
+	if (!bUp)
+	{
+		bUp = true;
+		if (!ship.isDead)
+		{
+			ship.img = ship.game.textures.ship_up.getPath();
+			ship.printShip();
+		}
+		timerUp = window.setInterval(moveTheShip, 10, ship, 0, -ship.speed, 'up');
+	}
+}
+
+function moveDown()
+{
+	if (!bDown)
+	{
+		bDown = true;
+		if (!ship.isDead)
+		{
+			ship.img = ship.game.textures.ship_down.getPath();
+			ship.printShip();
+		}
+		timerDown = window.setInterval(moveTheShip, 10, ship, 0, ship.speed, 'down');
+	}
+}
+
+function moveLeft()
+{
+	if (!bLeft)
+	{
+		bLeft = true;
+		timerLeft = window.setInterval(moveTheShip, 10, ship, -ship.speed, 0, 'left');
+	}
+}
+
+function moveRight()
+{
+	if (!bRight)
+	{
+		bRight = true;
+		timerRight = window.setInterval(moveTheShip, 10, ship, ship.speed, 0, 'right');
+	}
+}
+
+var pauseGame = function()
+{
+	if (ship.game.pause)
+	{
+		ship.game.pause = false;
+		ship.game.waveTimer = window.setInterval(ship.game.createEnnemy, 1000, ship.game);
+		ship.game.gameSchedulerTimer = window.setInterval(ship.game.f, 10, ship.game.scheduler);
+		if (ship.hasRockets)
+			ship.rocketTimer = window.setInterval(ship.launchRocket, 2000, ship);
+	}
+	else
+	{
+		ship.game.pause = true;
+		window.clearInterval(ship.game.waveTimer);
+		window.clearInterval(ship.game.gameSchedulerTimer);
+		if (ship.hasRockets)
+			window.clearInterval(ship.rocketTimer);
+	}
+}
+
+var changeSelectedSpanName = function()
+{
+	if (document.getElementById('saveScreen') != null)
+	{
+		var selectedOld = document.getElementsByClassName('selected')[0];
+		selectedOld.className = 'name';
+		var spanNames = document.querySelectorAll('span.name');
+		var selectedNew = spanNames[parseInt(selectedOld.id) % spanNames.length];
+		selectedNew.className = 'name selected';
+	}
+}
+
+var changeLetterInSpanName = function(direction)
+{
+	if (document.getElementById('saveScreen') != null)
+	{
+		var alpha = new Array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
+		var selectedSpan = document.getElementsByClassName('selected')[0];
+		if (direction == 'up')
+		{
+			var letter = 'A';
+			
+			if (alpha.indexOf(selectedSpan.textContent) + 1 < alpha.length)
+			{
+				letter = alpha[alpha.indexOf(selectedSpan.textContent) + 1 % alpha.length];
+			}
+			
+			selectedSpan.textContent = letter;
+		}
+		else
+		{
+			var letter = 'Z';
+			
+			if (alpha.indexOf(selectedSpan.textContent) - 1 >= 0)
+			{
+				letter = alpha[alpha.indexOf(selectedSpan.textContent) - 1 % alpha.length];
+			}
+			
+			selectedSpan.textContent = letter;
+		}
+	}
+}
+
 function moveShip(e)
 {
-	var moveTheShip = function(ship, x, y, direction)
-	{
-		ship.direction = direction;
-		ship.move(x, y);
-	}
-	
-	var changeSelectedSpanName = function()
-	{
-		if (document.getElementById('saveScreen') != null)
-		{
-			var selectedOld = document.getElementsByClassName('selected')[0];
-			selectedOld.className = 'name';
-			var spanNames = document.querySelectorAll('span.name');
-			var selectedNew = spanNames[parseInt(selectedOld.id) % spanNames.length];
-			selectedNew.className = 'name selected';
-		}
-	}
-	
-	var changeLetterInSpanName = function(direction)
-	{
-		if (document.getElementById('saveScreen') != null)
-		{
-			var alpha = new Array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
-			var selectedSpan = document.getElementsByClassName('selected')[0];
-			if (direction == 'up')
-			{
-				var letter = 'A';
-				
-				if (alpha.indexOf(selectedSpan.textContent) + 1 < alpha.length)
-				{
-					letter = alpha[alpha.indexOf(selectedSpan.textContent) + 1 % alpha.length];
-				}
-				
-				selectedSpan.textContent = letter;
-			}
-			else
-			{
-				var letter = 'Z';
-				
-				if (alpha.indexOf(selectedSpan.textContent) - 1 >= 0)
-				{
-					letter = alpha[alpha.indexOf(selectedSpan.textContent) - 1 % alpha.length];
-				}
-				
-				selectedSpan.textContent = letter;
-			}
-		}
-	}
-	
 	switch (e.keyCode)
 	{
 		case 81:
-			if (!bLeft)
-			{
-				bLeft = true;
-				timerLeft = window.setInterval(moveTheShip, 10, ship, -ship.speed, 0, 'left');
-			}
+			moveLeft();
 			break;
 		case 90:
-			if (!bUp)
-			{
-				bUp = true;
-				if (!ship.isDead)
-				{
-					ship.img = ship.game.textures.ship_up.getPath();
-					ship.printShip();
-				}
-				timerUp = window.setInterval(moveTheShip, 10, ship, 0, -ship.speed, 'up');
-			}
+			moveUp();
 			break;
 		case 68:
-			if (!bRight)
-			{
-				bRight = true;
-				timerRight = window.setInterval(moveTheShip, 10, ship, ship.speed, 0, 'right');
-			}
+			moveRight();
 			break;
 		case 83:
-			if (!bDown)
-			{
-				bDown = true;
-				if (!ship.isDead)
-				{
-					ship.img = ship.game.textures.ship_down.getPath();
-					ship.printShip();
-				}
-				timerDown = window.setInterval(moveTheShip, 10, ship, 0, ship.speed, 'down');
-			}
+			moveDown();
 			break;
 		case 27:
-			if (ship.game.pause)
-			{
-				ship.game.pause = false;
-				ship.game.waveTimer = window.setInterval(ship.game.createEnnemy, 1000, ship.game);
-				ship.game.gameSchedulerTimer = window.setInterval(ship.game.f, 10, ship.game.scheduler);
-				if (ship.hasRockets)
-					ship.rocketTimer = window.setInterval(ship.launchRocket, 2000, ship);
-			}
-			else
-			{
-				ship.game.pause = true;
-				window.clearInterval(ship.game.waveTimer);
-				window.clearInterval(ship.game.gameSchedulerTimer);
-				if (ship.hasRockets)
-					window.clearInterval(ship.rocketTimer);
-			}
+			pauseGame();
 			break;
 		case 17:
 			ship.throwModule();
@@ -319,6 +345,11 @@ function setupEvent()
 	}
 	
 	getIp();
+	
+	var agent = navigator.userAgent.toLowerCase();
+	
+	if (agent.contains('android') || agent.contains('iphone') || agent.contains('tablet'))
+		new TactilePad();
 }
 
 window.addEventListener('load', setupEvent);
