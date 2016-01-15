@@ -345,6 +345,11 @@ function setupEvent()
 	}
 	
 	getIp();
+	
+	var agent = navigator.userAgent.toLowerCase();
+	
+	if (agent.contains('android') || agent.contains('iphone') || agent.contains('tablet'))
+		new TactilePad();
 }
 
 window.addEventListener('load', setupEvent);
