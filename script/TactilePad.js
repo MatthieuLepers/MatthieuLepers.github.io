@@ -8,8 +8,8 @@ TactilePad.prototype.displayPad = function()
 	var buttonUp = document.createElement('span');
 	buttonUp.className = 'pad';
 	buttonUp.id = 'padUp';
-	buttonUp.addEventListener('mouseenter', moveUp);
-	buttonUp.addEventListener('mouseleave', function()
+	buttonUp.addEventListener('mousedown', moveUp);
+	buttonUp.addEventListener('mouseup', function()
 										{
 											bUp = false;
 											window.clearInterval(timerUp);
@@ -21,14 +21,14 @@ TactilePad.prototype.displayPad = function()
 	var buttonLeft = document.createElement('span');
 	buttonLeft.className = 'pad';
 	buttonLeft.id = 'padLeft';
-	buttonLeft.addEventListener('mouseenter', moveLeft);
-	buttonLeft.addEventListener('mouseleave', function() {bLeft = false; window.clearInterval(timerLeft);});
+	buttonLeft.addEventListener('mousedown', moveLeft);
+	buttonLeft.addEventListener('mouseup', function() {bLeft = false; window.clearInterval(timerLeft);});
 	
 	var buttonDown = document.createElement('span');
 	buttonDown.className = 'pad';
 	buttonDown.id = 'padDown';
-	buttonDown.addEventListener('mouseenter', moveDown);
-	buttonDown.addEventListener('mouseleave', function()
+	buttonDown.addEventListener('mousedown', moveDown);
+	buttonDown.addEventListener('mouseup', function()
 											{
 												bDown = false;
 												window.clearInterval(timerDown);
@@ -40,25 +40,25 @@ TactilePad.prototype.displayPad = function()
 	var buttonRight = document.createElement('span');
 	buttonRight.className = 'pad';
 	buttonRight.id = 'padRight';
-	buttonRight.addEventListener('mouseenter', moveRight);
-	buttonRight.addEventListener('mouseleave', function() {bRight = false; window.clearInterval(timerRight);});
+	buttonRight.addEventListener('mousedown', moveRight);
+	buttonRight.addEventListener('mouseup', function() {bRight = false; window.clearInterval(timerRight);});
 	
 	var shootButton = document.createElement('span');
 	shootButton.className = 'pad';
 	shootButton.id = 'shoot';
-	shootButton.addEventListener('mouseenter', function() {if (!bShoot) {bShoot = true; ship.shoot(); timerShoot = window.setInterval(shipShoot, 100, ship);}});
-	shootButton.addEventListener('mouseleave', function() {bShoot = false; window.clearInterval(timerShoot);});
+	shootButton.addEventListener('mousedown', function() {if (!bShoot) {bShoot = true; ship.shoot(); timerShoot = window.setInterval(shipShoot, 100, ship);}});
+	shootButton.addEventListener('mouseup', function() {bShoot = false; window.clearInterval(timerShoot);});
 	
 	var chargeButton = document.createElement('span');
 	chargeButton.className = 'pad';
 	chargeButton.id = 'charge';
-	chargeButton.addEventListener('mouseenter', function() {ship.prepareCharge();});
-	chargeButton.addEventListener('mouseleave', function() {ship.launchCharge();});
+	chargeButton.addEventListener('mousedown', function() {ship.prepareCharge();});
+	chargeButton.addEventListener('mouseup', function() {ship.launchCharge();});
 	
 	var throwButton = document.createElement('span');
 	throwButton.className = 'pad';
 	throwButton.id = 'throw';
-	throwButton.addEventListener('mouseenter', function() {ship.throwModule();});
+	throwButton.addEventListener('mousepress', function() {ship.throwModule();});
 	
 	var pauseButton = document.createElement('span');
 	pauseButton.className = 'pad';
