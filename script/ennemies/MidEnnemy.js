@@ -61,11 +61,15 @@ MidEnnemy.prototype.onDestroyed = function()
 {
 	this.fire(new Event('ondestroyed', this));
 	this.game.stats.killedMid++;
+	this.game.killCounter++;
 }
 
 MidEnnemy.prototype.onLaunch = function()
 {
 	this.fire(new Event('onlaunched', this));
+	this.game.nbEnnemySpawnedForThisWave++;
+	if (!this.game.ship.isDead)
+		this.game.stats.totalSpawnedMid++;
 }
 
 /* ----- Actions ----- */

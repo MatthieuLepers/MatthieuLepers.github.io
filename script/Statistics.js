@@ -40,6 +40,10 @@ function Statistics(game)
 	this.killedMid = 0;
 	this.killedCancer = 0;
 	this.killedPowArmor = 0;
+	this.totalSpawnedPataPata = 0;
+	this.totalSpawnedMid = 0;
+	this.totalSpawnedCancer = 0;
+	this.totalSpawnedPowArmor = 0;
 	
 	//Upgrades
 	this.spawnedUpgrade = 0;
@@ -58,12 +62,12 @@ function getMaxScore(waves)
 {
 	if (waves == 0)
 	{
-		return 935;
+		return 935 + 500;
 	}
 	else
 	{
 		var w = (waves * 5 > 30 ? 30 : waves * 5);
-		return ((w * 50) + (w * 100) - 35 + (w * 10) + (waves * 10)) + getMaxScore(waves - 1);
+		return ((w * 50) + (w * 100) - 35 + (w * 10) + (waves * 10)) + 500 + getMaxScore(waves - 1);
 	}
 }
 
@@ -135,10 +139,10 @@ Statistics.prototype.getJSON = function()
 	};
 	
 	var kills = {
-		patapata: this.killedPataPata,
-		mid: this.killedMid,
-		cancer: this.killedCancer,
-		powarmor: this.killedPowArmor
+		patapata: this.killedPataPata + "/" + this.totalSpawnedPataPata,
+		mid: this.killedMid + "/" + this.totalSpawnedMid,
+		cancer: this.killedCancer + "/" + this.totalSpawnedCancer,
+		powarmor: this.killedPowArmor + "/" + this.totalSpawnedPowArmor
 	};
 	
 	var bullets = {
@@ -262,10 +266,10 @@ Statistics.prototype.printStatistics = function()
 	
 	//Create Kills statistics
 	var killsStats = createCell('Kills statistics');
-	killsStats.appendChild(createCellSection(new Array('PataPata:',this.killedPataPata)));
-	killsStats.appendChild(createCellSection(new Array('Mid:',this.killedMid)));
-	killsStats.appendChild(createCellSection(new Array('Cancer:',this.killedCancer)));
-	killsStats.appendChild(createCellSection(new Array('PowArmor:',this.killedPowArmor)));
+	killsStats.appendChild(createCellSection(new Array('PataPata:',this.killedPataPata + "/" + this.totalSpawnedPataPata)));
+	killsStats.appendChild(createCellSection(new Array('Mid:',this.killedMid + "/" + this.totalSpawnedMid)));
+	killsStats.appendChild(createCellSection(new Array('Cancer:',this.killedCancer + "/" + this.totalSpawnedCancer)));
+	killsStats.appendChild(createCellSection(new Array('PowArmor:',this.killedPowArmor + "/" + this.totalSpawnedPowArmor)));
 	article.appendChild(killsStats);
 	
 	//Create Ship statistics
