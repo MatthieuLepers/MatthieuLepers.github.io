@@ -71,3 +71,4 @@ version 1.1.0 (beta)
 - [Added] World scoreboard with the top 30th score.
 - [Added][Experimental] Game pad for IPhones, Androids and Tablets.
 - [Added][Experimental] Androids, Iphones and Tablets compatibility.
+- [Added] Bonus score when you kill all ennemies in a wave.

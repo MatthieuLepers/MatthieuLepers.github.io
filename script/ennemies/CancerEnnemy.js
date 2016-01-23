@@ -57,11 +57,13 @@ CancerEnnemy.prototype.onDestroyed = function()
 {
 	this.fire(new Event('ondestroyed', this));
 	this.game.stats.killedCancer++;
+	this.game.killCounter++;
 }
 
 CancerEnnemy.prototype.onLaunch = function()
 {
 	this.fire(new Event('onlaunched', this));
+	this.game.nbEnnemySpawnedForThisWave++;
 }
 
 /* ----- Actions ----- */

@@ -58,12 +58,12 @@ function getMaxScore(waves)
 {
 	if (waves == 0)
 	{
-		return 935;
+		return 935 + 500;
 	}
 	else
 	{
 		var w = (waves * 5 > 30 ? 30 : waves * 5);
-		return ((w * 50) + (w * 100) - 35 + (w * 10) + (waves * 10)) + getMaxScore(waves - 1);
+		return ((w * 50) + (w * 100) - 35 + (w * 10) + (waves * 10)) + 500 + getMaxScore(waves - 1);
 	}
 }
 

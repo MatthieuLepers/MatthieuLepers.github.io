@@ -7,6 +7,10 @@ function Game()
 	this.scheduler = new Scheduler();
 	this.ship = new Ship(this);
 	this.score = 100;
+	
+	this.nbEnnemySpawnedForThisWave = 0;
+	this.killCounter = 0;
+	
 	this.pause = false;
 	
 	this.hasSpawn = false;
@@ -32,10 +36,37 @@ function Game()
 		g.printScore();
 	}
 	
+	var displayBonus = function()
+	{
+		var body = document.querySelectorAll('body')[0];
+		var timer;
+		
+		var bonus = document.createElement('span');
+		bonus.id = 'bonus';
+		bonus.textContent = 'Bonus wave clear: 500';
+		
+		body.appendChild(bonus);
+		
+		var removeBonus = function()
+		{
+			var b = document.getElementById('bonus');
+			b.parentNode.removeChild(b);
+		}
+		
+		timer = window.setTimeout(removeBonus, 2000);
+	}
+	
 	var newWave = function(g)
 	{
 		if (!g.ship.isDead && !g.pause)
 		{
+			if (g.killCounter == g.nbEnnemySpawnedForThisWave)
+			{
+				g.addPoints(500);
+				displayBonus();
+			}
+			g.killCounter = 0;
+			g.nbEnnemySpawnedForThisWave = 0;
 			if (g.maxEnnemyPerWave < 30)
 			{
 				g.maxEnnemyPerWave += 5;
