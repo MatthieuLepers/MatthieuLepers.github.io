@@ -65,6 +65,8 @@ POWArmorEnnemy.prototype.onLaunch = function()
 {
 	this.fire(new Event('onlaunched', this));
 	this.game.nbEnnemySpawnedForThisWave++;
+	if (!this.game.ship.isDead)
+		this.game.stats.totalSpawnedPowArmor++;
 }
 
 /* ----- Actions ----- */
