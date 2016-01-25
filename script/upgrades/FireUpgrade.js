@@ -72,6 +72,7 @@ FireUpgrade.prototype.launch = function(id)
 
 FireUpgrade.prototype.pickup = function()
 {
+	this.onPickup();
 	this.destroy();
 	var ship = this.powarmor.game.ship;
 	

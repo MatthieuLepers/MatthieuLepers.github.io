@@ -72,6 +72,7 @@ DnaUpgrade.prototype.launch = function(id)
 
 DnaUpgrade.prototype.pickup = function()
 {
+	this.onPickup();
 	this.destroy();
 	var ship = this.powarmor.game.ship;
 	

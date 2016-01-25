@@ -72,6 +72,7 @@ LaserUpgrade.prototype.launch = function(id)
 
 LaserUpgrade.prototype.pickup = function()
 {
+	this.onPickup();
 	this.destroy();
 	var ship = this.powarmor.game.ship;
 	
