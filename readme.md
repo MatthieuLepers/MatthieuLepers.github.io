@@ -1,6 +1,8 @@
 # **R-Type Web**
 ---
 
+# /!\ **Vérifier que votre navigateur supporte le JavaScript ECMA 6** /!\
+
 ## **Sommaire**
 - Préambule
 - Fonctionnalités
@@ -23,20 +25,20 @@ Les manches bonus en plus d'avoir la même capacité que les manches standards p
 ### Les améliorations
 Elles sont aux nombre de 6, voici leurs spécification plus en détail:
 
-- ![Dna Upgrade](http://aireayquaza.github.io/images/bonus/upgrade_dna.gif) Permet d'obtenir le module ainsi que d'obtenir l'arme ADN
-- ![Laser Upgrade](http://aireayquaza.github.io/images/bonus/upgrade_laser.gif) Permet d'obtenir le module ainsi que d'obtenir l'arme Laser
-- ![Fire upgrade](http://aireayquaza.github.io/images/bonus/upgrade_fire.gif) Permet d'obtenir le module ainsi que d'obtenir l'arme ADN
-- ![Speed Upgrade](http://aireayquaza.github.io/images/bonus/upgrade_speed.gif) Augmente la vitesse du joueur de 25% de sa valeur de base
-- ![Bit module Upgrade](http://aireayquaza.github.io/images/module/bit_module_top.gif) Ajoute un module 'Bit' au dessus et/ou en dessous du joueur
-- ![Rockets Upgrade](http://aireayquaza.github.io/images/bonus/upgrade_rockets.gif) Permet au joueur de tirer deux roquettes toutes les deux secondes
-- ![ForceField Upgrade](http://aireayquaza.github.io/images/bonus/upgrade_forcefield.gif) Augmente la vie du joueur de deux points, lui permettant de générer un champ de force pouvant absorber un projectile, ces améliorations sont cumulables
+- ![Dna Upgrade](http://aireayquaza.github.io/images/gui/icons/upgrade_dna.gif) Permet d'obtenir le module ainsi que d'obtenir l'arme ADN
+- ![Laser Upgrade](http://aireayquaza.github.io/images/gui/icons/upgrade_laser.gif) Permet d'obtenir le module ainsi que d'obtenir l'arme Laser
+- ![Fire upgrade](http://aireayquaza.github.io/images/gui/icons/upgrade_fire.gif) Permet d'obtenir le module ainsi que d'obtenir l'arme ADN
+- ![Speed Upgrade](http://aireayquaza.github.io/images/gui/icons/upgrade_speed.gif) Augmente la vitesse du joueur de 25% de sa valeur de base
+- ![Bit module Upgrade](http://aireayquaza.github.io/images/gui/icons/bit_module_top.gif) Ajoute un module 'Bit' au dessus et/ou en dessous du joueur
+- ![Rockets Upgrade](http://aireayquaza.github.io/images/gui/icons/upgrade_rockets.gif) Permet au joueur de tirer deux roquettes toutes les deux secondes
+- ![ForceField Upgrade](http://aireayquaza.github.io/images/gui/icons/upgrade_forcefield.gif) Augmente la vie du joueur de deux points, lui permettant de générer un champ de force pouvant absorber un projectile, ces améliorations sont cumulables
 
 ---
 
 ## **Les modes de jeu disponibles**
 #### Normal
 Permet de joué simplement à R-Type Web à un ou deux joueurs sur le même clavier.
-#### [WIP]Assisté
+#### Assisté
 Comme le mode normal mais ajoute une IA qui tirera sur les ennemies quand vous serez en fasse d'eux.
 #### 1 Joueur
 Permet de joué en solo.
@@ -53,11 +55,11 @@ Quand vous tirez, vos tirs doivent à chaque fois touché, dans le cas contraire
 
 ## **Les contrôles**
 #### Général
-- Echap : Mettre le jeu e pause
+- Echap : Mettre le jeu en pause
 - F5 : Recharger, remet le jeu à zéro pour un nouvel essai
 - Entré : Même effet que F5 mais quand Game Over
 - ↑ ↓ : Changer la lettre de la colonne (Enregistrement du score)
-- → : Changer de colonne (Enregistrement du score)
+- ← → : Changer de colonne (Enregistrement du score)
 
 #### Joueur 1
 - Z : Monter
@@ -89,21 +91,18 @@ Quand vous tirez, vos tirs doivent à chaque fois touché, dans le cas contraire
 - Le Konami code à un effet sur le jeu, il donne un essai supplémentaire à chaque joueur encore en vie.
 
 ## **Fonctionnalités à venir**
-- Possibilité d'enregistrer/consulter ces statistiques (1P et 2P)
-- Permettre de consulter le leaderboard (1P et 2P)
 - Un pad pour pouvoir jouer sur téléphone/tablette
 - Mode Tower Defense
 - Ajout d'un niveau contenant des murs dès la manche 10 (level design)
 - Ajout d'un boss final à la manche 25
-- Ajout de nouvelles mécaniques telle que le tir super-chargé
+- Ajout de nouvelles mécaniques telle que le tir super-chargé (R-Type II)
 - Permettre l'obtention d'un nouvel essai quand le joueur cumule 25 000 points
 - Ajouter d'autre type d’ennemies et projectiles
 - Ajouter de nouveaux succès
 - Transformer le mode deux joueurs pour qu'il utilise le module socket.io de Node.JS (Création et gestion de serveurs, retrait du mode 2 joueurs sur le même clavier (?), inclusion du mode 2 joueurs sur 2 ordinateurs séparés)
 
 ## **Installation**
-Tant que le projet est en JavaScript pur, vous n'aurez besoin que de télécharger le projet.
-Par contre quand les fonctionnalités d'enregistrement de score serons implémentées, il vous faudra installer WampServer afin de permettre à votre ordinateur d'interprété le langage PHP et avoir accès à MySQL.
+Actuellement les fonctionnalités d'enregistrement de score sont implémentées en PHP + MySQL, il vous faudra installer WampServer afin de permettre à votre ordinateur d'interprété le langage PHP et avoir accès à MySQL.
 Quand le projet passera sur Node.JS, il vous faudra installer ce dernier, ainsi le projet tournera **uniquement** sous Node.JS et MySQL.
 
 ## **Comment contribuer**
