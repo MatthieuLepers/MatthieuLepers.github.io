@@ -388,7 +388,7 @@ class Scoreboard
 		var xhr = new XMLHttpRequest();
 		var params = new FormData();
 		
-		xhr.open('POST', 'https://hackromproject.craym.eu/JSGames/ajax/save.php', true);
+		xhr.open('POST', 'https://hackromproject.craym.eu/JSGames/R-Type%20Web/ajax/save.php', true);
 		params.append('p_ip', p_ip);
 		params.append('p_p1Name', p_p1Name);
 		if (game.params.has('players') && game.params.get('players') == 2)
@@ -411,7 +411,7 @@ class Scoreboard
 	{
 		var xhr = new XMLHttpRequest();
 		
-		xhr.open('GET', 'https://hackromproject.craym.eu/JSGames/ajax/getBestScores.php', true)
+		xhr.open('GET', 'https://hackromproject.craym.eu/JSGames/R-Type%20Web/ajax/getBestScores.php', true)
 		
 		xhr.onload = function()
 		{
