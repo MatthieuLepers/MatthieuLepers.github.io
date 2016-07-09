@@ -32,7 +32,7 @@ class PlayerShip extends SpawnableEntity
 		this.charge = {
 			sprite: new Sprite(
 				this.sprite.id + '_charge',
-				'images/particles/gui/none.png',
+				'images/gui/none.png',
 				1,
 				1,
 				new Point(

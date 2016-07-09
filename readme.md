@@ -28,9 +28,9 @@ Elles sont aux nombre de 6, voici leurs spécification plus en détail:
 - ![Dna Upgrade](http://aireayquaza.github.io/images/gui/icons/upgrade_dna.gif) Permet d'obtenir le module ainsi que d'obtenir l'arme ADN
 - ![Laser Upgrade](http://aireayquaza.github.io/images/gui/icons/upgrade_laser.gif) Permet d'obtenir le module ainsi que d'obtenir l'arme Laser
 - ![Fire upgrade](http://aireayquaza.github.io/images/gui/icons/upgrade_fire.gif) Permet d'obtenir le module ainsi que d'obtenir l'arme Lance flamme
-- ![Speed Upgrade](http://aireayquaza.github.io/images/gui/icons/upgrade_speed.gif) Augmente la vitesse du joueur de 25% de sa valeur de base
-- ![Bit module Upgrade](http://aireayquaza.github.io/images/gui/icons/bit_module_top.gif) Ajoute un module 'Bit' au dessus et/ou en dessous du joueur
-- ![Rockets Upgrade](http://aireayquaza.github.io/images/gui/icons/upgrade_rockets.gif) Permet au joueur de tirer deux roquettes toutes les deux secondes
+- ![Speed Upgrade](http://aireayquaza.github.io/images/gui/icons/upgrade_speed.gif) Augmente la vitesse du joueur de 25% de sa valeur de base (cumulable 4 fois par joueur)
+- ![Bit module Upgrade](http://aireayquaza.github.io/images/gui/icons/bit_module_top.gif) Ajoute un module 'Bit' au dessus et/ou en dessous du joueur (cumulable 2 fois par joueur)
+- ![Rockets Upgrade](http://aireayquaza.github.io/images/gui/icons/upgrade_rockets.gif) Permet au joueur de tirer deux roquettes toutes les deux secondes (non cumulable)
 - ![ForceField Upgrade](http://aireayquaza.github.io/images/gui/icons/upgrade_forcefield.gif) Augmente la vie du joueur de deux points, lui permettant de générer un champ de force pouvant absorber un projectile, ces améliorations sont cumulables
 
 ---
