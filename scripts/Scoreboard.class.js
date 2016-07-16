@@ -416,8 +416,8 @@ class Scoreboard
 		xhr.onload = function()
 		{
 			var object = JSON.parse(this.responseText);
-			var span1P = '<span class="best1P">No score</span">';
-			var span2P = span1P;
+			var span1P = '<span class="best1P">No score</span>';
+			var span2P = '<span class="best1P">No score</span>';
 			
 			if (object['p1']['name'] != '')
 				span1P = '<span class="best1P"><a href="stats.php?id=' + object['p1']['id'] + '&mode=1P">' + object['p1']['name'] + '</a> - ' + object['p1']['score'] + ' point' + (object['p1']['score'] > 1 ? 's' : '') + '</span>';
