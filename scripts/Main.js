@@ -310,7 +310,7 @@ function changeLetterVertically(direction)
 		
 		if ((direction == 'up' ? (alpha.indexOf(selected.textContent) + 1) < alpha.length : (alpha.indexOf(selected.textContent) - 1) >= 0))
 			letter = alpha[alpha.indexOf(selected.textContent) + (sign * 1) % alpha.length];
-		console.log(letter);
+		
 		selected.textContent = letter;
 	}
 }
