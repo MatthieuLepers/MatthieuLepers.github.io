@@ -420,9 +420,9 @@ class Scoreboard
 			var span2P = '<span class="best2P">No score</span>';
 			
 			if (object['p1']['name'] != '')
-				span1P = '<span class="best1P"><a href="stats.php?id=' + object['p1']['id'] + '&mode=1P">' + object['p1']['name'] + '</a> - ' + object['p1']['score'] + ' point' + (object['p1']['score'] > 1 ? 's' : '') + '</span>';
+				span1P = '<span class="best1P"><a href="http://hackromproject.craym.eu/JSGames/R-Type%20Web/stats.php?id=' + object['p1']['id'] + '&mode=1P">' + object['p1']['name'] + '</a> - ' + object['p1']['score'] + ' point' + (object['p1']['score'] > 1 ? 's' : '') + '</span>';
 			if (object['p2']['name_1p'] != '' && object['p2']['name_2p'] != '')
-				span2P = '<span class="best2P"><a href="stats.php?id=' + object['p2']['id'] + '&mode=2P">' + object['p2']['name_1p'] + ' & ' + object['p2']['name_2p'] + '</a> - ' + (parseInt(object['p2']['score_1p']) + parseInt(object['p2']['score_2p'])) + ' point' + ((parseInt(object['p2']['score_1p']) + parseInt(object['p2']['score_2p'])) > 1 ? 's' : '') + '</span>';
+				span2P = '<span class="best2P"><a href="http://hackromproject.craym.eu/JSGames/R-Type%20Web/stats.php?id=' + object['p2']['id'] + '&mode=2P">' + object['p2']['name_1p'] + ' & ' + object['p2']['name_2p'] + '</a> - ' + (parseInt(object['p2']['score_1p']) + parseInt(object['p2']['score_2p'])) + ' point' + ((parseInt(object['p2']['score_1p']) + parseInt(object['p2']['score_2p'])) > 1 ? 's' : '') + '</span>';
 			
 			document.getElementById('scoreboard').innerHTML += '<div id="bestScores">' + span1P + span2P + '</div>';
 		};
