@@ -23,7 +23,7 @@ class Rocket extends PlayerProjectile
 			),
 			6.5,
 			1,
-			Explosion.rocketExplosion(),
+			ExplosionEntity.rocketExplosion(),
 			shooter,
 			2
 		);
