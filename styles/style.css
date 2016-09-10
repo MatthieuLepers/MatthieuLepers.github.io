@@ -446,3 +446,10 @@ span.red {
 span.green {
 	color: green;
 }
+
+div#scoreboard a.sources {
+	position: absolute;
+	right: 55px;
+	top: 14px;
+	color: cyan;
+}
