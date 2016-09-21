@@ -416,6 +416,7 @@ class Scoreboard
 		xhr.onload = function()
 		{
 			var object = JSON.parse(this.responseText);
+			var divBestScore = document.createElement('div');
 			var span1P = '<span class="best1P">No score</span>';
 			var span2P = '<span class="best2P">No score</span>';
 			
@@ -424,7 +425,10 @@ class Scoreboard
 			if (object['p2']['name_1p'] != '' && object['p2']['name_2p'] != '')
 				span2P = '<span class="best2P"><a href="http://hackromproject.craym.eu/JSGames/R-Type%20Web/stats.php?id=' + object['p2']['id'] + '&mode=2P">' + object['p2']['name_1p'] + ' & ' + object['p2']['name_2p'] + '</a> - ' + (parseInt(object['p2']['score_1p']) + parseInt(object['p2']['score_2p'])) + ' point' + ((parseInt(object['p2']['score_1p']) + parseInt(object['p2']['score_2p'])) > 1 ? 's' : '') + '</span>';
 			
-			document.getElementById('scoreboard').innerHTML += '<div id="bestScores">' + span1P + span2P + '</div>';
+			divBestScore.id = 'bestScores';
+			bestScores.innerHTML = span1P + span2P;
+			
+			document.getElementById('scoreboard').appendChild(divBestScore);
 		};
 		
 		xhr.send(null);
