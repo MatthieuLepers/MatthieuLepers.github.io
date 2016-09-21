@@ -41,6 +41,19 @@ Node.prototype.remove = function()
 		console.warn('This node cannot be removed because he have no parent node');
 }
 
+/**
+ * Get the object number of attributes
+ */
+Object.prototype.getOjectSize = function()
+{
+	var size = 0;
+	
+	for (var attribute in this)
+		size++;
+	
+	return size;
+}
+
 /* ----- Konami Code ----- */
 /**
  * Check if pressed keys are a valid konami code

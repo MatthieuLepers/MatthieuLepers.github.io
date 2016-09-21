@@ -269,11 +269,16 @@ class Statistics
 		//Create achievements unlocked statistics
 		var achievementsMap = game.scores[player].achievements;
 		
-		if (achievementsMap != null && achievementsMap.size > 0)
+		if (achievementsMap != null && achievementsMap.getOjectSize() > 0)
 		{
+			var max = achievementsMap.getOjectSize() - 1;
 			var unlocked = this.createCell('Achievements unlocked');
-			for (var achievement of achievementsMap.keys())
-				unlocked.appendChild(this.createCellSection(new Array(achievement, achievementsMap.get(achievement))));
+			for (var achievement in achievementsMap)
+				if (max > 0)
+				{
+					unlocked.appendChild(this.createCellSection(new Array(achievement, achievementsMap[achievement])));
+					max--;
+				}
 			
 			article.appendChild(unlocked);
 		}
