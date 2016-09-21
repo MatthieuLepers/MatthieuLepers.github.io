@@ -2,6 +2,7 @@
 var canvas;
 var context;
 var player1, player2;
+var registeredProjectiles = new Map();
 var skins = {blue: 0, darkblue: 15, green: 30, purple: 45, red: 60, yellow: 75};
 //Controls
 var timerUp		= {player1: null, player2: null};
@@ -310,7 +311,7 @@ function changeLetterVertically(direction)
 		
 		if ((direction == 'up' ? (alpha.indexOf(selected.textContent) + 1) < alpha.length : (alpha.indexOf(selected.textContent) - 1) >= 0))
 			letter = alpha[alpha.indexOf(selected.textContent) + (sign * 1) % alpha.length];
-		
+		console.log(letter);
 		selected.textContent = letter;
 	}
 }

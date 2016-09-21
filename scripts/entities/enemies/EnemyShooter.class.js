@@ -39,7 +39,7 @@ class EnemyShooter extends Enemy
 		{
 			this.onShoot();
 			var projectile = this.getProjectile();
-			this.registeredProjectiles.set(projectile.sprite.id, projectile);
+			registeredProjectiles.set(projectile.sprite.id, projectile);
 			
 			this.cooldown = true;
 			window.setTimeout(this.clearCooldown, 900 + Math.random() * 400, this);

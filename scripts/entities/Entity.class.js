@@ -17,9 +17,6 @@ class Entity extends EventsEmitter
 		this.resistance = 1;
 		this.isInvulnerable = true;
 		this.isDead = false;
-		
-		//Sub-entities
-		this.registeredProjectiles = new Map();
 	}
 	
 	/* ----- Getters ----- */
@@ -125,7 +122,10 @@ class Entity extends EventsEmitter
 		var scheduler = game.scheduler;
 		
 		if (entity.isOutOfScreen())
+		{
 			entity.removeEntity();
+			registeredProjectiles.set(entity.sprite.id, null);
+		}
 		else
 		{
 			var module1 = game.getModule(1) || null;

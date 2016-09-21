@@ -73,7 +73,7 @@ class BugEnemy extends EnemyShooter
 	 */
 	getProjectile()
 	{
-		return new PlasmaBall(this.sprite.id + '_plasma_ball' + this.registeredProjectiles.size, this, this.target);
+		return new PlasmaBall(this.sprite.id + '_plasma_ball' + registeredProjectiles.size, this, this.target);
 	}
 	
 	/* ----- Animations ----- */
