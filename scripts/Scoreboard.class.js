@@ -426,7 +426,7 @@ class Scoreboard
 				span2P = '<span class="best2P"><a href="http://hackromproject.craym.eu/JSGames/R-Type%20Web/stats.php?id=' + object['p2']['id'] + '&mode=2P">' + object['p2']['name_1p'] + ' & ' + object['p2']['name_2p'] + '</a> - ' + (parseInt(object['p2']['score_1p']) + parseInt(object['p2']['score_2p'])) + ' point' + ((parseInt(object['p2']['score_1p']) + parseInt(object['p2']['score_2p'])) > 1 ? 's' : '') + '</span>';
 			
 			divBestScore.id = 'bestScores';
-			bestScores.innerHTML = span1P + span2P;
+			divBestScore.innerHTML = span1P + span2P;
 			
 			document.getElementById('scoreboard').appendChild(divBestScore);
 		};
