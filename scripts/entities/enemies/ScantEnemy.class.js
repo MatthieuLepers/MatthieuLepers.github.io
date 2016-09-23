@@ -30,7 +30,7 @@ class ScantEnemy extends EnemyShooter
 		this.state = 'up';
 		this.findTarget();
 		
-		game.statistics.totalSpawnedRobot++;
+		game.statistics.totalSpawnedScant++;
 	}
 	
 	/* ----- Actions ----- */
@@ -46,10 +46,10 @@ class ScantEnemy extends EnemyShooter
 		{
 			//Player bullets
 			if (damager.shooter)
-				game.statistics.killedRobot[damager.shooter.sprite.id]++;
+				game.statistics.killedScant[damager.shooter.sprite.id]++;
 			//Module if attached to a player
 			else if (damager.owner)
-				game.statistics.killedRobot[damager.owner.sprite.id]++;
+				game.statistics.killedScant[damager.owner.sprite.id]++;
 		}
 		else
 			new Sound('sounds/sound_forcefield_hits.ogg', true, false);
@@ -77,7 +77,7 @@ class ScantEnemy extends EnemyShooter
 	shoot()
 	{
 		this.onShoot();
-		var projectile = new RobotChargedBullet(this.sprite.id + registeredProjectiles.size, this);
+		var projectile = new ScantChargedBullet.class(this.sprite.id + registeredProjectiles.size, this);
 		registeredProjectiles.set(projectile.sprite.id, projectile);
 		this.cooldown = true;
 		window.setTimeout(this.clearCooldown, 1000, this);
