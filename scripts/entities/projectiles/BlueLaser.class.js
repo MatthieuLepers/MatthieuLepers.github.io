@@ -62,7 +62,7 @@ class BlueLaser extends PlayerProjectile
 			'images/spritesheets/projectiles/blue_laser.png',
 			(this.shooter.module.tier == 1 ? [64, 48, 32, 16] : [128, 112, 96, 80, 64, 48, 32, 16]),
 			3,
-			BlueLaser.getPosition(shooter, angle),
+			BlueLaser.getPosition(this.shooter, angle),
 			6,
 			(this.shooter.module.tier == 1 ? [0, 0, 0, 0] : [0, 0, 0, 0, 0, 0, 0, 0]),
 			false,
