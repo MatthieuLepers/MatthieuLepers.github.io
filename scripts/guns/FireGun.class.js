@@ -41,10 +41,10 @@ class FireGun extends Gun
 	{
 		if (!module.cooldown)
 		{
-			var fireball = new Fireball('fireballup' + module.owner.registeredProjectiles.size, module.owner, 'up');
-			module.owner.registeredProjectiles.set(fireball.sprite.id, fireball);
-			var fireball1 = new Fireball('fireballdown' + module.owner.registeredProjectiles.size, module.owner, 'down');
-			module.owner.registeredProjectiles.set(fireball1.sprite.id, fireball1);
+			var fireball = new Fireball('fireballup' + registeredProjectiles.size, module.owner, 'up');
+			registeredProjectiles.set(fireball.sprite.id, fireball);
+			var fireball1 = new Fireball('fireballdown' + registeredProjectiles.size, module.owner, 'down');
+			registeredProjectiles.set(fireball1.sprite.id, fireball1);
 			window.setTimeout(this.fireLaunch,  70, module.owner, 'up');
 			window.setTimeout(this.fireLaunch,  70, module.owner, 'down');
 			window.setTimeout(this.fireLaunch, 140, module.owner, 'up');
@@ -66,10 +66,10 @@ class FireGun extends Gun
 	{
 		if (!module.cooldown)
 		{
-			var fireball = new Fireball('fireballup' + module.owner.registeredProjectiles.size, module.owner, 'up');
-			module.owner.registeredProjectiles.set(fireball.sprite.id, fireball);
-			var fireball1 = new Fireball('fireballdown' + module.owner.registeredProjectiles.size, module.owner, 'down');
-			module.owner.registeredProjectiles.set(fireball1.sprite.id, fireball1);
+			var fireball = new Fireball('fireballup' + registeredProjectiles.size, module.owner, 'up');
+			registeredProjectiles.set(fireball.sprite.id, fireball);
+			var fireball1 = new Fireball('fireballdown' + registeredProjectiles.size, module.owner, 'down');
+			registeredProjectiles.set(fireball1.sprite.id, fireball1);
 			window.setTimeout(this.fireLaunch,  70, module.owner, 'up');
 			window.setTimeout(this.fireLaunch,  70, module.owner, 'down');
 			window.setTimeout(this.fireLaunch, 140, module.owner, 'up');
