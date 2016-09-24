@@ -487,6 +487,11 @@ function init()
 	
 	//Start game
 	game.start();
+	
+	var agent = navigator.userAgent.toLowerCase();
+	
+	if (agent.contains('android') || agent.contains('iphone') || agent.contains('tablet'))
+		new TactilePad();
 }
 
 window.addEventListener('load', init);

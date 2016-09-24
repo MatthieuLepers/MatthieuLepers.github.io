@@ -448,8 +448,70 @@ span.green {
 }
 
 div#scoreboard a.sources {
+    position: absolute;
+    right: 55px;
+    top: 14px;
+    color: cyan;
+}
+
+/* Tactile Pad */
+.pad {
+	display: block;
+	border: 1px solid grey;
+	border-radius: 50px;
+	opacity: 0.50;
 	position: absolute;
-	right: 55px;
-	top: 14px;
-	color: cyan;
+	width: 64px;
+	height: 64px;
+	z-index: 99;
+}
+
+span#padUp {
+	left: 96px;
+	bottom: 228px;
+	background-image: url('../images/gui/up.png');
+}
+
+span#padLeft {
+	left: 32px;
+	bottom: 160px;
+	background-image: url('../images/gui/left.png');
+}
+
+span#padDown {
+	left: 96px;
+	bottom: 96px;
+	background-image: url('../images/gui/down.png');
+}
+
+span#padRight {
+	left: 160px;
+	bottom: 160px;
+	background-image: url('../images/gui/right.png');
+}
+
+span#padShoot {
+	right: 32px;
+	bottom: 96px;
+	background-image: url('../images/gui/bullet.png');
+}
+
+span#padCharge {
+	right: 118px;
+	bottom: 96px;
+	background-image: url('../images/gui/charged_beam.png');
+}
+
+span#padCallRelease {
+	right: 32px;
+	bottom: 180px;
+	background-image: url('../images/gui/module.png');
+}
+
+span#padPause {
+	right: 32px;
+	top: 32px;
+	width: 48px;
+	height: 48px;
+	background-image: url('../images/gui/pause.png');
 }
