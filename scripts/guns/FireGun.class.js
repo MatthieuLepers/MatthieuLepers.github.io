@@ -93,7 +93,7 @@ class FireGun extends Gun
 	 */
 	fireLaunch(player, direction)
 	{
-		var fireball = new Fireball('fireball' + direction + player.registeredProjectiles.size, player, direction);
-		player.registeredProjectiles.set(fireball.sprite.id, fireball);
+		var fireball = new Fireball('fireball' + direction + registeredProjectiles.size, player, direction);
+		registeredProjectiles.set(fireball.sprite.id, fireball);
 	}
 }
