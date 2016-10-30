@@ -26,6 +26,7 @@ class Game extends EventsEmitter
 		//Entities
 		this.registeredEnemies = new Map();
 		this.registeredModules = new Map();
+		this.registeredProjectiles = new Map();
 		
 		this.scoreboard = null;
 		this.statistics = new Statistics();
@@ -127,6 +128,7 @@ class Game extends EventsEmitter
 	 */
 	start()
 	{
+		//Set game params
 		if (this.params.has('noBackground') && this.params.get('noBackground'))
 			document.getElementById('canvas').removeAttribute('id');
 		
@@ -162,9 +164,8 @@ class Game extends EventsEmitter
 			player2.sprite.position = new Point(5, 2 * (canvas.height / 3));
 		}
 		else if (player1 != null && !player2)
-		{
 			player1.sprite.position = new Point(5, canvas.height / 2);
-		}
+		
 		this.scoreboard.print();
 		window.setTimeout(function(game) {game.spawner.spawnWave();}, 5000, this);
 		
@@ -185,15 +186,51 @@ class Game extends EventsEmitter
 		this.addEventListener('onunregisterenemy', 	function() {this.rewardPlayers(); this.spawner.spawnWave();});
 		this.addEventListener('ongameover', function() {
 			this.isLost = true;
-			new Sound('sounds/sound_game_over.ogg', true, false);
-			document.getElementsByTagName('canvas')[0].removeAttribute('class');
-			this.muliplyEnemiesSpeed();
-			this.scoreboard.gameOver();
 			if (this.ambient != null)
 				this.ambient.audio.pause();
+			this.ambient = null;
+			
+			this.ambient = new Sound('sounds/sound_game_over.ogg', true, false);
+			document.getElementById('canvas').removeAttribute('class');
+			this.muliplyEnemiesSpeed();
+			this.scoreboard.gameOver();
 		});
 		
 		gameLoop();
+	}
+	
+	/**
+	 * Restart game
+	 */
+	restart()
+	{
+		this.scheduler.stop();
+		this.renderer.stop();
+		this.isLost = false;
+		this.isWin = false;
+		this.wave = 0;
+		this.spawner = null;
+		this.params = this.parseUrlParams();
+		this.players.clear();
+		this.registeredEnemies.clear();
+		this.registeredModules.clear();
+		this.registeredProjectiles.clear();
+		this.scoreboard = null;
+		this.statistics = new Statistics();
+		this.scores = {
+			player1: {score: 0, achievements: null}, 
+			player2: {score: 0, achievements: null}
+		};
+		
+		if (document.getElementById('gameOver') != null)
+			document.getElementById('gameOver').remove();
+		
+		if (this.ambient != null)
+				this.ambient.audio.pause();
+		this.ambient = null;
+		
+		document.getElementById('canvas').className = 'animate';
+		this.start();
 	}
 	
 	/* ----- Actions ----- */

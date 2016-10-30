@@ -130,7 +130,7 @@ class PowArmorEnemy extends Enemy
 	{
 		super.modifyPosition();
 		this.sprite.position.x -= this.speed;
-		this.sprite.position.y = this.staticTop + Math.sin(this.staticAng) * ((window.innerHeight / 2) - 50);
+		this.sprite.position.y = this.staticTop + Math.sin(this.staticAng) * ((canvas.height / 2) - 50);
 		this.staticAng += 0.01;
 	}
 }

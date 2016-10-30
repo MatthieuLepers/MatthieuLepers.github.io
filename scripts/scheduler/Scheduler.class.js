@@ -8,6 +8,7 @@ class Scheduler
 	{
 		this._timer = null;
 		this.speed = speed;
+		this._frame = 0;
 		this.tasks = new Map();
 		this.isPaused = false;
 		this.fps = 0;
@@ -38,6 +39,7 @@ class Scheduler
 	doStep()
 	{
 		this.fps++;
+		this._frame++;
 		if (!this.isPaused)
 			for (var key of this.tasks.keys())
 				this.tasks.get(key).doStep();
@@ -49,6 +51,19 @@ class Scheduler
 	start()
 	{
 		this._timer = window.setInterval(function(scheduler) {scheduler.doStep();}, this.speed, this);
+	}
+	
+	/**
+	 * Stop the scheduler
+	 */
+	stop()
+	{
+		window.clearInterval(this._timer);
+		this._timer = null;
+		this.tasks.clear();
+		this.isPaused = false;
+		this._frame = 0;
+		this.fps = 0;
 	}
 	
 	/**
@@ -65,6 +80,18 @@ class Scheduler
 	resume()
 	{
 		this.isPaused = false;
+	}
+	
+	/**
+	 * Restart the scheduler
+	 * @param speed : [Int][Optional] The new scheduler speed
+	 */
+	restart(speed)
+	{
+		window.clearInterval(this._timer);
+		var newSpeed = speed || 10;
+		this.speed = speed;
+		this.start();
 	}
 	
 	/**

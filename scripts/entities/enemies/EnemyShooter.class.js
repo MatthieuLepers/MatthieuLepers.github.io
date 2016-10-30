@@ -32,14 +32,11 @@ class EnemyShooter extends Enemy
 	 */
 	shoot()
 	{
-		var percent50Fps = (10 * game.scheduler.speed) / 2;
-		var fps = game.scheduler.fps;
-		
-		if (Math.random() * 100 > this.probaShoot && this.getBooleanToSatisfyToShoot() && !this.cooldown && fps >= percent50Fps)
+		if (Math.random() * 100 > this.probaShoot && this.getBooleanToSatisfyToShoot() && !this.cooldown)
 		{
 			this.onShoot();
 			var projectile = this.getProjectile();
-			registeredProjectiles.set(projectile.sprite.id, projectile);
+			game.registeredProjectiles.set(projectile.sprite.id, projectile);
 			
 			this.cooldown = true;
 			window.setTimeout(this.clearCooldown, 900 + Math.random() * 400, this);

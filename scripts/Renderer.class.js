@@ -5,7 +5,17 @@ class Renderer
 	 */
 	constructor()
 	{
+		this._timer = null;
 		this.sprites = new Map();
+	}
+	
+	/**
+	 * Stop rendering
+	 */
+	stop()
+	{
+		this.sprites.clear();
+		window.cancelAnimationFrame(this._timer);
 	}
 	
 	/**

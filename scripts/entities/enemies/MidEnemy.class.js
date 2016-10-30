@@ -63,7 +63,7 @@ class MidEnemy extends EnemyShooter
 	 */
 	getProjectile()
 	{
-		return new RedLaser(this.sprite.id + '_midshot' + registeredProjectiles.size, this);
+		return new RedLaser(this.sprite.id + '_midshot' + game.registeredProjectiles.size, this);
 	}
 	
 	/* ----- Animations ----- */

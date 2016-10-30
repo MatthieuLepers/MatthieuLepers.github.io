@@ -251,7 +251,7 @@ class PlayerShip extends SpawnableEntity
 			this.onShoot();
 			game.renderer.deleteSpritePattern(new RegExp(this.sprite.id + '_charge[0-9]+'));
 			this.charge.sprite = new Sprite(
-				this.sprite.id + '_shoot_bullet' + registeredProjectiles.size,
+				this.sprite.id + '_shoot_bullet' + game.registeredProjectiles.size,
 				'images/spritesheets/particles/bullet_emit.png',
 				14,
 				12,
@@ -265,8 +265,8 @@ class PlayerShip extends SpawnableEntity
 				true
 			);
 			
-			var bullet = new Bullet(this.sprite.id + 'shot' + registeredProjectiles.size, this);
-			registeredProjectiles.set(bullet.sprite.id, bullet);
+			var bullet = new Bullet(this.sprite.id + 'shot' + game.registeredProjectiles.size, this);
+			game.registeredProjectiles.set(bullet.sprite.id, bullet);
 			
 			if (this.module != null && this.module.gun != null && !this.module.cooldown)
 				this.module.gun.shoot(this.module);
@@ -288,7 +288,7 @@ class PlayerShip extends SpawnableEntity
 		var powerBar = document.getElementById('powerBar' + player.sprite.id).children[0];
 		
 		if (powerBar && parseInt(powerBar.style.width) < 300)
-			powerBar.style.width = parseFloat(powerBar.style.width) + 1.5 + 'px';
+			powerBar.style.width = parseFloat(powerBar.style.width) + ((1 / (game.scheduler.speed / 5)) * 4) + 'px';
 	}
 	
 	/**
@@ -301,7 +301,7 @@ class PlayerShip extends SpawnableEntity
 			this.onCharge();
 			this.charge.timer = window.setInterval(this.chargeBeamBar, 6, this);
 			this.charge.sprite = new Sprite(
-				this.sprite.id + '_charge' + registeredProjectiles.size,
+				this.sprite.id + '_charge' + game.registeredProjectiles.size,
 				'images/spritesheets/particles/charge_bullet.png',
 				32,
 				32,
@@ -332,7 +332,7 @@ class PlayerShip extends SpawnableEntity
 			game.renderer.deleteSprite(this.charge.sprite.id);
 			window.clearInterval(this.charge.timer);
 			this.charge.sprite = new Sprite(
-				this.sprite.id + '_charge' + registeredProjectiles.size,
+				this.sprite.id + '_charge' + game.registeredProjectiles.size,
 				'images/spritesheets/particles/charge_shoot.png',
 				36,
 				20,
@@ -356,9 +356,9 @@ class PlayerShip extends SpawnableEntity
 		this.onShootCharged();
 		if (!this.isDead && !game.scheduler.isPaused && percent >= 15)
 		{
-			var bullet = new ChargedBullet('shipchargedshot' + registeredProjectiles.size, this, percent);
+			var bullet = new ChargedBullet('shipchargedshot' + game.registeredProjectiles.size, this, percent);
 			this.charge.sprite.position.x += (this.module && this.module.slot == 'front' ? (this.module.tier < 2 ? 16 : 31) : 0);
-			registeredProjectiles.set(bullet.sprite.id, bullet);
+			game.registeredProjectiles.set(bullet.sprite.id, bullet);
 		}
 	}
 	

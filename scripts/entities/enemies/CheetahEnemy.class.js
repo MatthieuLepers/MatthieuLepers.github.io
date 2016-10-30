@@ -45,7 +45,7 @@ class CheetahEnemy extends EnemyShooter
 	 */
 	getProjectile()
 	{
-		var projectile = new RedLaser(this.sprite.id + '_cheetahshot' + registeredProjectiles.size, this);
+		var projectile = new RedLaser(this.sprite.id + '_cheetahshot' + game.registeredProjectiles.size, this);
 		projectile.sprite.position.y = (this.sprite.position.y + 2) + (Math.random() * (this.sprite.height - 2));
 		
 		return projectile;

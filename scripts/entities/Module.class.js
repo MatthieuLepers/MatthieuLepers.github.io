@@ -282,32 +282,32 @@ class Module extends SpawnableEntity
 		switch (this.tier)
 		{
 			case 0:
-				var bullet = new ModuleAngleBullet('moduleshot' + registeredProjectiles.size, this, 0);
-				registeredProjectiles.set(bullet.sprite.id, bullet);
+				var bullet = new ModuleAngleBullet('moduleshot' + game.registeredProjectiles.size, this, 0);
+				game.registeredProjectiles.set(bullet.sprite.id, bullet);
 				break;
 			case 1:
-				var angleBullet1 = new ModuleAngleBullet('moduleshot' + registeredProjectiles.size, this, 20);
+				var angleBullet1 = new ModuleAngleBullet('moduleshot' + game.registeredProjectiles.size, this, 20);
 				angleBullet1.sprite.position.y += 6;
-				registeredProjectiles.set(angleBullet1.sprite.id, angleBullet1);
-				var angleBullet2 = new ModuleAngleBullet('moduleshot' + registeredProjectiles.size, this, -20);
+				game.registeredProjectiles.set(angleBullet1.sprite.id, angleBullet1);
+				var angleBullet2 = new ModuleAngleBullet('moduleshot' + game.registeredProjectiles.size, this, -20);
 				angleBullet2.sprite.position.y -= 6;
-				registeredProjectiles.set(angleBullet2.sprite.id, angleBullet2);
+				game.registeredProjectiles.set(angleBullet2.sprite.id, angleBullet2);
 				break;
 			case 2:
-				var angleBullet1 = new ModuleAngleBullet('moduleshot' + registeredProjectiles.size, this, 20);
+				var angleBullet1 = new ModuleAngleBullet('moduleshot' + game.registeredProjectiles.size, this, 20);
 				angleBullet1.sprite.position.y += 6;
-				registeredProjectiles.set(angleBullet1.sprite.id, angleBullet1);
-				var angleBullet2 = new ModuleAngleBullet('moduleshot' + registeredProjectiles.size, this, -20);
+				game.registeredProjectiles.set(angleBullet1.sprite.id, angleBullet1);
+				var angleBullet2 = new ModuleAngleBullet('moduleshot' + game.registeredProjectiles.size, this, -20);
 				angleBullet2.sprite.position.y -= 6;
-				registeredProjectiles.set(angleBullet2.sprite.id, angleBullet2);
-				var angleBullet3 = new ModuleAngleBullet('moduleshot' + registeredProjectiles.size, this, 90);
+				game.registeredProjectiles.set(angleBullet2.sprite.id, angleBullet2);
+				var angleBullet3 = new ModuleAngleBullet('moduleshot' + game.registeredProjectiles.size, this, 90);
 				angleBullet3.sprite.position.x -= 15;
 				angleBullet3.sprite.position.y += 6;
-				registeredProjectiles.set(angleBullet3.sprite.id, angleBullet3);
-				var angleBullet4 = new ModuleAngleBullet('moduleshot' + registeredProjectiles.size, this, -90);
+				game.registeredProjectiles.set(angleBullet3.sprite.id, angleBullet3);
+				var angleBullet4 = new ModuleAngleBullet('moduleshot' + game.registeredProjectiles.size, this, -90);
 				angleBullet4.sprite.position.x -= 15;
 				angleBullet4.sprite.position.y -= 6;
-				registeredProjectiles.set(angleBullet4.sprite.id, angleBullet4);
+				game.registeredProjectiles.set(angleBullet4.sprite.id, angleBullet4);
 				break;
 		}
 	}

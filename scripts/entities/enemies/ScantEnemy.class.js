@@ -77,8 +77,8 @@ class ScantEnemy extends EnemyShooter
 	shoot()
 	{
 		this.onShoot();
-		var projectile = new ScantChargedBullet(this.sprite.id + registeredProjectiles.size, this);
-		registeredProjectiles.set(projectile.sprite.id, projectile);
+		var projectile = new ScantChargedBullet(this.sprite.id + game.registeredProjectiles.size, this);
+		game.registeredProjectiles.set(projectile.sprite.id, projectile);
 		this.cooldown = true;
 		window.setTimeout(this.clearCooldown, 1000, this);
 		game.scheduler.removeTask(this.sprite.id);

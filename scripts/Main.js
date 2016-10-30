@@ -2,7 +2,6 @@
 var canvas;
 var context;
 var player1, player2;
-var registeredProjectiles = new Map();
 var skins = {blue: 0, darkblue: 15, green: 30, purple: 45, red: 60, yellow: 75};
 //Controls
 var timerUp		= {player1: null, player2: null};
@@ -400,6 +399,9 @@ function keysDownEvent(e)
 		case 'F5':
 			location.reload();
 			break;
+		case 'F6':
+			game.restart();
+			break;
 	}
 }
 
@@ -459,7 +461,7 @@ function keysUpEvent(e)
  */
 function gameLoop()
 {
-	window.requestAnimationFrame(gameLoop);
+	game.renderer._timer = window.requestAnimationFrame(gameLoop);
 	
 	game.renderer.renderAll();
 }

@@ -177,7 +177,8 @@ class Scoreboard
 			'			<dd>M</dd>		<dt>Charge</dt>' +
 			'			<dd>Ctrl</dd>	<dt>Throw module</dt>' +
 			'			<dd>Echap</dd>	<dt>Pause</dt>' +
-			'			<dd>F5</dd>		<dt>Retry</dt>' +
+			'			<dd>F5</dd>		<dt>Reload</dt>' +
+			'			<dd>F6</dd>		<dt>Retry</dt>' +
 			'			<dd>↑ ↓</dd>	<dt>Change letter</dt>' +
 			'			<dd>→</dd>		<dt>Change slot</dt>' +
 			'		</dl>' +
@@ -366,7 +367,7 @@ class Scoreboard
 		document.getElementById('background').appendChild(div);
 		
 		document.getElementById('save').addEventListener('click', Scoreboard.save);
-		document.getElementById('retry').addEventListener('click', 		function() {location.reload();});
+		document.getElementById('retry').addEventListener('click', 		function() {game.restart();});
 		document.getElementById('openStats').addEventListener('click', 	function() {game.statistics.print();});
 		window.addEventListener('keyup', function(e) {
 			if (e.keyCode == 13)

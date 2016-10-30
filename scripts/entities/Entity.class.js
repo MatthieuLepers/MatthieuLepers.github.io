@@ -124,7 +124,7 @@ class Entity extends EventsEmitter
 		if (entity.isOutOfScreen())
 		{
 			entity.removeEntity();
-			registeredProjectiles.set(entity.sprite.id, null);
+			game.registeredProjectiles.set(entity.sprite.id, null);
 		}
 		else
 		{

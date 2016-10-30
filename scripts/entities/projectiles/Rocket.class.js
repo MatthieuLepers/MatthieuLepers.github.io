@@ -60,10 +60,10 @@ class Rocket extends PlayerProjectile
 		}
 		else if (!game.scheduler.isPaused && player.hasRockets)
 		{
-			var rocketUp = new Rocket('rocketUp_' + player.sprite.id + '_' + registeredProjectiles.size, player, 'up');
-			registeredProjectiles.set(rocketUp.sprite.id, rocketUp);
-			var rocketDown = new Rocket('rocketDown_' + player.sprite.id + '_' + (registeredProjectiles.size), player, 'down');
-			registeredProjectiles.set(rocketDown.sprite.id, rocketDown);
+			var rocketUp = new Rocket('rocketUp_' + player.sprite.id + '_' + game.registeredProjectiles.size, player, 'up');
+			game.registeredProjectiles.set(rocketUp.sprite.id, rocketUp);
+			var rocketDown = new Rocket('rocketDown_' + player.sprite.id + '_' + (game.registeredProjectiles.size), player, 'down');
+			game.registeredProjectiles.set(rocketDown.sprite.id, rocketDown);
 			new Sound('sounds/sound_rocket_launch.ogg', true, false);
 		}
 	}
