@@ -85,7 +85,7 @@ class Statistics
 		{
 			moduleJSON = {
 				tier: module.tier,
-				gun: module.gun.type,
+				gun: (module.gun != null ? module.gun.type : 'None'),
 				absorbed: this.moduleAbsorbedShot[module.sprite.id],
 				bullets: {
 					shots: this.moduleShots[module.sprite.id],
