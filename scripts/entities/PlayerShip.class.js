@@ -27,6 +27,7 @@ class PlayerShip extends SpawnableEntity
 		this.triesLeft = 3;					// Used for get how many respawn left
 		this.isInvulnerable = false;		// Used for respawning
 		this.canMove = false;				// Used for starting animation
+		this.isCharging = false;			// Used when player is charging a shot
 		
 		//Charged beam
 		this.charge = {
@@ -73,8 +74,8 @@ class PlayerShip extends SpawnableEntity
 			this.shootAudio = new Sound('sounds/sound_' + sound, true, false);
 		});
 		this.addEventListener('onshootcharged', function() {new Sound('sounds/sound_player_shoot_charged.ogg', true, false);});
-		this.addEventListener('oncharge', 		function() {this.charge.audio = new Sound('sounds/sound_player_charge.ogg', true, false);});
-		this.addEventListener('onchargeover', 	function() {this.charge.audio.pause();});
+		this.addEventListener('oncharge', 		function() {this.isCharging = true; this.charge.audio = new Sound('sounds/sound_player_charge.ogg', true, false);});
+		this.addEventListener('onchargeover', 	function() {this.isCharging = false; this.charge.audio.pause();});
 		this.addEventListener('ondestroyed', 	function() {if (this.charge.audio != null)
 			this.charge.audio.pause();
 			document.getElementById('powerBar' + this.sprite.id).children[0].style.width = '0px';
@@ -287,7 +288,7 @@ class PlayerShip extends SpawnableEntity
 	{
 		var powerBar = document.getElementById('powerBar' + player.sprite.id).children[0];
 		
-		if (powerBar && parseInt(powerBar.style.width) < 300)
+		if (!game.scheduler.isPaused && powerBar && parseInt(powerBar.style.width) < 300)
 			powerBar.style.width = parseFloat(powerBar.style.width) + ((1 / (game.scheduler.speed / 5)) * 4) + 'px';
 	}
 	
@@ -370,7 +371,8 @@ class PlayerShip extends SpawnableEntity
 	{
 		this.onDestroyed();
 		game.renderer.deleteSpritePattern(new RegExp(this.sprite.id + '_charge[0-9]+'));
-		game.renderer.replaceSprite(new Sprite(
+		game.renderer.replaceSprite(
+			new Sprite(
 				this.sprite.id,
 				'images/spritesheets/particles/explosion_player.png',
 				32,

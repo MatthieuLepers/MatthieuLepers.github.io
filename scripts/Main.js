@@ -215,7 +215,13 @@ function togglePause()
 	if (game.scheduler.isPaused)
 		game.scheduler.resume();
 	else
-		game.scheduler.pause();
+		if (player1 != null && !player1.isCharging)
+			if (player2 != null && !player2.isCharging)
+				game.scheduler.pause();
+			else
+				game.scheduler.pause();
+		else if (player2 != null && !player2.isCharging)
+			game.scheduler.pause();
 }
 
 /**
