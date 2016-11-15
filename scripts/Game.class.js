@@ -204,6 +204,7 @@ class Game extends EventsEmitter
 	 */
 	restart()
 	{
+		konamiCodeExecuted = false;
 		this.scheduler.stop();
 		this.renderer.stop();
 		this.isLost = false;
