@@ -41,10 +41,10 @@ class FireGun extends Gun
 	{
 		if (!module.cooldown)
 		{
-			var fireball = new Fireball('fireballup' + registeredProjectiles.size, module.owner, 'up');
-			registeredProjectiles.set(fireball.sprite.id, fireball);
-			var fireball1 = new Fireball('fireballdown' + registeredProjectiles.size, module.owner, 'down');
-			registeredProjectiles.set(fireball1.sprite.id, fireball1);
+			var fireball = new Fireball('fireballup' + game.registeredProjectiles.size, module.owner, 'up');
+			game.registeredProjectiles.set(fireball.sprite.id, fireball);
+			var fireball1 = new Fireball('fireballdown' + game.registeredProjectiles.size, module.owner, 'down');
+			game.registeredProjectiles.set(fireball1.sprite.id, fireball1);
 			window.setTimeout(this.fireLaunch,  70, module.owner, 'up');
 			window.setTimeout(this.fireLaunch,  70, module.owner, 'down');
 			window.setTimeout(this.fireLaunch, 140, module.owner, 'up');
@@ -66,10 +66,10 @@ class FireGun extends Gun
 	{
 		if (!module.cooldown)
 		{
-			var fireball = new Fireball('fireballup' + registeredProjectiles.size, module.owner, 'up');
-			registeredProjectiles.set(fireball.sprite.id, fireball);
-			var fireball1 = new Fireball('fireballdown' + registeredProjectiles.size, module.owner, 'down');
-			registeredProjectiles.set(fireball1.sprite.id, fireball1);
+			var fireball = new Fireball('fireballup' + game.registeredProjectiles.size, module.owner, 'up');
+			game.registeredProjectiles.set(fireball.sprite.id, fireball);
+			var fireball1 = new Fireball('fireballdown' + game.registeredProjectiles.size, module.owner, 'down');
+			game.registeredProjectiles.set(fireball1.sprite.id, fireball1);
 			window.setTimeout(this.fireLaunch,  70, module.owner, 'up');
 			window.setTimeout(this.fireLaunch,  70, module.owner, 'down');
 			window.setTimeout(this.fireLaunch, 140, module.owner, 'up');
@@ -93,7 +93,7 @@ class FireGun extends Gun
 	 */
 	fireLaunch(player, direction)
 	{
-		var fireball = new Fireball('fireball' + direction + registeredProjectiles.size, player, direction);
-		registeredProjectiles.set(fireball.sprite.id, fireball);
+		var fireball = new Fireball('fireball' + direction + game.registeredProjectiles.size, player, direction);
+		game.registeredProjectiles.set(fireball.sprite.id, fireball);
 	}
 }
