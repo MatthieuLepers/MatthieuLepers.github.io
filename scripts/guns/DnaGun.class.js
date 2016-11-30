@@ -42,10 +42,10 @@ class DnaGun extends Gun
 	{
 		if (!module.cooldown)
 		{
-			var DNARed = new DnaBullet(module.owner.sprite.id + 'dnashot' + registeredProjectiles.size, 'red', module, module);
-			registeredProjectiles.set(DNARed.sprite.id, DNARed);
-			var DNABlue = new DnaBullet(module.owner.sprite.id + 'dnashot' + registeredProjectiles.size, 'blue', module, module);
-			registeredProjectiles.set(DNABlue.sprite.id, DNABlue);
+			var DNARed = new DnaBullet(module.owner.sprite.id + 'dnashot' + game.registeredProjectiles.size, 'red', module, module);
+			game.registeredProjectiles.set(DNARed.sprite.id, DNARed);
+			var DNABlue = new DnaBullet(module.owner.sprite.id + 'dnashot' + game.registeredProjectiles.size, 'blue', module, module);
+			game.registeredProjectiles.set(DNABlue.sprite.id, DNABlue);
 			
 			game.statistics.dnaBulletShots += 2;
 			module.cooldown = true;
@@ -62,8 +62,8 @@ class DnaGun extends Gun
 	{
 		if (!module.cooldown)
 		{
-			var dnaBeam = new DnaBeam(module.owner.sprite.id + 'DnaBeam' + registeredProjectiles.size, module.owner);
-			registeredProjectiles.set(dnaBeam.sprite.id, dnaBeam);
+			var dnaBeam = new DnaBeam(module.owner.sprite.id + 'DnaBeam' + game.registeredProjectiles.size, module.owner);
+			game.registeredProjectiles.set(dnaBeam.sprite.id, dnaBeam);
 			
 			module.cooldown = true;
 			window.setTimeout(module.clearCooldown, 420, module);
@@ -82,15 +82,15 @@ class DnaGun extends Gun
 		
 		if (bitModuleTop != null && module != null && module.tier >= 1)
 		{
-			var DNARed = new DnaBullet(module.owner.sprite.id + 'dnashot' + registeredProjectiles.size, 'red', module, bitModuleTop);
+			var DNARed = new DnaBullet(module.owner.sprite.id + 'dnashot' + game.registeredProjectiles.size, 'red', module, bitModuleTop);
 			game.statistics.bitModuleShots[module.owner.sprite.id]++;
-			registeredProjectiles.set(DNARed.sprite.id, DNARed);
+			game.registeredProjectiles.set(DNARed.sprite.id, DNARed);
 		}
 		if (bitModuleBottom != null && module != null && module.tier >= 1)
 		{
-			var DNABlue = new DnaBullet(module.owner.sprite.id + 'dnashot' + registeredProjectiles.size, 'blue', module, bitModuleBottom);
+			var DNABlue = new DnaBullet(module.owner.sprite.id + 'dnashot' + game.registeredProjectiles.size, 'blue', module, bitModuleBottom);
 			game.statistics.bitModuleShots[module.owner.sprite.id]++;
-			registeredProjectiles.set(DNABlue.sprite.id, DNABlue);
+			game.registeredProjectiles.set(DNABlue.sprite.id, DNABlue);
 		}
 	}
 }
