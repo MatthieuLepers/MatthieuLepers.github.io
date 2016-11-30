@@ -41,12 +41,12 @@ class LaserGun extends Gun
 	{
 		if (!module.cooldown)
 		{
-			var bluelaser45 = new BlueLaser('shipbluelaser45' + registeredProjectiles.size, module.owner, 45, 1);
-			registeredProjectiles.set(bluelaser45.sprite.id, bluelaser45);
-			var bluelaser0 = new BlueLaser('shipbluelaser0' + registeredProjectiles.size, module.owner, 0, 1);
-			registeredProjectiles.set(bluelaser0.sprite.id, bluelaser0);
-			var bluelaser_45 = new BlueLaser('shipbluelaser_45' + registeredProjectiles.size, module.owner, -45, 1);
-			registeredProjectiles.set(bluelaser_45.sprite.id, bluelaser_45);
+			var bluelaser45 = new BlueLaser('shipbluelaser45' + game.registeredProjectiles.size, module.owner, 45, 1);
+			game.registeredProjectiles.set(bluelaser45.sprite.id, bluelaser45);
+			var bluelaser0 = new BlueLaser('shipbluelaser0' + game.registeredProjectiles.size, module.owner, 0, 1);
+			game.registeredProjectiles.set(bluelaser0.sprite.id, bluelaser0);
+			var bluelaser_45 = new BlueLaser('shipbluelaser_45' + game.registeredProjectiles.size, module.owner, -45, 1);
+			game.registeredProjectiles.set(bluelaser_45.sprite.id, bluelaser_45);
 			
 			module.cooldown = true;
 			window.setTimeout(module.clearCooldown, (module.tier == 1 ? 1000 : 850), module);
