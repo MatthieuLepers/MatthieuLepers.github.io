@@ -15,6 +15,8 @@ class Hitbox
 		this.cTopRight = new Point(this.origin.x + this.width, this.origin.y);
 		this.cBottomLeft = new Point(this.origin.x, this.origin.y + this.height);
 		this.cBottomRight = new Point(this.origin.x + this.width, this.origin.y + this.height);
+		
+		this.hitPart = null;
 	}
 	
 	/* ----- Booleans ----- */
@@ -34,11 +36,22 @@ class Hitbox
 		var g = otherHitbox.cBottomRight;
 		var h = otherHitbox.cBottomLeft;
 		
-		var bA = (a.x >= e.x && a.x <= f.x && a.y >= e.y && a.y <= h.y);
-		var bB = (b.x >= e.x && b.x <= f.x && b.y >= e.y && b.y <= h.y);
-		var bC = (c.x >= e.x && c.x <= f.x && c.y >= e.y && c.y <= h.y);
-		var bD = (d.x >= e.x && d.x <= f.x && d.y >= e.y && d.y <= h.y);
+		//Vars format : (This_Hitbox_Side) HittedBy (Enemy_Hitbox_Side)
+		var bRightHittedByLeft = (e.y <= c.y && h.y >= b.y);
+		var bLeftHittedByRight = (f.y <= d.y && g.y >= a.y);
+		var bBottomHittedByTop = (f.x >= d.x && e.x <= c.x);
+		var bTopHittedByBottom = (g.x >= a.x && h.x <= b.x);
 		
-		return (bA || bB || bC || bD);
+		if (this.hitPart == null)
+			if (bRightHittedByLeft)
+				this.hitPart = 'right';
+			else if (bLeftHittedByRight)
+				this.hitPart = 'left';
+			else if (bBottomHittedByTop)
+				this.hitPart = 'bottom';
+			else if (bTopHittedByBottom)
+				this.hitPart = 'top';
+		
+		return (bRightHittedByLeft || bLeftHittedByRight) && (bBottomHittedByTop || bTopHittedByBottom);
 	}
 }
