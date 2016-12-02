@@ -25,8 +25,10 @@ class Hitbox
 	 * @param otherHitbox : [Hitbox] The other collision box
 	 * @return true if this is hovering the other box, false else
 	 */
-	isHovering(otherHitbox)
+	isHovering(otherHitbox, checkSquareHitbox)
 	{
+		var check = checkSquareHitbox || false;
+		
 		var a = this.cTopLeft;
 		var b = this.cTopRight;
 		var c = this.cBottomRight;
@@ -37,21 +39,65 @@ class Hitbox
 		var h = otherHitbox.cBottomLeft;
 		
 		//Vars format : (This_Hitbox_Side) HittedBy (Enemy_Hitbox_Side)
-		var bRightHittedByLeft = (e.y <= c.y && h.y >= b.y);
-		var bLeftHittedByRight = (f.y <= d.y && g.y >= a.y);
+		var bRightHittedByLeft = (h.y >= b.y && e.y <= c.y);
+		var bLeftHittedByRight = (g.y >= a.y && f.y <= d.y);
 		var bBottomHittedByTop = (f.x >= d.x && e.x <= c.x);
 		var bTopHittedByBottom = (g.x >= a.x && h.x <= b.x);
 		
-		if (this.hitPart == null)
-			if (bRightHittedByLeft)
-				this.hitPart = 'right';
-			else if (bLeftHittedByRight)
-				this.hitPart = 'left';
-			else if (bBottomHittedByTop)
-				this.hitPart = 'bottom';
-			else if (bTopHittedByBottom)
-				this.hitPart = 'top';
+		if (check && this.hitPart == null)
+		{
+			var ab = new Point(a.x + this.width / 2, a.y);
+			var ad = new Point(a.x, this.height / 2);
+			
+			var hitboxTopLeft = new Hitbox({position: a, width: this.width / 2, height: this.height / 2});
+			var hitboxTopRight = new Hitbox({position: ab, width: this.width / 2, height: this.height / 2});
+			var hitboxBottomLeft = new Hitbox({position: ad, width: this.width / 2, height: this.height / 2});
+			
+			if (hitboxTopLeft.isHovering(otherHitbox))
+				this.hitPart = 'top left';
+			else if (hitboxTopRight.isHovering(otherHitbox))
+				this.hitPart = 'top right';
+			else if (hitboxBottomLeft.isHovering(otherHitbox))
+				this.hitPart = 'bottom left';
+			else
+				this.hitPart = 'bottom right';
+		}
 		
 		return (bRightHittedByLeft || bLeftHittedByRight) && (bBottomHittedByTop || bTopHittedByBottom);
+	}
+	
+	/* ----- Debug ----- */
+	/**
+	 * /!\ THIS IS A DEBUG METHOD, USE IT OLY FOR DEBUGING HITBOXES /!\
+	 * Stop the game and draw to the canvas the hitbox of the hitten player
+	 */
+	debugDraw()
+	{
+		game.renderer.stop();
+		game.scheduler.pause();
+		
+		var a = this.cTopLeft;
+		var b = this.cTopRight;
+		var c = this.cBottomRight;
+		var d = this.cBottomLeft;
+		
+		var ab = new Point((a.x + b.x) / 2, a.y);
+		var ad = new Point(a.x, (a.y + d.y) / 2);
+		var bc = new Point(b.x, (b.y + c.y) / 2);
+		var dc = new Point((d.x + c.x) / 2, d.y);
+		
+		context.beginPath();
+		context.strokeStyle = 'black';
+		context.rect(a.x, a.y, this.width, this.height);
+		context.stroke();
+		
+		context.fillStyle = 'magenta';
+		context.fillRect(a.x + this.width / 2, a.y + this.height / 2, this.width / 2, this.height / 2);
+		context.fillStyle = 'blue';
+		context.fillRect(a.x, a.y, this.width / 2, this.height / 2);
+		context.fillStyle = 'red';
+		context.fillRect(a.x + this.width / 2, a.y, this.width / 2, this.height / 2);
+		context.fillStyle = 'green';
+		context.fillRect(a.x, a.y + this.height / 2, this.width / 2, this.height / 2);
 	}
 }

@@ -12,6 +12,7 @@ class Statistics
 		this.chargedShots		= {player1: 0, player2: 0};//Done
 		this.chargedShotHits	= {player1: 0, player2: 0};//Done
 		this.chargedShotFails	= {player1: 0, player2: 0};//Done
+		this.isAI				= {player1: (game.params.has('ia') && game.params.get('ia') == 'player1'), player2: (game.params.has('ia') && game.params.get('ia') == 'player2')};//Done
 		
 		//Gun Stats
 		this.dnaBulletShots		= {player1: 0, player2: 0};//Done
@@ -193,7 +194,8 @@ class Statistics
 					assisted: game.params.get('assist'),
 					twoPlayers: game.params.get('players') == 2,
 					wave: game.wave,
-					maxScore: this.getMaxScore(game.wave)
+					maxScore: this.getMaxScore(game.wave),
+					isAI: this.isAI
 				},
 				maxSpawned: {
 					PataPata: this.totalSpawnedPataPata,

@@ -29,7 +29,7 @@ class Game extends EventsEmitter
 		this.registeredProjectiles = new Map();
 		
 		this.scoreboard = null;
-		this.statistics = new Statistics();
+		this.statistics = null;
 	}
 	
 	/* ----- Getters ----- */
@@ -58,6 +58,7 @@ class Game extends EventsEmitter
 		if (ignore != 'players' && this.params.has('players') && this.params.get('players') == 2)	url += '&players=2';
 		if (ignore != 'noSounds' && this.params.has('noSounds') && this.params.get('noSounds'))	url += '&noSounds=true';
 		if (ignore != 'noBackground' && this.params.has('noBackground') && this.params.get('noBackground'))	url += '&noBackground=true';
+		if (ignore != 'ia' && this.params.has('ia')) url += '&ia=' + this.params.get('ia');
 		
 		if (startSymbole)
 			return url.replace(/&(.+)/, '?$1');
@@ -75,15 +76,19 @@ class Game extends EventsEmitter
 		var skinRegexP2 = new RegExp(/.+skin_player2=(blue|darkblue|green|purple|red|yellow)(.+)?/);
 		var gameIdRegex = new RegExp(/.+gameId=([0-9]+)(.+)?/);
 		var playersRegex = new RegExp(/.+players=2(.+)?/);
+		var iaRegex = new RegExp(/.+ia=(player(1|2)|both)(.+)?/);
 		
 		params.set('drawFps', (document.URL.contains('drawFps=true')));
 		params.set('noSounds', (document.URL.contains('noSounds=true')));
 		params.set('noBackground', (document.URL.contains('noBackground=true')));
 		params.set('skin_player1', (skinRegexP1.test(document.URL) ? document.URL.replace(skinRegexP1, '$1') : 'blue'));
 		params.set('skin_player2', (skinRegexP2.test(document.URL) ? document.URL.replace(skinRegexP2, '$1') : 'blue'));
-		params.set('assist', document.URL.contains('assist=true'));
+		if (!iaRegex.test(document.URL))
+			params.set('assist', document.URL.contains('assist=true'));
 		params.set('players', (playersRegex.test(document.URL) ? 2 : 1));
 		params.set('ambient', (document.URL.contains('ambient=R-Type%20II') ? 'R-Type II' : (document.URL.contains('ambient=R-Type%20I') ? 'R-Type I' : '')));
+		if (iaRegex.test(document.URL) && !document.URL.contains('assist=true'))
+			params.set('ia', document.URL.replace(iaRegex, '$1'));
 		
 		return params;
 	}
@@ -122,6 +127,20 @@ class Game extends EventsEmitter
 			this.emit('onunregisterenemy', this);
 	}
 	
+	/* ----- Random ----- */
+	/**
+	 * Get a random skin
+	 * @param exclude : [String] The skin to exclude
+	 * @return : [String] The random skin
+	 */
+	randomSkin(exclude)
+	{
+		var skins = new Array('blue', 'darkblue', 'red', 'green', 'yellow', 'purple');
+		skins.splice(exclude, 1);
+		
+		return skins[Math.floor(Math.random() * skins.length)];
+	}
+	
 	/* ----- Actions ----- */
 	/**
 	 * Initialize and start the game
@@ -140,6 +159,7 @@ class Game extends EventsEmitter
 			}, (this.params.get('ambient') == 'R-Type I' ? 16662 : 5916), this);
 		}
 		
+		this.statistics = new Statistics();
 		this.scoreboard = new Scoreboard();
 		this.spawner = new EnemySpawner();
 		
@@ -148,14 +168,36 @@ class Game extends EventsEmitter
 		
 		if (this.params.get('players') == 2)
 		{
+			if (this.params.get('skin_player1') == this.params.get('skin_player2'))
+				this.params.set('skin_player2', this.randomSkin(this.params.get('skin_player1')));
+			
 			player2 = new PlayerShip(this);
 			this.players.set('player2', player2);
 		}
 		
-		if (this.params.has('assist') && this.params.get('assist'))
+		if (this.params.has('assist') && this.params.get('assist') && ! this.params.has('ia'))
 		{
-			new IA(player1);
-			if (player2 != null) new IA(player2);
+			new IA(player1, new Array(IA.SHOOT));
+			if (player2 != null) new IA(player2, new Array(IA.SHOOT));
+		}
+		
+		if (this.params.has('ia') && !this.params.has('assist'))
+		{
+			switch (this.params.get('ia'))
+			{
+				case 'player1':
+					if (player1 != null) new IA(player1, new Array(IA.DODGES, IA.FOCUS, IA.SHOOT));
+					break;
+				case 'player2':
+					if (player2 != null) new IA(player2, new Array(IA.DODGES, IA.FOCUS, IA.SHOOT));
+					break;
+				case 'both':
+					if (player1 != null) new IA(player1, new Array(IA.DODGES, IA.FOCUS, IA.SHOOT));
+					if (player2 != null) new IA(player2, new Array(IA.DODGES, IA.FOCUS, IA.SHOOT));
+					break;
+				default:
+					break;
+			}
 		}
 		
 		if (player1 != null && player2 != null)
@@ -217,7 +259,6 @@ class Game extends EventsEmitter
 		this.registeredModules.clear();
 		this.registeredProjectiles.clear();
 		this.scoreboard = null;
-		this.statistics = new Statistics();
 		this.scores = {
 			player1: {score: 0, achievements: null}, 
 			player2: {score: 0, achievements: null}

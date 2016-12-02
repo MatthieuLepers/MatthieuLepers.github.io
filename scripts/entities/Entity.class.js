@@ -17,6 +17,7 @@ class Entity extends EventsEmitter
 		this.resistance = 1;
 		this.isInvulnerable = true;
 		this.isDead = false;
+		this.tags = new Map();
 	}
 	
 	/* ----- Getters ----- */
@@ -39,6 +40,16 @@ class Entity extends EventsEmitter
 		var bX = this.sprite.position.x < -(this.sprite.width + 50) || this.sprite.position.x > canvas.width + this.sprite.width + 50;
 		var bY = this.sprite.position.y < -(this.sprite.height + 50) || this.sprite.position.y > canvas.height + this.sprite.height + 50;
 		return bX || bY;
+	}
+	
+	addTag(tagName)
+	{
+		this.tags.set(tagName, true);
+	}
+	
+	hasTag(tagName)
+	{
+		return this.tags.has(tagName);
 	}
 	
 	/* ----- Events ----- */

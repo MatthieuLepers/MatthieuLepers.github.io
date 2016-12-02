@@ -354,10 +354,10 @@ class Scoreboard
 		'	<h2> SAVE SCORE AS</h2>' +
 		'	<div id="selectName">' +
 		'		<div id="playersNames">' +
-		'			<span id="1" class="name selected">P</span>' +
-		'			<span id="2" class="name">L</span>' +
+		'			<span id="1" class="name selected">' + (game.params.has('ia') && game.params.get('ia') == 'player1' ? 'A' : 'P') + '</span>' +
+		'			<span id="2" class="name">' + (game.params.has('ia') && game.params.get('ia') == 'player1' ? 'I' : 'L') + '</span>' +
 		'			<span id="3" class="name">1</span>' +
-		(game.params.has('players') && game.params.get('players') == 2 ? '<span class="format">&</span><span id="4" class="name">P</span><span id="5" class="name">L</span><span id="6" class="name">2</span>' : '') +
+		(game.params.has('players') && game.params.get('players') == 2 ? '<span class="format">&</span><span id="4" class="name">' + (game.params.has('ia') && game.params.get('ia') == 'player2' ? 'A' : 'P') + '</span><span id="5" class="name">' + (game.params.has('ia') && game.params.get('ia') == 'player2' ? 'I' : 'L') + '</span><span id="6" class="name">2</span>' : '') +
 		'		</div>' +
 		'		<div id="savescores">' +
 		'			<button id="save">Save my score</button>' +
