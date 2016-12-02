@@ -90,19 +90,24 @@ Quand vous tirez, vos tirs doivent à chaque fois touché, dans le cas contraire
 - Quelques paramètres tel que la possibilité de jouer sans son et/ou sans le fond étoilé.
 - Le Konami code à un effet sur le jeu, il donne un essai supplémentaire à chaque joueur encore en vie.
 
+## **Fonctionnalités en bêta ou encore en développement**
+- [En bêta]Un pad pour pouvoir jouer sur téléphone/tablette
+- [WIP] Intelligence artificielle
+
 ## **Fonctionnalités à venir**
-- Un pad pour pouvoir jouer sur téléphone/tablette
 - Mode Tower Defense
 - Ajout d'un niveau contenant des murs dès la manche 10 (level design)
 - Ajout d'un boss final à la manche 25
 - Ajout de nouvelles mécaniques telle que le tir super-chargé (R-Type II)
 - Permettre l'obtention d'un nouvel essai quand le joueur cumule 25 000 points
+- Permettre, en mode 2 joueurs, de réanimé un joueur ne pouvant plus respawn lors de l'obtention d'un nouvel essai (25 000 points)
 - Ajouter d'autre type d’ennemies et projectiles
 - Ajouter de nouveaux succès
-- Transformer le mode deux joueurs pour qu'il utilise le module socket.io de Node.JS (Création et gestion de serveurs, retrait du mode 2 joueurs sur le même clavier (?), inclusion du mode 2 joueurs sur 2 ordinateurs séparés)
+- Ajouter une barre d'instabilité qui réalisera un spray de plus en plus imprécis des tirs du joueur quand celui-ci abuse de la touche de tir (Sera désactivable mais présent par défaut)
+- Permettre au deuxième joueur de jouer avec la sourie
 
 ## **Installation**
-Actuellement les fonctionnalités d'enregistrement de score sont implémentées en PHP + MySQL, il vous faudra installer WampServer afin de permettre à votre ordinateur d'interprété le langage PHP et avoir accès à MySQL.
+Actuellement les fonctionnalités d'enregistrement de score sont implémentées en PHP + MySQL, il vous faudra installer WampServer afin de permettre à votre ordinateur d'interpréter le langage PHP et avoir accès à MySQL.
 Quand le projet passera sur Node.JS, il vous faudra installer ce dernier, ainsi le projet tournera **uniquement** sous Node.JS et MySQL.
 
 ## **Comment contribuer**
@@ -114,3 +119,21 @@ Merci de respecté l'indentation et les conventions utilisé dans le code, en vo
 
 Au niveau des tests, merci de vérifier que votre contribution fonctionne avant de l'envoyer, ne sachant pas comment testé avec JavaScript, tout code non fonctionnel compromettra la relecture du code.
 
+## **Aparté sur l'IA actuelle**
+###Ce qu'elle peut faire
+- Esquiver les projectiles durant un certain temps
+- Tirer sur les ennemies
+- Prendre en chasse un ennemies et le détruire
+- Utiliser le tir chargé sur les Cheetahs
+
+###Ce qu'elle ne peut pas (encore) faire
+- Esquiver à tout les coups
+- Prévoir les trajectoires sinusoïdales des PataPatas
+- Utiliser le tir chargé de manière cohérente (multi-kills)
+- Prioriser les upgrades dropées et détruire les drones bonus
+- Appeler/Relâcher le module
+- Mettre le module à l'avant/arrière
+- Éviter les collisions avec les vaisseaux ennemies
+- Utiliser les bitmodules/module pour entré en collision avec les ennemies
+- Ignorer les Balles de Plasma qui arrive de l'avant lorsque le module est à l'avant et réciproquement à l'arrière
+- Utiliser correctement les Forcefields
