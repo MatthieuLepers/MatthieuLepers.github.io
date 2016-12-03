@@ -27,7 +27,7 @@ class RedLaser extends PiercingEnemyProjectile
 			shooter,
 			2
 		);
-		
+		this.sign = -1;
 		this.launch();
 	}
 	
@@ -39,6 +39,6 @@ class RedLaser extends PiercingEnemyProjectile
 	modifyPosition()
 	{
 		super.modifyPosition();
-		this.sprite.position.x -= this.speed;
+		this.sprite.position.x += this.sign * this.speed;
 	}
 }
