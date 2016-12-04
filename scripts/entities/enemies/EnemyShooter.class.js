@@ -15,6 +15,8 @@ class EnemyShooter extends Enemy
 		super(sprite, speed, lifePoints, explosion, resistance, points);
 		this.probaShoot = probaShoot;
 		this.cooldown = false;
+		this.cooldownTime = 900 + Math.random() * 400;
+		this.otherProjectiles = function(entity) {};
 	}
 	
 	/* ----- Events ----- */
@@ -38,8 +40,10 @@ class EnemyShooter extends Enemy
 			var projectile = this.getProjectile();
 			game.registeredProjectiles.set(projectile.sprite.id, projectile);
 			
+			this.otherProjectiles(this);
+			
 			this.cooldown = true;
-			window.setTimeout(this.clearCooldown, 900 + Math.random() * 400, this);
+			window.setTimeout(this.clearCooldown, this.cooldownTime, this);
 		}
 	}
 	
