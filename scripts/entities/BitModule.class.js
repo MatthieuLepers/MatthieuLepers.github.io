@@ -27,6 +27,7 @@ class BitModule extends SpawnableEntity
 		this.owner = owner;
 		this.slot = slot;
 		this.damages = 1;
+		this.cooldown = false;
 	}
 	
 	/* ----- Events ----- */
@@ -61,8 +62,12 @@ class BitModule extends SpawnableEntity
 		for (var key of game.registeredEnemies.keys())
 		{
 			var enemy = game.registeredEnemies.get(key);
-			if (enemy && enemy.sprite.id.contains('enemy') && !enemy.isDead && this.getHitbox().isHovering(enemy.getHitbox()))
+			if (enemy && enemy.sprite.id.contains('enemy') && !enemy.isDead && this.getHitbox().isHovering(enemy.getHitbox()) && !this.cooldown)
+			{
 				enemy.damage(this);
+				this.cooldown = true;
+				window.setTimeout(function(entity) {entity.cooldown = false;}, 800, this);
+			}
 		}
 	}
 	

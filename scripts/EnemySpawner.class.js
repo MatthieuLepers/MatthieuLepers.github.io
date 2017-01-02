@@ -23,29 +23,29 @@ class EnemySpawner
 		
 		game.scoreboard.print();
 		game.scheduler.addTask(new Task('aPowArmorSpawner', this.spawn, {
-				maxEnemies: game.players.size,
-				waveCond: game.wave > 0 && game.wave % 5 == 0,
+				maxEnemies: (game.wave == 24 ? game.players.size * 3 : game.players.size),
+				waveCond: (game.wave > 0 && game.wave % 5 == 0) || game.wave == 24,
 				enemyType: 'PowArmor',
 				clazz: PowArmorEnemy,
 				taskName: 'aPowArmorSpawner'
 		}));
 		game.scheduler.addTask(new Task('patapataSpawner', this.spawn, {
 				maxEnemies: (game.wave * 5 <= 30 ? game.wave * 5 : 30),
-				waveCond: game.wave < 50,
+				waveCond: game.wave <= 23,
 				enemyType: 'PataPata',
 				clazz: PataPataEnemy,
 				taskName: 'patapataSpawner'
 		}));
 		game.scheduler.addTask(new Task('midSpawner', this.spawn, {
 				maxEnemies: (game.wave * 5 <= 30 ? game.wave * 5 : 30),
-				waveCond: game.wave < 50,
+				waveCond: game.wave <= 23,
 				enemyType: 'Mid',
 				clazz: MidEnemy,
 				taskName: 'midSpawner'
 		}));
 		game.scheduler.addTask(new Task('cheetahSpawner', this.spawn, {
-				maxEnemies: 5,
-				waveCond: game.wave >= 0 && game.wave < 50 && game.wave % 5 == 0,
+				maxEnemies: (game.wave == 24 ? 10 : 5),
+				waveCond: (game.wave >= 0 && game.wave < 25 && game.wave % 5 == 0) || game.wave == 23 || game.wave == 24,
 				enemyType: 'Cheetah',
 				clazz: CheetahEnemy,
 				taskName: 'cheetahSpawner'
@@ -59,13 +59,12 @@ class EnemySpawner
 		}));
 		game.scheduler.addTask(new Task('scantSpawner', this.spawn, {
 				maxEnemies: 1,
-				waveCond: game.wave == 15,
+				waveCond: game.wave == 15 || game.wave == 23,
 				enemyType: 'Scant',
 				clazz: ScantEnemy,
 				taskName: 'scantSpawner'
 		}));
-		/*
-		game.scheduler.addTask(new Task('bugSpawner', this.spawn, {
+		/*game.scheduler.addTask(new Task('bugSpawner', this.spawn, {
 				maxEnemies: 15,
 				waveCond: game.wave >= 0,
 				enemyType: 'Bug',
@@ -74,11 +73,19 @@ class EnemySpawner
 				position: new Point(canvas.width, Math.random() * (canvas.height - 200)),
 				time: 200
 		}));*/
+		game.scheduler.addTask(new Task('compilerSpawner', function() {
+			if (game.wave == 25)
+			{
+				game.scheduler.removeTask('gameRoutine');
+				compiler = new CompilerBoss();
+				game.scheduler.removeTask('compilerSpawner');
+			}
+		}));
 	}
 	
 	/**
 	 * Spawn an enemy type
-	 * @param params 	: [Object] The object witch contains the following key:
+	 * @param params 	: [Object] The object witch contains the following keys:
 	 * 		maxEnemies 	: [Int] The maximum number of this enemy type witch can be display each wave
 	 *		waveCond	: [Boolean] The codition to spawn the enemy
 	 *		enemyType	: [String] The enemyType with caps
@@ -91,9 +98,10 @@ class EnemySpawner
 		var spawnPoint = params.position || null;
 		if (!game.isWin && !game.isLost && !game.scheduler.isPaused && params.waveCond && game.spawner['spawned' + params.enemyType] < params.maxEnemies)
 		{
-			var wait = (params.time || 1000) * game.spawner['spawned' + params.enemyType];
+			if (!game.spawner['cooldown' + params.enemyType])
+			{
+				var wait = params.time || 1000;
 			
-			window.setTimeout(function() {
 				var enemy = new params.clazz('enemy' + game.registeredEnemies.size);
 				if (spawnPoint != null)
 				{
@@ -102,9 +110,11 @@ class EnemySpawner
 					enemy.staticTop = spawnPoint.y;
 				}
 				game.registeredEnemies.set(enemy.sprite.id, enemy);
-			}, wait);
-			
-			game.spawner['spawned' + params.enemyType]++;
+				
+				game.spawner['spawned' + params.enemyType]++;
+				game.spawner['cooldown' + params.enemyType] = true;
+				window.setTimeout(function() {game.spawner['cooldown' + params.enemyType] = false;}, wait);
+			}
 		}
 		else
 			game.scheduler.removeTask(params.taskName);

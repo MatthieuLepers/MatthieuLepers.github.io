@@ -21,7 +21,7 @@ class CompilerTurret extends EnemyShooter
 			),
 			0,
 			0,
-			ExplosionEntity.noExplosion(),
+			ExplosionEntity.littleExplosion(),
 			0,
 			0,
 			95
@@ -38,6 +38,7 @@ class CompilerTurret extends EnemyShooter
 	/**
 	 * Get the boolean to satisfy when the enemy try to shoot
 	 */
+	//@Override
 	getBooleanToSatisfyToShoot()
 	{
 		if (this.partOfScreenForShooting.contains('left'))
@@ -52,6 +53,7 @@ class CompilerTurret extends EnemyShooter
 	/**
 	 * Get the projectile to shoot
 	 */
+	//@Override
 	getProjectile()
 	{
 		return new PlasmaBall(this.sprite.id + '_plasmaball' + game.registeredProjectiles.size, this, this.target);

@@ -48,7 +48,7 @@ class PlayerProjectile extends Projectile
 		for (var key of game.registeredEnemies.keys())
 		{
 			var enemy = game.registeredEnemies.get(key);
-			if (enemy != null && (enemy.sprite.id.contains('enemy') || enemy.sprite.id.contains('boss')) && !enemy.isDead && this.getHitbox().isHovering(enemy.getHitbox()))
+			if (enemy != null && enemy.sprite.id.contains('enemy') && !enemy.isDead && this.getHitbox().isHovering(enemy.getHitbox()))
 			{
 				this.modifyHits();
 				this.damage(enemy);

@@ -49,6 +49,7 @@ class Statistics
 		this.killedBold				= {player1: 0, player2: 0};//Done
 		this.killedScant			= {player1: 0, player2: 0};//Done
 		this.killedBug				= {player1: 0, player2: 0};//Done
+		this.killedCompiler			= {player1: 0, player2: 0};//Done
 		this.totalSpawnedPataPata	= 0;//Done
 		this.totalSpawnedMid		= 0;//Done
 		this.totalSpawnedCheetah	= 0;//Done
@@ -223,13 +224,9 @@ class Statistics
 	 */
 	getMaxScore(wave)
 	{
-		var tab = [100, 1350, 3350, 6100, 9600, 14800];
-		if (wave < 6)
-			return tab[wave];
-		else if (wave >= 6 && wave % 5 != 0)
-			return 14800 + ((wave - 5) * 5000);
-		else
-			return 14800 + ((wave - 5) * 5000) + (wave == 10 ? 2450 : (wave == 15 ? 4400 : 950));
+		var scores1P = new Array(100, 1350, 3350, 6100, 9600, 14800, 19800, 24800, 29800, 34800, 42250, 47250, 52250, 57250, 62250, 69200, 74200, 79200, 84200, 89200, 96150, 101150, 106150, 111900, 114500, 122000);
+		var scores2P = new Array(  0,    0,    0,    0,    0,   200,   200,   200,   200,   200,   400,   400,   400,   400,   400,   600,   600,   600,   600,   600,   800,    800,    800,    800,   1400,   1400);
+		return scores1P[wave] + (game.params.has('players') && game.params.get('players') == 2 ? scores2P[wave] : 0);
 	}
 	
 	/**

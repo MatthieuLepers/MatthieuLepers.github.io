@@ -9,8 +9,8 @@ class Game extends EventsEmitter
 		super();
 		this.players = new Map();
 		this.scores = {
-			player1: {score: 0, achievements: null}, 
-			player2: {score: 0, achievements: null}
+			player1: {score: 0, achievements: null, dieAtWave: null}, 
+			player2: {score: 0, achievements: null, dieAtWave: null}
 		}; //Defined after player death
 		this.gameSpeed = gameSpeed;
 		this.scheduler = new Scheduler(gameSpeed);
@@ -30,6 +30,15 @@ class Game extends EventsEmitter
 		
 		this.scoreboard = null;
 		this.statistics = null;
+		
+		this.addEventListener('onwin', function() {
+			this.isWin = true;
+			if (this.ambient != null)
+				this.ambient.audio.pause();
+			this.ambient = null;
+			new Sound('sounds/R-Type I/sound_boss_defeat.ogg', true, false, 1);
+			console.log('WIN !');
+		});
 	}
 	
 	/* ----- Getters ----- */
@@ -76,7 +85,7 @@ class Game extends EventsEmitter
 		var skinRegexP2 = new RegExp(/.+skin_player2=(blue|darkblue|green|purple|red|yellow)(.+)?/);
 		var gameIdRegex = new RegExp(/.+gameId=([0-9]+)(.+)?/);
 		var playersRegex = new RegExp(/.+players=2(.+)?/);
-		var iaRegex = new RegExp(/.+ia=(player(1|2)|both)(.+)?/);
+		var iaRegex = new RegExp(/.+ia=(player(1|2))(.+)?/);
 		
 		params.set('drawFps', (document.URL.contains('drawFps=true')));
 		params.set('noSounds', (document.URL.contains('noSounds=true')));
@@ -119,6 +128,14 @@ class Game extends EventsEmitter
 	}
 	
 	/**
+	 * Trigger an 'onwin' event
+	 */
+	onWin()
+	{
+		this.emit('onwin', this);
+	}
+	
+	/**
 	 * Trigger an 'onunregisterenemy' event
 	 */
 	onUnregisterEnemy()
@@ -153,10 +170,10 @@ class Game extends EventsEmitter
 		
 		if (this.params.has('ambient') && this.params.get('ambient') != '')
 		{
-			this.ambient = new Sound('sounds/' + this.params.get('ambient') + '/sound_stage_start.ogg', true, false);
-			window.setTimeout(function(game) {
-				game.ambient = new Sound('sounds/' + game.params.get('ambient') + '/sound_stage_loop.ogg', true, true);
-			}, (this.params.get('ambient') == 'R-Type I' ? 16662 : 5916), this);
+			this.ambient = new Sound('sounds/' + this.params.get('ambient') + '/sound_stage_start.ogg', true, false, 1);
+			window.setTimeout(function() {
+				game.ambient = new Sound('sounds/' + game.params.get('ambient') + '/sound_stage_loop.ogg', true, true, 1);
+			}, (this.params.get('ambient') == 'R-Type I' ? 16662 : 5916));
 		}
 		
 		this.statistics = new Statistics();
@@ -260,8 +277,8 @@ class Game extends EventsEmitter
 		this.registeredProjectiles.clear();
 		this.scoreboard = null;
 		this.scores = {
-			player1: {score: 0, achievements: null}, 
-			player2: {score: 0, achievements: null}
+			player1: {score: 0, achievements: null, dieAtWave: null}, 
+			player2: {score: 0, achievements: null, dieAtWave: null}
 		};
 		
 		if (document.getElementById('gameOver') != null)

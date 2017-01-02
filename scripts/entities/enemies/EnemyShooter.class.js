@@ -19,6 +19,16 @@ class EnemyShooter extends Enemy
 		this.otherProjectiles = function(entity) {};
 	}
 	
+	/**
+	 * Get the boolean to satisfy when the enemy try to shoot
+	 */
+	getBooleanToSatisfyToShoot() {return false;}
+	
+	/**
+	 * Get the projectile to shoot
+	 */
+	getProjectile() {return null;}
+	
 	/* ----- Events ----- */
 	/**
 	 * Trigger an 'onshoot' event
@@ -38,12 +48,15 @@ class EnemyShooter extends Enemy
 		{
 			this.onShoot();
 			var projectile = this.getProjectile();
-			game.registeredProjectiles.set(projectile.sprite.id, projectile);
-			
-			this.otherProjectiles(this);
-			
-			this.cooldown = true;
-			window.setTimeout(this.clearCooldown, this.cooldownTime, this);
+			if (projectile != null)
+			{
+				game.registeredProjectiles.set(projectile.sprite.id, projectile);
+				
+				this.otherProjectiles(this);
+				
+				this.cooldown = true;
+				window.setTimeout(this.clearCooldown, this.cooldownTime, this);
+			}
 		}
 	}
 	

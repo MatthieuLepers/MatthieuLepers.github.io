@@ -30,8 +30,8 @@ class CompilerPlasmaBall extends EnemyProjectileAbsorbable
 		);
 		this.target = target;
 		this.sign = (this.target.sprite.position.x - this.sprite.position.x > 0 ? 1 : -1);
-		this.x = 0.0;
-		this.staticTop = Math.random() * 4 + 4;
+		this.randomAdd = Math.floor(Math.random() * 2);
+		this.x = 2 + this.randomAdd;
 	}
 	
 	/* ----- Animations ----- */
@@ -40,10 +40,10 @@ class CompilerPlasmaBall extends EnemyProjectileAbsorbable
 	 */
 	modifyPosition()
 	{
-		//Find better function
 		super.modifyPosition();
+		
 		this.sprite.position.x += this.sign * this.speed;
-		this.sprite.position.y -= (-Math.pow(this.x, 2) / (Math.random() * 100 + 5) + this.staticTop) / 4;
+		this.sprite.position.y += ((Math.pow(this.x, 2)) / (Math.floor(Math.random() * 8) + 8)) - (2 + this.randomAdd);
 		this.x -= 0.1;
 	}
 }

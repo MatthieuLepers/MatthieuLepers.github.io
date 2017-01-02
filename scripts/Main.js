@@ -1,7 +1,7 @@
 //Globals
 var canvas;
 var context;
-var player1, player2;
+var player1, player2, compiler = null;
 var skins = {blue: 0, darkblue: 15, green: 30, purple: 45, red: 60, yellow: 75};
 //Controls
 var timerUp		= {player1: null, player2: null};

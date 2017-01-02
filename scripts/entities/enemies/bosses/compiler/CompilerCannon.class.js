@@ -21,7 +21,7 @@ class CompilerCannon extends EnemyShooter
 			),
 			0,
 			0,
-			ExplosionEntity.noExplosion(),
+			ExplosionEntity.bigExplosion(),
 			0,
 			0,
 			95
@@ -44,8 +44,8 @@ class CompilerCannon extends EnemyShooter
 	 */
 	getBooleanToSatisfyToShoot()
 	{
-		return false;
-		//return (player1 != null && !player1.isDead && player1.sprite.position.y + player1.sprite.height >= this.sprite.position.y - 200 && player1.sprite.position.y + player1.sprite.height <= this.sprite.position.y) || (player2 != null && !player2.isDead && player2.sprite.position.y + player2.sprite.height >= this.sprite.position.y - 200 && player2.sprite.position.y + player2.sprite.height <= this.sprite.position.y);
+		return (player1 != null && !player1.isDead && player1.sprite.position.y + player1.sprite.height >= this.sprite.position.y - 200 && player1.sprite.position.y + player1.sprite.height <= this.sprite.position.y && player1.sprite.position.x + player1.sprite.width >= this.sprite.position.x - 100 && player1.sprite.position.x <= this.sprite.position.x + this.sprite.width + 100) || 
+		(player2 != null && !player2.isDead && player2.sprite.position.y + player2.sprite.height >= this.sprite.position.y - 200 && player2.sprite.position.y + player2.sprite.height <= this.sprite.position.y && player2.sprite.position.x + player2.sprite.width >= this.sprite.position.x - 100 && player2.sprite.position.x <= this.sprite.position.x + this.sprite.width + 100);
 	}
 	
 	/**

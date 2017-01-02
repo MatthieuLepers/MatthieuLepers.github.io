@@ -10,7 +10,7 @@ class ScantChargedBullet extends PiercingEnemyProjectile
 		super(
 			new Sprite(
 				id,
-				'images/spritesheets/projectiles/robot_shot.png',
+				'images/spritesheets/projectiles/scant_shot.png',
 				63,
 				16,
 				new Point(

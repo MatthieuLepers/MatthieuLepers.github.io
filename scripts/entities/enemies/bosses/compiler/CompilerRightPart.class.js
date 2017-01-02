@@ -1,4 +1,4 @@
-class CompilerRightPart extends EnemyShooter
+class CompilerRightPart extends CompilerPart
 {
 	/**
 	 * Create the Top part of the Compiler Boss
@@ -7,28 +7,35 @@ class CompilerRightPart extends EnemyShooter
 	{
 		super(
 			new Sprite(
-				'part3_boss_compiler',
+				'part3_boss_compiler_enemy',
 				'images/spritesheets/enemies/bosses/compiler_right_part.png',
 				96,
 				80,
 				new Point(
-					canvas.width / 2 + 81,
+					canvas.width + 81,
 					canvas.height / 2 - 8
 				),
 				6,
 				[0, 1, 2, 3, 2, 1, 0],
 				true
-			),
-			0,
-			400,
-			ExplosionEntity.bigExplosion(),
-			10,
-			2500,
-			90
+			)
 		);
-		this.cooldownTime = 400;
 		
-		this.attachedEntities = new Map();
+		this.addEventListener('oncanmove', function() {
+			this.animate();
+		});
+		this.addEventListener('onready', function() {
+			compiler.incrementReady();
+		});
+	}
+	
+	/* ----- Events ----- */
+	/**
+	 * Trigger an 'oncanmove' event
+	 */
+	onCanMove()
+	{
+		this.emit('oncanmove', this);
 	}
 	
 	/* ----- Getters ----- */
@@ -40,15 +47,6 @@ class CompilerRightPart extends EnemyShooter
 	getHitbox()
 	{
 		return new Hitbox({position: new Point(this.sprite.position.x - 2, this.sprite.position.y + 24), width: 16, height: 26});
-	}
-	
-	/**
-	 * Get the entity's collison box
-	 * @return [Hitbox] The entity's collision box
-	 */
-	getFullHitbox()
-	{
-		return new Hitbox(this.sprite);
 	}
 	
 	/**
@@ -78,52 +76,38 @@ class CompilerRightPart extends EnemyShooter
 		}
 	}
 	
-	/* ----- Actions ----- */
-	/**
-	 * Damage the entity
-	 * @param damager : [Entity] The damager
-	 */
-	//@Override
-	damage(damager)
-	{
-		super.damage(damager);
-		if (this.lifePoints <= 0)
-		{
-			//Player bullets
-			if (damager.shooter)
-				game.statistics.killedCompiler[damager.shooter.sprite.id]++;
-			//Module if attached to a player
-			else if (damager.owner)
-				game.statistics.killedCompiler[damager.owner.sprite.id]++;
-		}
-		else
-			new Sound('sounds/sound_forcefield_hits.ogg', true, false);
-	}
-	
 	/* ----- Animations ----- */
 	/**
-	 * Allow collision with players
+	 * Start animate this entity
 	 */
-	//@Override
-	allowCollisionWithPlayers()
+	animate()
 	{
-		//this.getHitbox().debugDraw();
-		//this.getFullHitbox().debugDraw();
-		for (var key of game.registeredProjectiles.keys())
-		{
-			var pr = game.registeredProjectiles.get(key);
-			if (pr != null && pr instanceof PlayerProjectile && this.getFullHitbox().isHovering(pr.getHitbox()))
-				pr.explode();
-		}
-		if (player1 != null && !player1.isDead && !player1.isInvulnerable && this.getFullHitbox().isHovering(player1.getHitbox()))
-		{
-			this.explode();
-			player1.explode();
-		}
-		if (player2 != null && !player2.isDead && !player2.isInvulnerable && this.getFullHitbox().isHovering(player2.getHitbox()))
-		{
-			this.explode();
-			player2.explode();
-		}
+		game.scheduler.addTask(new Task('phase_down_' + this.sprite.id, this.phaseMovementVerticallyAnim, {
+			entity: this,
+			objective: 0.5 * canvas.height,
+			direction: 'down',
+			fn: function(entity) {
+				game.scheduler.addTask(new Task('phase_left_' + entity.sprite.id, entity.phaseMovementHorizontallyAnim, {
+					entity: entity,
+					objective: 0.1 * canvas.width,
+					direction: 'left',
+					fn: function(entity) {
+						//Reforme
+						game.scheduler.addTask(new Task('phase_right_' + entity.sprite.id, entity.phaseMovementHorizontallyAnim, {
+							entity: entity,
+							objective: canvas.width / 2 + 81,
+							direction: 'right',
+							fn: function(entity) {entity.incrementReady();}
+						}));
+						game.scheduler.addTask(new Task('phase_up_' + entity.sprite.id, entity.phaseMovementVerticallyAnim, {
+							entity: entity,
+							objective: canvas.height / 2 - 8,
+							direction: 'up',
+							fn: function(entity) {entity.incrementReady();}
+						}));
+					}
+				}));
+			}
+		}));
 	}
 }

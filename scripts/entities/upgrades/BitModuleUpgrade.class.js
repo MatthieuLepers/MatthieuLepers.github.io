@@ -8,7 +8,7 @@ class BitModuleUpgrade extends Upgrade
 	{
 		super(
 			new Sprite(
-				'upgrade_' + dropper.id,
+				'upgrade_' + dropper.sprite.id,
 				'images/spritesheets/module/bit_module.png',
 				16,
 				16,

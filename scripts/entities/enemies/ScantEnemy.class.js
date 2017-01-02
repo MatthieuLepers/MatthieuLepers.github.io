@@ -9,7 +9,7 @@ class ScantEnemy extends EnemyShooter
 		super(
 			new Sprite(
 				id,
-				'images/spritesheets/enemies/robot.png',
+				'images/spritesheets/enemies/scant.png',
 				56,
 				54,
 				new Point(
@@ -124,7 +124,7 @@ class ScantEnemy extends EnemyShooter
 				if (entity.state != 'down')
 				{
 					game.renderer.deleteSprite(entity.sprite.id);
-					entity.sprite = new Sprite(id, 'images/spritesheets/enemies/robot.png', 56, 54, entity.sprite.position, 6, [2], true);
+					entity.sprite = new Sprite(id, 'images/spritesheets/enemies/scant.png', 56, 54, entity.sprite.position, 6, [2], true);
 				}
 				entity.state = 'down';
 			}
@@ -134,7 +134,7 @@ class ScantEnemy extends EnemyShooter
 				if (entity.state != 'up')
 				{
 					game.renderer.deleteSprite(entity.sprite.id);
-					entity.sprite = new Sprite(id, 'images/spritesheets/enemies/robot.png', 56, 54, entity.sprite.position, 6, [0], true);
+					entity.sprite = new Sprite(id, 'images/spritesheets/enemies/scant.png', 56, 54, entity.sprite.position, 6, [0], true);
 				}
 				entity.state = 'up';
 			}
@@ -154,10 +154,10 @@ class ScantEnemy extends EnemyShooter
 		if (!entity.cooldown)
 		{
 			entity.state = 'shoot';
-			game.renderer.replaceSprite(new Sprite(entity.sprite.id, 'images/spritesheets/enemies/robot.png', 56, 54, entity.sprite.position, 6, [0, 1, 2], false));
+			game.renderer.replaceSprite(new Sprite(entity.sprite.id, 'images/spritesheets/enemies/scant.png', 56, 54, entity.sprite.position, 6, [0, 1, 2], false));
 			entity.charge = new Sprite(
 				entity.sprite.id + '_charge',
-				'images/spritesheets/particles/robot_charge.png',
+				'images/spritesheets/particles/scant_charge.png',
 				48,
 				16,
 				new Point(

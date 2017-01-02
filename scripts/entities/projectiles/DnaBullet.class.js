@@ -58,10 +58,10 @@ class DnaBullet extends PlayerProjectile
 	{
 		super.removeEntity();
 		//Shooter is a bit module
-		if (this.module == this.shooter)
+		if (this.module == this.shooter && this.module.owner != null)
 			game.statistics.bitModuleShotFails[this.module.owner.sprite.id] += (!this.hasHits ? 1 : 0);
 		//Shooter is the module
-		else
+		else if (this.module.owner != null)
 			game.statistics.dnaBulletShotFails[this.module.owner.sprite.id] += (!this.hasHits ? 1 : 0);
 	}
 	
@@ -84,10 +84,10 @@ class DnaBullet extends PlayerProjectile
 	{
 		super.modifyHits();
 		//Shooter is a bit module
-		if (this.module == this.shooter)
+		if (this.module == this.shooter && this.module.owner != null)
 			game.statistics.bitModuleShotHits[this.module.owner.sprite.id]++;
 		//Shooter is the module
-		else
+		else if (this.module.owner != null)
 			game.statistics.dnaBulletShotHits[this.module.owner.sprite.id]++;
 	}
 }

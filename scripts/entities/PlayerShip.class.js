@@ -55,6 +55,7 @@ class PlayerShip extends SpawnableEntity
 		this.bitModules = new Map();
 		this.hasRockets = false;
 		this.rocketTimer = null;
+		this.releasedModule = null;
 		
 		this.achievements = new Achievements();
 		
@@ -62,8 +63,7 @@ class PlayerShip extends SpawnableEntity
 		
 		//Events
 		this.addEventListener('onshoot', 		function() {
-			var sound = 'player_shoot.ogg'
-			//(this.module && this.module.tier > 0 && this.module.gun.type == 'DNA' && !this.module.cooldown ? 'dna_beam.ogg' : 'player_shoot.ogg')
+			var sound = 'player_shoot.ogg';
 			if (this.module != null && !this.module.cooldown)
 				if (this.module.tier > 0)
 					if (this.module.gun.type == 'DNA')
@@ -76,8 +76,9 @@ class PlayerShip extends SpawnableEntity
 		this.addEventListener('onshootcharged', function() {new Sound('sounds/sound_player_shoot_charged.ogg', true, false);});
 		this.addEventListener('oncharge', 		function() {this.isCharging = true; this.charge.audio = new Sound('sounds/sound_player_charge.ogg', true, false);});
 		this.addEventListener('onchargeover', 	function() {this.isCharging = false; this.charge.audio.pause();});
-		this.addEventListener('ondestroyed', 	function() {if (this.charge.audio != null)
-			this.charge.audio.pause();
+		this.addEventListener('ondestroyed', 	function() {
+			if (this.charge.audio != null)
+				this.charge.audio.pause();
 			document.getElementById('powerBar' + this.sprite.id).children[0].style.width = '0px';
 			window.clearInterval(this.charge.timer);
 			new Sound('sounds/sound_player_explosion.ogg', true, false);
@@ -152,7 +153,7 @@ class PlayerShip extends SpawnableEntity
 			),
 			0,
 			[2],
-			false
+			true
 		));
 		this.score = (this.score >= 2000 ? this.score - 2000 : 0);
 		this.lifePoints = 1;
@@ -417,7 +418,11 @@ class PlayerShip extends SpawnableEntity
 		
 		if (this.triesLeft <= 0)
 		{
-			game.scores[this.sprite.id] = {score: this.score, achievements: this.achievements.getUnlockedAchievementsAsMap()};
+			game.scores[this.sprite.id] = {
+				score: this.score,
+				achievements: this.achievements.getUnlockedAchievementsAsMap(),
+				dieAtWave: game.wave
+			};
 			
 			if (this.sprite.id == 'player1')
 				player1 = null;

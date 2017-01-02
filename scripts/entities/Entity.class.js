@@ -129,7 +129,7 @@ class Entity extends EventsEmitter
 	 */
 	anim(entity)
 	{
-		var id = entity.id;
+		var id = entity.sprite.id;
 		var scheduler = game.scheduler;
 		
 		if (entity.isOutOfScreen())

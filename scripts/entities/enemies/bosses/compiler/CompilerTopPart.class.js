@@ -1,4 +1,4 @@
-class CompilerTopPart extends EnemyShooter
+class CompilerTopPart extends CompilerPart
 {
 	/**
 	 * Create the Top part of the Compiler Boss
@@ -7,31 +7,19 @@ class CompilerTopPart extends EnemyShooter
 	{
 		super(
 			new Sprite(
-				'part1_boss_compiler',
+				'part1_boss_compiler_enemy',
 				'images/spritesheets/enemies/bosses/compiler_top_part.png',
 				112,
 				64,
 				new Point(
-					canvas.width / 2,
+					canvas.width,
 					canvas.height / 2
 				),
 				6,
 				[0, 1, 2, 3, 2, 1, 0],
 				true
-			),
-			0,
-			400,
-			ExplosionEntity.bigExplosion(),
-			10,
-			2500,
-			90
+			)
 		);
-		
-		this.target = player1;
-		
-		this.cooldownTime = 400;
-		
-		this.attachedEntities = new Map();
 		this.attachedEntities.set(this.sprite.id + '_attachedTurret', new CompilerTurret(
 			this.sprite.id + '_attachedTurret',
 			new Point(
@@ -42,22 +30,9 @@ class CompilerTopPart extends EnemyShooter
 			0,
 			'left'
 		));
-		this.attachedEntities.set(this.sprite.id + '_attachedCannon_1', new CompilerCannon(
-			this.sprite.id + '_attachedCannon_1',
-			new Point(
-				this.sprite.position.x + 41,
-				this.sprite.position.y
-			),
-			'top'
-		));
-		this.attachedEntities.set(this.sprite.id + '_attachedCannon_2', new CompilerCannon(
-			this.sprite.id + '_attachedCannon_2',
-			new Point(
-				this.sprite.position.x + 73,
-				this.sprite.position.y
-			),
-			'top'
-		));
+		this.addEventListener('onready', function() {
+			compiler.incrementReady();
+		});
 	}
 	
 	/* ----- Getters ----- */
@@ -69,15 +44,6 @@ class CompilerTopPart extends EnemyShooter
 	getHitbox()
 	{
 		return new Hitbox({position: new Point(this.sprite.position.x + 37, this.sprite.position.y + 52), width: 31, height: 15});
-	}
-	
-	/**
-	 * Get the entity's collison box
-	 * @return [Hitbox] The entity's collision box
-	 */
-	getFullHitbox()
-	{
-		return new Hitbox(this.sprite);
 	}
 	
 	/**
@@ -109,59 +75,77 @@ class CompilerTopPart extends EnemyShooter
 	
 	/* ----- Actions ----- */
 	/**
-	 * Damage the entity
-	 * @param damager : [Entity] The damager
+	 * Add attached cannon when entering
 	 */
-	//@Override
-	damage(damager)
+	addCannons()
 	{
-		super.damage(damager);
-		if (this.lifePoints <= 0)
-		{
-			//Player bullets
-			if (damager.shooter)
-				game.statistics.killedCompiler[damager.shooter.sprite.id]++;
-			//Module if attached to a player
-			else if (damager.owner)
-				game.statistics.killedCompiler[damager.owner.sprite.id]++;
-		}
-		else
-			new Sound('sounds/sound_forcefield_hits.ogg', true, false);
-	}
-	
-	//@Override
-	explode()
-	{
-		super.explode();
-		for (var key of this.attachedEntities.keys())
-			if (this.attachedEntities.get(key) != null)
-				this.attachedEntities.get(key).explode();
+		this.attachedEntities.set(this.sprite.id + '_attachedCannon_1', new CompilerCannon(
+			this.sprite.id + '_attachedCannon_1',
+			new Point(
+				this.sprite.position.x + 41,
+				this.sprite.position.y
+			),
+			'top'
+		));
+		//ce cannon est détruit après ajout, trouver pourquoi. Supprimer car outofscreen ?
+		this.attachedEntities.set(this.sprite.id + '_attachedCannon_2', new CompilerCannon(
+			this.sprite.id + '_attachedCannon_2',
+			new Point(
+				this.sprite.position.x + 73,
+				this.sprite.position.y
+			),
+			'top'
+		));
 	}
 	
 	/* ----- Animations ----- */
-	/**
-	 * Allow collision with players
-	 */
-	//@Override
-	allowCollisionWithPlayers()
+	separate()
 	{
-		// this.getHitbox().debugDraw();
-		// this.getFullHitbox().debugDraw();
-		for (var key of game.registeredProjectiles.keys())
+		game.scheduler.addTask(new Task('separate_' + this.sprite.id, this.separateAnim, {
+			entity: this,
+			fn: function(entity) {
+				compiler.compiler3.onCanMove();
+				game.scheduler.addTask(new Task('phase_down_' + entity.sprite.id, entity.phaseMovementVerticallyAnim, {
+					entity: entity,
+					objective: 0.8 * canvas.height,
+					direction: 'down',
+					fn: function(entity) {
+						game.scheduler.addTask(new Task('phase_right_' + entity.sprite.id, entity.phaseMovementHorizontallyAnim, {
+							entity: entity,
+							objective: 0.8 * canvas.width,
+							direction: 'right',
+							fn: function(entity) {
+								//Reforme
+								game.scheduler.addTask(new Task('phase_left_' + entity.sprite.id, entity.phaseMovementHorizontallyAnim, {
+									entity: entity,
+									objective: canvas.width / 2,
+									direction: 'left',
+									fn: function(entity) {entity.incrementReady();}
+								}));
+								game.scheduler.addTask(new Task('phase_up_' + entity.sprite.id, entity.phaseMovementVerticallyAnim, {
+									entity: entity,
+									objective: canvas.height / 2,
+									direction: 'up',
+									fn: function(entity) {entity.incrementReady();}
+								}));
+							}
+						}));
+					}
+				}));
+			}
+		}));
+	}
+	
+	separateAnim(object)
+	{
+		var entity = object.entity;
+		
+		if (entity.sprite.position.x <= canvas.width * 0.1)
 		{
-			var pr = game.registeredProjectiles.get(key);
-			if (pr != null && pr instanceof PlayerProjectile && this.getFullHitbox().isHovering(pr.getHitbox()))
-				pr.explode();
+			game.scheduler.removeTask('separate_' + entity.sprite.id);
+			object.fn(entity);
 		}
-		if (player1 != null && !player1.isDead && !player1.isInvulnerable && this.getFullHitbox().isHovering(player1.getHitbox()))
-		{
-			this.explode();
-			player1.explode();
-		}
-		if (player2 != null && !player2.isDead && !player2.isInvulnerable && this.getFullHitbox().isHovering(player2.getHitbox()))
-		{
-			this.explode();
-			player2.explode();
-		}
+		else
+			entity.move(new Point(-entity.speed, 0));
 	}
 }
