@@ -321,10 +321,10 @@ function changeLetterVertically(direction)
 {
 	if (document.getElementById('saveScreen') != null)
 	{
-		var alpha = new Array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','1','2','3','4','5','6','7','8','9');
+		var alpha = new Array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','1','2','3','4','5','6','7','8','9', '0');
 		var selected = document.querySelectorAll('span.name.selected')[0];
 		
-		var letter = (direction == 'up' ? 'A' : '9');
+		var letter = (direction == 'up' ? 'A' : '0');
 		var sign = (direction == 'up' ? 1 : (-1));
 		
 		if ((direction == 'up' ? (alpha.indexOf(selected.textContent) + 1) < alpha.length : (alpha.indexOf(selected.textContent) - 1) >= 0))
