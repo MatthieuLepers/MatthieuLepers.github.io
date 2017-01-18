@@ -472,6 +472,34 @@ function gameLoop()
 	game.renderer.renderAll();
 }
 
+function getLatestCommit()
+{
+	var url = 'https://api.github.com/repos/AireAyquaza/aireayquaza.github.io/commits';
+	var xhr = new XMLHttpRequest();
+	xhr.open('GET', url, true);
+	xhr.onload = function()
+	{
+		var object = JSON.parse(this.responseText);
+		var lastCommit = {
+			date: object[0].commit.committer.date,
+			msg: object[0].commit.message,
+			url: object[0].html_url
+		};
+		
+		var sources = document.querySelectorAll('div#scoreboard span.sources');
+		if (sources.length > 0)
+		{
+			var span = document.createElement('span');
+			span.className = 'lastCommit';
+			span.innerHTML = 'Last commit: <a href="' + lastCommit.url + '" class="lastCommitLink" target="_blank">' + (lastCommit.msg.length > 27 ? lastCommit.msg.substr(0, 27) + '...' : lastCommit.msg) + '</a>';
+			
+			sources[0].appendChild(span);
+		}
+		
+		console.log(lastCommit);
+	}
+	xhr.send(null);
+}
 
 /**
  * Initialize the game
@@ -495,6 +523,7 @@ function init()
 	
 	//Start game
 	game.start();
+	getLatestCommit();
 	
 	var agent = navigator.userAgent.toLowerCase();
 	

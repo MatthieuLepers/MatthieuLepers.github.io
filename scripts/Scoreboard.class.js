@@ -104,7 +104,9 @@ class Scoreboard
 			'</span>' +
 			beamBarP2 + 
 			this.makeTriesImg(player1) +
-			triesP2 + '<a href="https://github.com/AireAyquaza/AireAyquaza.github.io" class="sources">Github source code</a>';
+			triesP2 + '<span class="sources">' +
+			'	<a href="https://github.com/AireAyquaza/AireAyquaza.github.io" class="sources">Github source code</a>' +
+			'</span>';
 		
 			var help = document.createElement('div');
 			help.id = 'help';

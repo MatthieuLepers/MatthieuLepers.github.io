@@ -330,7 +330,7 @@ span.tries.player1 {
 }
 
 span.tries.player2 {
-	right: 50px;
+	right: 350px;
 }
 
 span.tries.player1 img {
@@ -447,11 +447,27 @@ span.green {
 	color: green;
 }
 
+div#scoreboard span.sources {
+	position: absolute;
+	right: 55px;
+	top: 5px;
+	width: 300px;
+}
+
 div#scoreboard a.sources {
-    position: absolute;
-    right: 55px;
-    top: 14px;
+    display: block;
+	float: right;
     color: cyan;
+}
+
+div#scoreboard span.sources span.lastCommit {
+	display: block;
+	float: right;
+}
+
+div#scoreboard span.sources span.lastCommit a {
+	display: inline-block;
+	color: cyan;
 }
 
 /* Tactile Pad */
