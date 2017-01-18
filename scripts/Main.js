@@ -491,7 +491,7 @@ function getLatestCommit()
 		{
 			var span = document.createElement('span');
 			span.className = 'lastCommit';
-			span.innerHTML = 'Last commit: <a href="' + lastCommit.url + '" class="lastCommitLink" target="_blank">' + (lastCommit.msg.length > 27 ? lastCommit.msg.substr(0, 27) + '...' : lastCommit.msg) + '</a>';
+			span.innerHTML = 'Last commit: <a href="' + lastCommit.url + '" class="lastCommitLink" target="_blank" title="' + lastCommit.msg + '">' + (lastCommit.msg.length > 27 ? lastCommit.msg.substr(0, 27) + '...' : lastCommit.msg) + '</a>';
 			
 			sources[0].appendChild(span);
 		}
