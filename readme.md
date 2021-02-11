@@ -1,8 +1,6 @@
 # **R-Type Web**
 ---
 
-# /!\ **Vérifier que votre navigateur supporte le JavaScript ECMA 6** /!\
-
 ## **Sommaire**
 - Préambule
 - Fonctionnalités
