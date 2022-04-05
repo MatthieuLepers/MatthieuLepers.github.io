@@ -6,7 +6,6 @@
 - Fonctionnalités
 - Fonctionnalités à venir
 - Installation
-- Comment contribuer
 
 ---
 ## **Préambule**
@@ -23,13 +22,13 @@ Les manches bonus en plus d'avoir la même capacité que les manches standards p
 ### Les améliorations
 Elles sont aux nombre de 6, voici leurs spécification plus en détail:
 
-- ![Dna Upgrade](http://aireayquaza.github.io/images/gui/icons/upgrade_dna.gif) Permet d'obtenir le module ainsi que d'obtenir l'arme ADN
-- ![Laser Upgrade](http://aireayquaza.github.io/images/gui/icons/upgrade_laser.gif) Permet d'obtenir le module ainsi que d'obtenir l'arme Laser
-- ![Fire upgrade](http://aireayquaza.github.io/images/gui/icons/upgrade_fire.gif) Permet d'obtenir le module ainsi que d'obtenir l'arme Lance flamme
-- ![Speed Upgrade](http://aireayquaza.github.io/images/gui/icons/upgrade_speed.gif) Augmente la vitesse du joueur de 25% de sa valeur de base (cumulable 4 fois par joueur)
-- ![Bit module Upgrade](http://aireayquaza.github.io/images/gui/icons/bit_module_top.gif) Ajoute un module 'Bit' au dessus et/ou en dessous du joueur (cumulable 2 fois par joueur)
-- ![Rockets Upgrade](http://aireayquaza.github.io/images/gui/icons/upgrade_rockets.gif) Permet au joueur de tirer deux roquettes toutes les deux secondes (non cumulable)
-- ![ForceField Upgrade](http://aireayquaza.github.io/images/gui/icons/upgrade_forcefield.gif) Augmente la vie du joueur de deux points, lui permettant de générer un champ de force pouvant absorber un projectile, ces améliorations sont cumulables
+- ![Dna Upgrade](http://matthieulepers.github.io/images/gui/icons/upgrade_dna.gif) Permet d'obtenir le module ainsi que d'obtenir l'arme ADN
+- ![Laser Upgrade](http://matthieulepers.github.io/images/gui/icons/upgrade_laser.gif) Permet d'obtenir le module ainsi que d'obtenir l'arme Laser
+- ![Fire upgrade](http://matthieulepers.github.io/images/gui/icons/upgrade_fire.gif) Permet d'obtenir le module ainsi que d'obtenir l'arme Lance flamme
+- ![Speed Upgrade](http://matthieulepers.github.io/images/gui/icons/upgrade_speed.gif) Augmente la vitesse du joueur de 25% de sa valeur de base (cumulable 4 fois par joueur)
+- ![Bit module Upgrade](http://matthieulepers.github.io/images/gui/icons/bit_module_top.gif) Ajoute un module 'Bit' au dessus et/ou en dessous du joueur (cumulable 2 fois par joueur)
+- ![Rockets Upgrade](http://matthieulepers.github.io/images/gui/icons/upgrade_rockets.gif) Permet au joueur de tirer deux roquettes toutes les deux secondes (non cumulable)
+- ![ForceField Upgrade](http://matthieulepers.github.io/images/gui/icons/upgrade_forcefield.gif) Augmente la vie du joueur de deux points, lui permettant de générer un champ de force pouvant absorber un projectile, ces améliorations sont cumulables
 
 ---
 
@@ -108,23 +107,14 @@ Quand vous tirez, vos tirs doivent à chaque fois touché, dans le cas contraire
 Actuellement les fonctionnalités d'enregistrement de score sont implémentées en PHP + MySQL, il vous faudra installer WampServer afin de permettre à votre ordinateur d'interpréter le langage PHP et avoir accès à MySQL.
 Quand le projet passera sur Node.JS, il vous faudra installer ce dernier, ainsi le projet tournera **uniquement** sous Node.JS et MySQL.
 
-## **Comment contribuer**
-Il est préférable, lors d'une pull request, qu'il n'y ai qu'un seul commit pour simplifier le merge final.
-Merci de respecté l'indentation et les conventions utilisé dans le code, en voici quelques exemples :
-- Une boucle à une instruction ne possède pas de crochets (if, for, while, etc ...)
-- Les crochets ouvrants sont toujours à la ligne (sauf cas extrême d'écriture de fonction sur une ligne comme pour les addEventListener, setTimeout, etc ...)
-- La documentation est requise pour chaque nouvelle classe, fonctions, méthodes, etc ...
-
-Au niveau des tests, merci de vérifier que votre contribution fonctionne avant de l'envoyer, ne sachant pas comment testé avec JavaScript, tout code non fonctionnel compromettra la relecture du code.
-
 ## **Aparté sur l'IA actuelle**
-###Ce qu'elle peut faire
+### Ce qu'elle peut faire
 - Esquiver les projectiles durant un certain temps
 - Tirer sur les ennemies
 - Prendre en chasse un ennemies et le détruire
 - Utiliser le tir chargé sur les Cheetahs
 
-###Ce qu'elle ne peut pas (encore) faire
+### Ce qu'elle ne peut pas (encore) faire
 - Esquiver à tout les coups
 - Prévoir les trajectoires sinusoïdales des PataPatas
 - Utiliser le tir chargé de manière cohérente (multi-kills)
