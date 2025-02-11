@@ -1,0 +1,38 @@
+{
+  "name": "vue-project-template",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "lint": "eslint ./src --fix",
+    "test:unit": "jest --passWithNoTests",
+    "type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false",
+    "dev": "vite",
+    "preview": "vite preview",
+    "build": "npm run type-check && vite build"
+  },
+  "dependencies": {
+    "vue": "^3.5.12",
+    "vue-i18n": "^10.0.4",
+    "vue-router": "^4.4.5",
+    "vue3-carousel": "^0.14.0"
+  },
+  "devDependencies": {
+    "@tsconfig/node22": "^22.0.0",
+    "@types/node": "^22.9.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "@vitejs/plugin-vue": "^4.6.2",
+    "@vue/eslint-config-typescript": "^11.0.3",
+    "@vue/tsconfig": "^0.5.1",
+    "eslint": "^8.57.1",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-airbnb-typescript": "^17.1.0",
+    "eslint-import-resolver-typescript": "^3.6.3",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-vue": "^9.30.0",
+    "sass": "1.69.5",
+    "typescript": "~5.6.3",
+    "vite": "^4.5.5",
+    "vue-tsc": "^2.1.10"
+  }
+}

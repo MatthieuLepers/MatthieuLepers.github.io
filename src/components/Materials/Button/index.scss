@@ -1,0 +1,108 @@
+@use 'sass:color';
+@import '~styles/utilities.scss';
+
+@mixin set-button-color($background, $text) {
+  background: linear-gradient(90deg, color.adjust($background, $lightness: 20%) 0%, $background 50%, color.adjust($background, $lightness: 20%) 100%);
+  color: $text;
+  box-shadow: 0 5px 10px color(grey999);
+
+  .m-button__icon {
+    color: $text;
+  }
+
+  &:focus,
+  &:hover {
+    background: linear-gradient(90deg, color.adjust($background, $lightness: 30%) 0%, color.adjust($background, $lightness: 10%) 50%, color.adjust($background, $lightness: 30%) 100%);
+  }
+
+  &.m-button--iconed:focus .m-button__icon,
+  &.m-button--iconed:hover .m-button__icon {
+    color: lighten($text, 10%);
+  }
+}
+
+.m-button {
+  min-height: 40px;
+  border-radius: 20px;
+  padding: 0 rem(8px);
+  background-color: color(grey800);
+  color: color(grey000);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+
+  &:focus,
+  &:hover {
+    outline: none;
+    background-color: color(grey700);
+  }
+
+  &--squared {
+    border-radius: 0;
+  }
+
+  &--iconOnly {
+    padding: 0 !important;
+    min-width: 40px;
+  }
+
+  &--iconed {
+    position: relative;
+
+    .m-button__icon {
+      font-size: rem(24px);
+      position: absolute;
+      top: 4px;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    &.m-button--iconed-left {
+      padding-left: rem(44px);
+
+      .m-button__icon {
+        left: 4px;
+      }
+    }
+
+    &.m-button--iconed-right {
+      padding-right: rem(44px);
+
+      .m-button__icon {
+        right: 4px;
+      }
+    }
+  }
+
+  &--success {
+    @include set-button-color(color(success300), color(grey100));
+  }
+
+  &--primary {
+    @include set-button-color(color(grey900), color(grey100));
+  }
+
+  &--secondary {
+    @include set-button-color(color(secondary200), color(grey100));
+  }
+
+  &--warning {
+    @include set-button-color(color(warning300), color(grey100));
+  }
+
+  &--danger {
+    @include set-button-color(color(danger300), color(grey100));
+  }
+
+  &--cancel {
+    @include set-button-color(color(grey600), color(grey100));
+  }
+
+  &--disabled {
+    @include set-button-color(color(grey600), color(grey000));
+  }
+}

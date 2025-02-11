@@ -1,0 +1,58 @@
+@import '~styles/utilities';
+
+.home-view {
+  background-image: url('/img/background-landing.jpg');
+  background-size: cover;
+  background-position: bottom right;
+  background-repeat: no-repeat;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: rem(32px);
+
+  @include set-from-screen(m) {
+    background-position: center center;
+  }
+}
+
+.baseline {
+  width: 100%;
+  display: flex;
+  align-items: center;
+
+  @include set-from-screen(m) {
+    @include set-font-scale(l);
+  }
+
+  @include set-from-screen(l) {
+    @include set-font-scale(xl);
+  }
+
+  h1 {
+    @include set-font-scale(xl);
+    text-shadow: 0 0 5px color(secondary200);
+    font-weight: 700;
+    text-align: center;
+
+    @include set-from-screen(m) {
+      @include set-font-scale(xl);
+      text-align: left;
+    }
+
+    @include set-from-screen(l) {
+      font-size: rem(50px);
+      line-height: rem(58px);
+    }
+  }
+}
+
+.carousel {
+  --vc-pgn-background-color: color(grey100);
+  --vc-pgn-active-color: color(grey90);
+  --vc-pgn-border-radius: 8px;
+  --vc-pgn-height: 8px;
+  --vc-pgn-width: 8px;
+  filter: drop-shadow(8px 8px 8px color(grey999));
+}
