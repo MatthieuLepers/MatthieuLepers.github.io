@@ -11,6 +11,7 @@
 
     <Container>
       <Carousel
+        :autoplay="10000"
         :itemsToShow="1"
         :wrapAround="true"
         :gap="16"
