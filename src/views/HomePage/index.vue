@@ -11,8 +11,8 @@
 
     <Container>
       <Carousel
-        :autoplay="10000"
         :itemsToShow="1"
+        :transition="500"
         :wrapAround="true"
         :gap="16"
         :breakpoints="{
@@ -31,7 +31,7 @@
         </Slide>
 
         <template #addons>
-          <Pagination :paginateByItemsToShow="true" />
+          <Pagination />
         </template>
       </Carousel>
     </Container>
@@ -47,6 +47,7 @@ import 'vue3-carousel/carousel.css';
 import Container from '@/components/Container.vue';
 import ProjectCard from '@/components/Project/Card.vue';
 import RTypeWebScene from '@/components/Scenes/RTypeWeb.vue';
+import GravitySimulationScene from '@/components/Scenes/GravitySimulationScene.vue';
 
 defineOptions({ name: 'HomePage' });
 
@@ -62,6 +63,13 @@ const projects = [
     description: 'Grandement inspiré du jeu du même nom de chez IREM, sortie en 1987. Ce projet me tiens depuis 2015 et ceci est la version 2.',
     link: '/r-type-web-v2/',
     scene: RTypeWebScene,
+  },
+  {
+    name: 'Gravity simulation',
+    description: 'Passionné d\'astronomie, j\'ai toujours rêvé de voir la naissance d\'une étoile... Optimisé avec WebGPU.',
+    link: '/gravity-simulation',
+    scene: GravitySimulationScene,
+    github: 'https://github.com/MatthieuLepers/gravity-simulation',
   },
   {
     name: 'MCD Save Editor',

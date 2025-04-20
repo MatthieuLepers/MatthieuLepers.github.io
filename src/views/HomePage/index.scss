@@ -49,10 +49,11 @@
 }
 
 .carousel {
-  --vc-pgn-background-color: color(grey100);
-  --vc-pgn-active-color: color(grey90);
+  --vc-pgn-background-color: #fff;
+  --vc-pgn-active-color: #181818;
   --vc-pgn-border-radius: 8px;
   --vc-pgn-height: 8px;
   --vc-pgn-width: 8px;
   filter: drop-shadow(8px 8px 8px color(grey999));
+  padding-bottom: 48px;
 }

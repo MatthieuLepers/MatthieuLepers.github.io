@@ -13,8 +13,9 @@
 $icons: (
   arrow-left  : ('icomoon', '\e900'),
   arrow-right : ('icomoon', '\e901'),
-  github      : ('icomoon', '\e902'),
-  linkedin    : ('icomoon', '\e903'),
+  refresh     : ('icomoon', '\e902'),
+  github      : ('icomoon', '\e903'),
+  linkedin    : ('icomoon', '\e904'),
 );
 
 @mixin icon($iconName) {
