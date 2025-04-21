@@ -1,5 +1,11 @@
 <template>
-  <main class="home-view">
+  <main :class="GenerateModifiers('home-view', { story: appStore.state.storyMode })">
+    <MaterialFormToggle
+      v-model="appStore.state.storyMode"
+      label="Story mode"
+      class="btn-story-mode"
+    />
+
     <div class="baseline">
       <Container>
         <h1>Bienvenue sur<br />mon Portfolio</h1>
@@ -17,10 +23,10 @@
         :gap="16"
         :breakpoints="{
           564: {
-            itemsToShow: 2,
+            itemsToShow: appStore.state.storyMode ? 1 : 2,
           },
           1024: {
-            itemsToShow: 3,
+            itemsToShow: appStore.state.storyMode ? 1 : 3,
           },
         }"
         snapAlign="start"
@@ -30,7 +36,7 @@
           <ProjectCard :project="project" />
         </Slide>
 
-        <template #addons>
+        <template #addons v-if="!appStore.state.storyMode">
           <Pagination />
         </template>
       </Carousel>
@@ -44,10 +50,13 @@ import { useRoute } from 'vue-router';
 import { Carousel, Slide, Pagination } from 'vue3-carousel';
 import 'vue3-carousel/carousel.css';
 
+import MaterialFormToggle from '@/components/Materials/Form/Toggle.vue';
 import Container from '@/components/Container.vue';
 import ProjectCard from '@/components/Project/Card.vue';
 import RTypeWebScene from '@/components/Scenes/RTypeWeb.vue';
 import GravitySimulationScene from '@/components/Scenes/GravitySimulationScene.vue';
+
+import { appStore } from '@/core/stores/appStore';
 
 defineOptions({ name: 'HomePage' });
 
