@@ -48,7 +48,7 @@ const canvas = ref<HTMLCanvasElement | null>(null);
 const state = reactive<{
   task: GravitySimulationTask | null;
   mousePos: Vector2D;
-  showQuadTree: boolean;
+  drawQuadTree: boolean;
   trackCenterOfMass: boolean;
 }>({
   task: null,
@@ -64,11 +64,11 @@ const actions = {
 };
 
 watch(() => state.drawQuadTree, (drawQuadTree) => {
-  state.task.options.drawQuadTree = drawQuadTree;
+  state.task!.options.drawQuadTree = drawQuadTree;
 });
 
 watch(() => state.trackCenterOfMass, (trackCenterOfMass) => {
-  state.task.options.trackCenterOfMass = trackCenterOfMass;
+  state.task!.options.trackCenterOfMass = trackCenterOfMass;
 });
 
 onMounted(() => {
@@ -88,11 +88,11 @@ onMounted(() => {
   appStore.state.processManager.addTask(state.task);
   appStore.state.processManager.addTask(mouseTask);
 
-  canvas.value.addEventListener('mousedown', (e: MouseEvent) => {
+  canvas.value?.addEventListener('mousedown', (e: MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     mouseTask.enabled = true;
-    const { x, y } = canvas.value.getBoundingClientRect();
+    const { x, y } = canvas.value!.getBoundingClientRect();
     state.mousePos = new Vector2D(e.clientX - x, e.clientY - y);
   });
   window.addEventListener('mouseup', () => {
