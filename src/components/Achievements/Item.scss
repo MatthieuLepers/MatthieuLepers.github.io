@@ -1,0 +1,61 @@
+@import '~styles/utilities';
+
+.achievement {
+  display: flex;
+  align-items: center;
+  gap: rem(16px);
+  padding: rem(8px);
+  border-radius: 12px;
+  background-color: rgba(color(grey800), .6);
+
+  img {
+    width: 64px;
+    filter: grayscale(1);
+  }
+
+  &__infos {
+    display: flex;
+    flex-direction: column;
+    gap: rem(4px);
+  }
+
+  &__name {
+    @include set-font-scale('l');
+    color: color(grey000);
+    font-weight: 600;
+  }
+
+  &__description {
+    @include set-font-scale('s');
+  }
+
+  &--popup {
+    border: 1px solid color(grey700);
+    border-radius: 12px;
+    padding: rem(8px);
+    background-color: color(grey700);
+    max-width: 408px;
+    box-shadow: 0 0 8px color(grey999);
+    @include transition(transform .3s ease-out);
+    transform: translateX(-100%);
+
+    &-in {
+      transform: translateX(16px);
+      transition-delay: 100ms;
+    }
+  }
+
+  &--acquired {
+    .achievement__name {
+      color: color(secondary200);
+    }
+
+    .achievement__description {
+      color: color(grey200);
+    }
+
+    img {
+      filter: none;
+    }
+  }
+}

@@ -1,0 +1,30 @@
+@import '~styles/utilities';
+
+.achievement-list {
+  width: 100%;
+
+  h2 {
+    @include set-font-scale('xl');
+    line-height: rem(40px);
+    padding: 0 0 0 rem(56px);
+    margin: 0 0 rem(8px);
+    font-weight: 700;
+  }
+
+  h3 {
+    @include set-font-scale('l');
+    line-height: rem(40px);
+    padding: 0 0 0 rem(8px);
+    margin: rem(8px) 0;
+    font-weight: 600;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: rem(8px);
+  }
+}

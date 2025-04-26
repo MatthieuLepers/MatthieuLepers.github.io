@@ -16,6 +16,11 @@ $icons: (
   refresh     : ('icomoon', '\e902'),
   github      : ('icomoon', '\e903'),
   linkedin    : ('icomoon', '\e904'),
+  trophy      : ('icomoon', '\e905'),
+  trash       : ('icomoon', '\e906'),
+  setting     : ('icomoon', '\e907'),
+  grid        : ('icomoon', '\e908'),
+  crosshair   : ('icomoon', '\e909'),
 );
 
 @mixin icon($iconName) {

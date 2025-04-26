@@ -22,6 +22,8 @@
   flex-direction: column;
   justify-content: center;
   gap: rem(32px);
+  position: relative;
+  overflow: hidden;
 
   @include set-from-screen(m) {
     background-position: center center;
@@ -83,4 +85,44 @@
   --vc-pgn-width: 8px;
   filter: drop-shadow(8px 8px 8px color(grey999));
   padding-bottom: 48px;
+}
+
+.trophy-menu {
+  @include transition(width .5s ease, height .5s ease);
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  overflow: hidden;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: rgba(color(grey900), .9);
+  z-index: 2;
+  transform: translate(calc(-50% + 16px), calc(-50% + 16px));
+  box-shadow: 0 0 8px color(grey999);
+
+  &--open {
+    width: 300vw;
+    height: 300vw;
+  }
+
+  .menu {
+    width: calc(100vw - 32px);
+    height: calc(100vh - 32px);
+    overflow: auto;
+    position: absolute;
+    top: calc(50% - 20px);
+    left: calc(50% - 20px);
+
+    .m-button {
+      position: relative;
+      z-index: 1;
+    }
+
+    .achievement-list {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+  }
 }

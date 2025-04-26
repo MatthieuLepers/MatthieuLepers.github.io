@@ -1,13 +1,19 @@
 import { Task } from '@/core/tasks';
 import { Particle, type IParticle } from '@/core/tasks/GravitySimulation/Particle';
-import { Vector2D } from '@/core/tasks/GravitySimulation/Vector2D';
-
-const SUN_MASS = 1e5;
+import { Vector2D } from '@/core/tasks/GravitySimulation/geometry/Vector2D';
+import { QuadTreeNode } from '@/core/tasks/GravitySimulation/geometry/QuadTree';
 
 export class GravitySimulationTask extends Task {
   public particles: Array<Particle> = [];
 
   public ctx: CanvasRenderingContext2D | null = null;
+
+  public quadTree!: QuadTreeNode;
+
+  public options = {
+    drawQuadTree: false,
+    trackCenterOfMass: false,
+  };
 
   constructor(
     public canvas: HTMLCanvasElement | null,
@@ -24,6 +30,15 @@ export class GravitySimulationTask extends Task {
       const { width, height } = this.scene.getBoundingClientRect();
       this.canvas.width = width;
       this.canvas.height = height;
+
+      if (!this.quadTree) {
+        this.quadTree = QuadTreeNode.create({
+          x: 0,
+          y: 0,
+          width,
+          height,
+        });
+      }
     }
   }
 
@@ -45,12 +60,17 @@ export class GravitySimulationTask extends Task {
   init() {
     if (this.canvas) {
       const { width, height } = this.canvas;
-      const sun = new Vector2D(width / 2, height / 2);
+      // const center = new Vector2D(width / 2, height / 2);
 
-      this.particles = [
-        this.createParticleAt(sun, { color: '#ff0', mass: SUN_MASS, size: 5 }),
-        ...[...Array(25).keys()].map(() => this.createParticleAt(Vector2D.randomPointAround(sun, Math.random() * (height / 2)))),
-      ];
+      this.particles = [...Array(1000).keys()]
+        .map(() => this.createParticleAt(
+          Vector2D.generatePoint(width, height),
+          // Vector2D.generateGaussianPoint(
+          //   center,
+          //   Math.random() * (height / 2),
+          // ),
+        ))
+      ;
     }
   }
 
@@ -65,43 +85,46 @@ export class GravitySimulationTask extends Task {
         this.ctx.fillStyle = '#000';
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-        // Compute gravity
-        const forces = this.particles
-          .map((p1) => this.particles.reduce((acc, p2) => (p1 === p2
-            ? acc
-            : acc.add(p1.computeGravitationalForce(p2))), new Vector2D()));
+        this.quadTree.clear();
+        this.quadTree.insertAll(this.particles);
 
-        this.particles.forEach((p1, i) => {
-          p1.applyForce(forces[i]);
+        this.quadTree.computeGravity();
+        this.quadTree.computeCollision();
+        this.quadTree.removeFarParticles(this.canvas.height);
 
-          this.particles.forEach((p2) => {
-            if (p1 !== p2 && p1.collideWith(p2)) {
-              if (p1.mass > p2.mass) {
-                p1.mergeWith(p2);
-                this.particles.splice(this.particles.indexOf(p2), 1);
-              } else {
-                p2.mergeWith(p1);
-                this.particles.splice(this.particles.indexOf(p1), 1);
-              }
-            }
-          });
+        this.particles = this.quadTree.getParticles();
 
-          if (i > 0 && this.particles[0].position.distance(p1.position) >= this.canvas!.width) {
-            this.particles.splice(this.particles.indexOf(p1), 1);
-          }
+        if (this.options.trackCenterOfMass) {
+          this.ctx.save();
+          this.ctx.translate(
+            this.canvas.width / 2 - this.quadTree.centerOfMass.position.x,
+            this.canvas.height / 2 - this.quadTree.centerOfMass.position.y,
+          );
+        }
 
-          p1.render(this.ctx!);
+        this.particles.forEach((p) => {
+          p.render(this.ctx!);
         });
 
-        if (this.particles.length < 25) {
-          this.particles.push(...[...Array(25 - this.particles.length).keys()].map(() => {
-            const position = new Vector2D(
-              Math.random() * this.canvas!.width,
-              Math.random() * this.canvas!.height,
-            );
-            return this.createParticleAt(position);
-          }));
+        if (this.options.trackCenterOfMass) {
+          this.ctx.restore();
         }
+
+        if (this.options.drawQuadTree) {
+          this.quadTree.render(this.ctx);
+        }
+
+        // if (this.particles.length < 25) {
+        //   const currentCenter = this.quadTree.centerOfMass.position;
+        //   const newParticles = [...Array(25 - this.particles.length).keys()].map(() => {
+        //     const position = new Vector2D(
+        //       Math.random() * this.canvas!.width,
+        //       Math.random() * this.canvas!.height,
+        //     );
+        //     return this.createParticleAt(position.add(currentCenter));
+        //   });
+        //   this.particles.push(...newParticles);
+        // }
       }
     }
   }

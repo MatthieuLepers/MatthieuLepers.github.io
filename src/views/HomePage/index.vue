@@ -1,5 +1,18 @@
 <template>
   <main :class="GenerateModifiers('home-view', { story: appStore.state.storyMode })">
+    <nav
+      v-if="appStore.state.achivements.length"
+      :class="GenerateModifiers('trophy-menu', { open: state.open })"
+    >
+      <div class="menu">
+        <MaterialButton
+          icon="icon-trophy"
+          @click="state.open = !state.open"
+        />
+        <AchievementList />
+      </div>
+    </nav>
+
     <MaterialFormToggle
       v-model="appStore.state.storyMode"
       label="Story mode"
@@ -41,6 +54,8 @@
         </template>
       </Carousel>
     </Container>
+
+    <AchievementArea />
   </main>
 </template>
 
@@ -50,11 +65,14 @@ import { useRoute } from 'vue-router';
 import { Carousel, Slide, Pagination } from 'vue3-carousel';
 import 'vue3-carousel/carousel.css';
 
+import MaterialButton from '@/components/Materials/Button/index.vue';
 import MaterialFormToggle from '@/components/Materials/Form/Toggle.vue';
 import Container from '@/components/Container.vue';
 import ProjectCard from '@/components/Project/Card.vue';
 import RTypeWebScene from '@/components/Scenes/RTypeWeb.vue';
 import GravitySimulationScene from '@/components/Scenes/GravitySimulationScene.vue';
+import AchievementArea from '@/components/Achievements/Area.vue';
+import AchievementList from '@/components/Achievements/List.vue';
 
 import { appStore } from '@/core/stores/appStore';
 
@@ -98,6 +116,10 @@ const projects = [
 
 watch(() => route.hash, (hash) => {
   state.currentSlideIndex = parseInt(hash.replace(/#slide([0-9]+)/, '$1'), 10);
+});
+
+watch(() => appStore.state.achivements.length, (len) => {
+  state.open = !len ? false : state.open;
 });
 
 onBeforeMount(() => {

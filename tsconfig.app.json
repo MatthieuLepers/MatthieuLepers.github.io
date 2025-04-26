@@ -16,6 +16,7 @@
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "allowJs": true,
     "skipLibCheck": true,
+    "esModuleInterop": true,
     "paths": {
       "@/*": ["./src/*"],
       "~js/*": ["./src/core/*"],

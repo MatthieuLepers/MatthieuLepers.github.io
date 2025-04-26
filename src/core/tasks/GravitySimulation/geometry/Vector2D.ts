@@ -1,3 +1,11 @@
+function gaussianRandom(mean = 0, stdDev = 1): number {
+  let u = 0;
+  let v = 0;
+  while (u === 0) u = Math.random(); // évite log(0)
+  while (v === 0) v = Math.random();
+  return mean + stdDev * Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+}
+
 export class Vector2D {
   constructor(
     public x: number = 0,
@@ -51,6 +59,20 @@ export class Vector2D {
     return new Vector2D(
       pos.x + u * Math.cos(t),
       pos.y + u * Math.sin(t),
+    );
+  }
+
+  static generateGaussianPoint(pos: Vector2D, stdDev: number) {
+    return new Vector2D(
+      gaussianRandom(pos.x, stdDev),
+      gaussianRandom(pos.y, stdDev),
+    );
+  }
+
+  static generatePoint(width: number, height: number) {
+    return new Vector2D(
+      Math.random() * width,
+      Math.random() * height,
     );
   }
 }
