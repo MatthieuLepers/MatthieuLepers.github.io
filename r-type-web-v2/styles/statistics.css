@@ -1,0 +1,244 @@
+* {
+	font-family: Calibri, arial;
+}
+
+section#stats {
+	display: block;
+	margin: auto;
+	width: 80%;
+	position: relative;
+	border-left: 1px solid white;
+	border-right: 1px solid white;
+	height: 100%;
+	color: white;
+	padding: 10px;
+}
+
+h1 {
+	padding: 5px;
+	margin: 0;
+	text-align: center;
+	font-size: 34px;
+	font-weight: bold;
+	color: black;
+}
+
+.shadowStyle {
+	color: black;
+	text-shadow: 1px 1px white,-1px -1px white,-1px 1px white,1px -1px white;
+}
+
+div#ship {
+	position: absolute;
+	top: 40px;
+	left: 40px;
+	float: left;
+}
+
+div#taken_upgrades {
+	display: block;
+	width: calc(100% - 120px);
+	margin-left: 120px;
+}
+
+div#taken_upgrades>div {
+	display: inline-block;
+	color: white;
+	width: 32px;
+	height: 32px;
+	position: relative;
+	margin-left: 5px;
+}
+
+div#taken_upgrades>div>label {
+	display: block;
+	z-index: 4;
+	position: absolute;
+	bottom: 4px;
+	right: 4px;
+	color: black;
+}
+
+div.datalist {
+	display: block;
+	width: 32%;
+	min-height: 250px;
+	color: white;
+	border: 1px solid white;
+	margin: 3px;
+	float: left;
+	background-color: black;
+}
+
+div.datalist>h2 {
+	text-align: center;
+	margin: 2px;
+	padding: 0;
+	border-bottom: 1px solid white;
+}
+
+dl {
+	display: block;
+	width: 100%;
+	margin: 0;
+	padding: 2px;
+	width: calc(100% - 4px);
+	border-bottom: 1px solid #222;
+}
+
+dl dd {
+	margin: 0;
+	display: block;
+	float: left;
+	width: 80%;
+}
+
+dl dd img {
+	max-height: 16px;
+	margin-right: 5px;
+}
+
+#kills dl dd, #kills dl dt {
+	height: 31px;
+}
+
+#kills dl dd img {
+	max-height: 31px;
+	margin-left: 5px;
+}
+
+dl dt {
+	display: inline-block;
+	text-align: right;
+	width: calc(20% - 5px);
+}
+
+div#rocket {
+	display: block;
+	position: relative;
+}
+
+div#rocket img.rocket{
+	position: absolute;
+	top: 8px;
+	left: 10px;
+}
+
+#shipImg {
+	width: 32px;
+	height: 15px;
+	top: 484px;
+	left: 10px;
+}
+
+table, thead, tbody, tr {
+	display: block;
+}
+
+table thead {
+	border-bottom: 1px solid white;
+}
+
+table {
+	width: 60%;
+	border: 1px solid white;
+	margin: auto;
+}
+
+table tr, tbody, thead {
+	width: 100%;
+}
+
+table td  {
+	text-align: right;
+	padding-right: 5px;
+}
+
+table th {
+	padding-right: 5px;
+}
+
+table thead {
+	background-color: rgb(100,100,100);
+}
+
+table tbody {
+	background-color: black;
+}
+
+table tbody tr:nth-child(2n) {
+	background-color: rgba(100,100,100, 0.3);
+}
+
+table .name, table .wave {
+	display: inline-block;
+	width: 18%;
+}
+
+table .score {
+	display: inline-block;
+	width: 60%;
+}
+
+table .score, table .name {
+	border-right: 1px solid white;
+}
+
+a {
+	color: blue;
+	text-decoration: underline;
+}
+
+a:hover {
+	color: white;
+	text-decoration: underline;
+}
+
+section#menu {
+	display: block;
+	position: absolute;
+	top: 0%;
+	width: calc(9.5% - 1px);
+	height: 100%;
+}
+
+section#menu a {
+	display: block;
+	font-size: 18px;
+	width: calc(100% - 15px);
+	text-align: center;
+	border: 1px solid white;
+	margin: 5px;
+}
+
+section#stats div#achievementsDataList dd {
+	width: calc(25% - 5px);
+}
+
+section#stats div#achievementsDataList dt {
+	width: 75%;
+}
+
+div[id].hide {
+	display: none;
+}
+
+span[data-player] {
+	cursor: pointer;
+	width: 50px;
+	text-align: center;
+	margin-left: 5px;
+}
+
+span[data-player].strong {
+	font-weight: bold;
+	text-align: center;
+}
+
+span[data-player]:hover {
+	text-decoration: underline;
+}
+
+div#canvas {
+	height: 100%;
+}
