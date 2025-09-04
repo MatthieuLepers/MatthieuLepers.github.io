@@ -20,7 +20,7 @@ export interface INotification {
 }
 
 const useNotificationStore = () => {
-  const notifications = ref([] as INotification[]);
+  const notifications = ref([] as Array<INotification>);
 
   const actions = {
     pushRawNotification(notification: INotification) {
@@ -32,7 +32,7 @@ const useNotificationStore = () => {
       }
     },
     pushNotification(type: NotificationTypeEnum, text: string, delay = 3000) {
-      const notification = { type, text, delay };
+      const notification: INotification = { type, text, delay };
       actions.pushRawNotification(notification);
     },
     success(text: string, delay = 3000) {

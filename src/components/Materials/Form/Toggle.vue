@@ -2,8 +2,8 @@
   <div :class="GenerateModifiers('m-form-toggle', {
     focus: state.focused,
     disabled: props.disabled,
-    [props.variant]: props.variant,
-    [props.direction]: props.direction,
+    [props.variant]: !!props.variant,
+    [props.direction]: !!props.direction,
   })">
     <input
       type="checkbox"
@@ -11,7 +11,7 @@
       :checked="modelValue"
       :name="props.name"
       :disabled="props.disabled"
-      @input="modelValue = $event.target.checked"
+      @input="modelValue = ($event.target as HTMLInputElement)?.checked"
       @focus="actions.handleFocus('focus', true)"
       @blur="actions.handleFocus('blur', false)"
     />
@@ -21,37 +21,46 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { reactive, getCurrentInstance } from 'vue';
 
 defineOptions({ name: 'FormToggle' });
 
-const emit = defineEmits(['focus', 'blur']);
-const $uid = getCurrentInstance().uid;
+const emit = defineEmits<{
+  focus: [state: boolean];
+  blur: [state: boolean];
+}>();
+const $uid = getCurrentInstance()?.uid;
 
-const modelValue = defineModel({ type: Boolean, default: false });
+const modelValue = defineModel<boolean>({ default: false });
 
-/**
- * slots:
- * - default : label
- */
-const props = defineProps({
-  id: { type: String, default: null },
-  name: { type: String, default: null },
-  label: { type: String, required: true },
-  disabled: { type: Boolean, default: false },
-  variant: { type: String, default: 'default' },
-  direction: { type: String, default: 'left' },
+defineSlots<{
+  default(): void;
+}>();
+
+const props = withDefaults(defineProps<{
+  id?: string;
+  name?: string;
+  label: string;
+  disabled?: boolean;
+  variant?: 'default';
+  direction?: 'left' | 'right';
+}>(), {
+  disabled: false,
+  variant: 'default',
+  direction: 'left',
 });
 
-const state = reactive({
+const state = reactive<{
+  focused: boolean;
+}>({
   focused: false,
 });
 
 const actions = {
-  handleFocus(type, value) {
+  handleFocus(type: 'focus' | 'blur', value: boolean) {
     state.focused = value;
-    emit(type, state.focused);
+    emit(type as ('focus' & 'blur'), state.focused);
   },
 };
 </script>

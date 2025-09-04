@@ -16,6 +16,7 @@ export class QuadTreeNode {
 
   constructor(
     public bounds: Rectangle,
+    public depth: number = 0,
   ) {}
 
   static create({ x, y, width, height }: IQuadTreeOptions) {
@@ -24,7 +25,7 @@ export class QuadTreeNode {
 
   static MAX_PARTICLES = 25;
 
-  static THETA = 1.5;
+  static MAX_DEPTH = 8;
 
   get centerOfMass(): IBody {
     const mass = this.particles.length > 0
@@ -58,28 +59,31 @@ export class QuadTreeNode {
   }
 
   subdivide() {
-    const halfWidth = this.bounds.width / 2;
-    const halfHeight = this.bounds.height / 2;
+    const { x, y, width, height } = this.bounds;
+    const halfWidth = width / 2;
+    const halfHeight = height / 2;
     this.nodes = [
-      new QuadTreeNode(new Rectangle(this.bounds.x, this.bounds.y, halfWidth, halfHeight)),
-      new QuadTreeNode(new Rectangle(this.bounds.x + halfWidth, this.bounds.y, halfWidth, halfHeight)),
-      new QuadTreeNode(new Rectangle(this.bounds.x, this.bounds.y + halfHeight, halfWidth, halfHeight)),
-      new QuadTreeNode(new Rectangle(this.bounds.x + halfWidth, this.bounds.y + halfHeight, halfWidth, halfHeight)),
+      new QuadTreeNode(new Rectangle(x, y, halfWidth, halfHeight), this.depth + 1),
+      new QuadTreeNode(new Rectangle(x + halfWidth, y, halfWidth, halfHeight), this.depth + 1),
+      new QuadTreeNode(new Rectangle(x, y + halfHeight, halfWidth, halfHeight), this.depth + 1),
+      new QuadTreeNode(new Rectangle(x + halfWidth, y + halfHeight, halfWidth, halfHeight), this.depth + 1),
     ];
   }
 
-  private getChildIndex(particle: Particle): number {
+  private getChildIndex(p: Particle): number | -1 {
     const { center } = this.bounds;
-    return (particle.position.x > center.x ? 1 : 0)
-      + (particle.position.y > center.y ? 2 : 0)
-    ;
+
+    if (p.position.x === center.x || p.position.y === center.y) {
+      return -1;
+    }
+
+    return (p.position.x > center.x ? 1 : 0) + (p.position.y > center.y ? 2 : 0);
   }
 
   insert(particle: Particle) {
     if (this.nodes.length) {
       const index = this.getChildIndex(particle);
-
-      if (index >= 0) {
+      if (index !== -1) {
         this.nodes[index].insert(particle);
         return;
       }
@@ -87,20 +91,21 @@ export class QuadTreeNode {
 
     this.particles.push(particle);
 
-    if (this.particles.length > QuadTreeNode.MAX_PARTICLES) {
+    if (this.particles.length > QuadTreeNode.MAX_PARTICLES && this.depth < QuadTreeNode.MAX_DEPTH) {
       if (!this.nodes.length) {
         this.subdivide();
       }
 
-      let i = 0;
-      while (i < this.particles.length) {
-        const index = this.getChildIndex(this.particles[i]);
+      const oldParticles = this.particles;
+      this.particles = [];
 
-        if (index >= 0) {
-          const [item] = this.particles.splice(i, 1);
-          this.nodes[index].insert(item);
+      for (let i = 0; i < oldParticles.length; i += 1) {
+        const p = oldParticles[i];
+        const index = this.getChildIndex(p);
+        if (index === -1) {
+          this.particles.push(p);
         } else {
-          i += 1;
+          this.nodes[index].insert(p);
         }
       }
     }

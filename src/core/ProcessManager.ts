@@ -12,6 +12,10 @@ export class ProcessManager {
     this.tasks.push(task);
   }
 
+  removeTask(task: Task) {
+    this.tasks = this.tasks.filter((t) => t.id !== task.id);
+  }
+
   start() {
     this.frame = requestAnimationFrame(this.update.bind(this));
     this.running = true;

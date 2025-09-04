@@ -1,7 +1,20 @@
 <template>
   <div class="project-card">
     <div class="project-card__scene">
-      <component :is="props.project.scene" v-if="props.project.scene" />
+      <Teleport to="body" v-if="props.project.scene && state.fullscreen">
+        <component
+          :is="props.project.scene"
+          :fullscreen="state.fullscreen"
+          @fullscreen="state.fullscreen = !state.fullscreen"
+        />
+      </Teleport>
+      <component
+        v-else-if="props.project.scene && !state.fullscreen"
+        :is="props.project.scene"
+        :fullscreen="state.fullscreen"
+        @fullscreen="state.fullscreen = !state.fullscreen"
+      />
+
       <div class="scene" v-else>
         <img :src="props.project.image" alt="" />
       </div>
@@ -41,7 +54,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Component } from 'vue';
+import { reactive, type Component } from 'vue';
 
 import MaterialButton from '@/components/Materials/Button/index.vue';
 
@@ -57,6 +70,10 @@ interface IProject {
 const props = defineProps<{
   project: IProject;
 }>();
+
+const state = reactive({
+  fullscreen: false,
+});
 </script>
 
 <style lang="scss">

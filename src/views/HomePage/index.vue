@@ -59,8 +59,13 @@
   </main>
 </template>
 
-<script setup>
-import { reactive, onBeforeMount, watch } from 'vue';
+<script setup lang="ts">
+import {
+  reactive,
+  onBeforeMount,
+  watch,
+  type Component,
+} from 'vue';
 import { useRoute } from 'vue-router';
 import { Carousel, Slide, Pagination } from 'vue3-carousel';
 import 'vue3-carousel/carousel.css';
@@ -80,11 +85,24 @@ defineOptions({ name: 'HomePage' });
 
 const route = useRoute();
 
-const state = reactive({
+const state = reactive<{
+  currentSlideIndex: number;
+  open: boolean;
+}>({
   currentSlideIndex: 0,
+  open: false,
 });
 
-const projects = [
+interface IProject {
+  name: string;
+  description: string;
+  link: string;
+  scene?: Component;
+  github?: string;
+  image?: string;
+}
+
+const projects: Array<IProject> = [
   {
     name: 'R-Type Web V2',
     description: 'Grandement inspiré du jeu du même nom de chez IREM, sortie en 1987. Ce projet me tiens depuis 2015 et ceci est la version 2.',

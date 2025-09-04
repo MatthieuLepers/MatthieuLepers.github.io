@@ -21,6 +21,9 @@ $icons: (
   setting     : ('icomoon', '\e907'),
   grid        : ('icomoon', '\e908'),
   crosshair   : ('icomoon', '\e909'),
+  fullscreen  : ('icomoon', '\e90a'),
+  play        : ('icomoon', '\e90b'),
+  pause       : ('icomoon', '\e90c'),
 );
 
 @mixin icon($iconName) {

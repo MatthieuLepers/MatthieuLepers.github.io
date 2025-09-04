@@ -2,7 +2,7 @@
   <router-view />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { onMounted, onBeforeMount } from 'vue';
 
 import { appStore } from '@/core/stores/appStore';
@@ -12,7 +12,7 @@ onBeforeMount(() => {
 });
 
 onMounted(() => {
-  appStore.state.processManager.start();
+  appStore.processManager.start();
 });
 </script>
 

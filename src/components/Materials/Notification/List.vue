@@ -12,7 +12,7 @@
       <MaterialButton
         v-if="!!notification.action"
         class="m-notification-list__item-btn"
-        :icon="notification.action.icon ?? null"
+        :icon="notification.action.icon"
         :modifiers="{ danger: true, inverted: true }"
         @click="actions.handleClickAction(notification)"
       >
@@ -22,27 +22,28 @@
   </ol>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, watch } from 'vue';
 
 import MaterialButton from '@/components/Materials/Button/index.vue';
 
-import { notificationStore } from '@/components/Materials/Notification/Store';
+import { notificationStore, type INotification } from '@/components/Materials/Notification/Store';
 
 defineOptions({ name: 'NotificationList' });
 
 const notifications = ref(notificationStore.notifications);
 
 const actions = {
-  handleClickAction(notification) {
+  handleClickAction(notification: INotification) {
     if (!notification.delay) {
       notificationStore.actions.removeNotification(notification);
     }
-    notification.action.callback();
+    notification.action?.callback();
   },
 };
 
 watch(() => notificationStore.notifications, (newNotifications) => {
+  // @ts-ignore type is valid
   notifications.value = newNotifications;
 });
 </script>

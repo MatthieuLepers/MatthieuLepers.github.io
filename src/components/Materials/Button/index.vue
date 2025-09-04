@@ -16,29 +16,32 @@
   </component>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useSlots } from 'vue';
 
 defineOptions({ name: 'MButton' });
 
 const slots = useSlots();
 
-/**
- * slots:
- * - default
- */
-const props = defineProps({
-  tag: { type: String, default: 'button' },
-  type: { type: String, default: 'button' },
-  disabled: { type: Boolean, default: false },
-  icon: { type: String, default: null },
-  iconSide: { type: String, default: 'left' },
-  /**
-   * Valid modifiers:
-   * - Color : success, secondary, warning, danger, cancel
-   * - Style : inverted, squared
-   */
-  modifiers: { type: Object, default: () => ({}) },
+defineSlots<{
+  default(): void;
+}>();
+
+type Modifiers = 'success' | 'secondary' | 'warning' | 'danger' | 'cancel' | 'inverted' | 'squared';
+
+const props = withDefaults(defineProps<{
+  tag?: string;
+  type?: HTMLButtonElement['type'];
+  disabled?: boolean;
+  icon?: string;
+  iconSide?: 'left' | 'right';
+  modifiers?: Partial<Record<Modifiers, boolean>>;
+}>(), {
+  tag: 'button',
+  type: 'button',
+  disabled: false,
+  iconSide: 'left',
+  modifiers: () => ({}),
 });
 </script>
 

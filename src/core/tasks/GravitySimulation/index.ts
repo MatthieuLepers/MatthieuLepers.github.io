@@ -20,14 +20,11 @@ export class GravitySimulationTask extends Task {
     public scene: HTMLDivElement | null,
   ) {
     super();
-    window.addEventListener('DOMContentLoaded', () => {
-      this.setCanvasSize();
-    });
+    this.enabled = false;
   }
 
-  private setCanvasSize() {
-    if (this.canvas && this.scene) {
-      const { width, height } = this.scene.getBoundingClientRect();
+  setCanvasSize(width: number, height: number) {
+    if (this.canvas) {
       this.canvas.width = width;
       this.canvas.height = height;
 
@@ -71,6 +68,7 @@ export class GravitySimulationTask extends Task {
           // ),
         ))
       ;
+      this.enabled = true;
     }
   }
 
@@ -79,8 +77,6 @@ export class GravitySimulationTask extends Task {
       if (!this.ctx) {
         this.ctx = this.canvas.getContext('2d');
       } else {
-        this.setCanvasSize();
-
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.fillStyle = '#000';
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);

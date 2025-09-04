@@ -7,16 +7,16 @@ import { getLocalStorage } from '@/core/LocalStorage';
 interface IState {
   theme: string;
   storyMode: boolean;
-  processManager: ProcessManager;
   achievementList: Array<Achievement>;
   achivements: Array<string>;
 }
 
 const useAppStore = () => {
+  const processManager = new ProcessManager();
+
   const state = reactive<IState>({
     theme: 'Default',
     storyMode: false,
-    processManager: new ProcessManager(),
     achievementList: [],
     achivements: [],
   });
@@ -29,6 +29,7 @@ const useAppStore = () => {
 
   return {
     state,
+    processManager,
     actions,
   };
 };
