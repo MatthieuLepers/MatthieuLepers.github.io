@@ -1,5 +1,6 @@
 @use 'sass:color';
-@import '~styles/utilities.scss';
+
+@use '~styles/utilities' as *;
 
 @mixin set-button-color($background, $text) {
   background: linear-gradient(90deg, color.adjust($background, $lightness: 20%) 0%, $background 50%, color.adjust($background, $lightness: 20%) 100%);
@@ -17,7 +18,7 @@
 
   &.m-button--iconed:focus .m-button__icon,
   &.m-button--iconed:hover .m-button__icon {
-    color: lighten($text, 10%);
+    color: color.adjust($text, $lightness: 10%);
   }
 }
 

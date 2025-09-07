@@ -1,4 +1,4 @@
-import { Vector2D } from '@/core/tasks/GravitySimulation/geometry/Vector2D';
+import { Vector2D } from './Vector2D';
 
 export class Rectangle {
   constructor(

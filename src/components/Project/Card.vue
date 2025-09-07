@@ -77,8 +77,8 @@ const state = reactive({
 </script>
 
 <style lang="scss">
-@import '~styles/utilities';
-@import '../Scenes/Scene';
+@use '~styles/utilities' as *;
+@use '../../projects/Scene';
 
 .project-card {
   background-color: color(grey900);

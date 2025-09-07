@@ -60,12 +60,7 @@
 </template>
 
 <script setup lang="ts">
-import {
-  reactive,
-  onBeforeMount,
-  watch,
-  type Component,
-} from 'vue';
+import { reactive, onBeforeMount, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { Carousel, Slide, Pagination } from 'vue3-carousel';
 import 'vue3-carousel/carousel.css';
@@ -74,12 +69,11 @@ import MaterialButton from '@/components/Materials/Button/index.vue';
 import MaterialFormToggle from '@/components/Materials/Form/Toggle.vue';
 import Container from '@/components/Container.vue';
 import ProjectCard from '@/components/Project/Card.vue';
-import RTypeWebScene from '@/components/Scenes/RTypeWeb.vue';
-import GravitySimulationScene from '@/components/Scenes/GravitySimulationScene.vue';
 import AchievementArea from '@/components/Achievements/Area.vue';
 import AchievementList from '@/components/Achievements/List.vue';
 
 import { appStore } from '@/core/stores/appStore';
+import { projects } from '@/projects';
 
 defineOptions({ name: 'HomePage' });
 
@@ -92,45 +86,6 @@ const state = reactive<{
   currentSlideIndex: 0,
   open: false,
 });
-
-interface IProject {
-  name: string;
-  description: string;
-  link: string;
-  scene?: Component;
-  github?: string;
-  image?: string;
-}
-
-const projects: Array<IProject> = [
-  {
-    name: 'R-Type Web V2',
-    description: 'Grandement inspiré du jeu du même nom de chez IREM, sortie en 1987. Ce projet me tiens depuis 2015 et ceci est la version 2.',
-    link: '/r-type-web-v2/',
-    scene: RTypeWebScene,
-  },
-  {
-    name: 'Gravity simulation',
-    description: 'Passionné d\'astronomie, j\'ai toujours rêvé de voir la naissance d\'une étoile... Optimisé avec WebGPU.',
-    link: '/gravity-simulation',
-    scene: GravitySimulationScene,
-    github: 'https://github.com/MatthieuLepers/gravity-simulation',
-  },
-  {
-    name: 'MCD Save Editor',
-    description: 'Minecraft: Dungeons, sortie en mai 2020, offre une multitude de combinaisons de gameplay différents, et moi : un éditeur de sauvegarde 😈',
-    link: '/mcd-save-editor/',
-    github: 'https://github.com/MatthieuLepers/mcd-save-editor',
-    image: '/img/mcd-save-editor.png',
-  },
-  {
-    name: 'My Genshin Impact characters',
-    description: 'Un outil de tracking pour Genshin Impact, permettant de savoir quoi farmer et dans quelle proportion selon nos propres objectifs en jeu.',
-    link: '/my-genshin-impact-characters/',
-    github: 'https://github.com/MatthieuLepers/my-genshin-impact-characters',
-    image: '/img/my-genshin-impact-characters.png',
-  },
-];
 
 watch(() => route.hash, (hash) => {
   state.currentSlideIndex = parseInt(hash.replace(/#slide([0-9]+)/, '$1'), 10);

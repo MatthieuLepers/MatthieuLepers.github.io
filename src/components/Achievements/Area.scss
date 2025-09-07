@@ -1,4 +1,4 @@
-@import '~styles/utilities';
+@use '~styles/utilities' as *;
 
 .achievement-area {
   position: absolute;

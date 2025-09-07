@@ -63,15 +63,17 @@ import {
   onMounted,
   onUnmounted,
   nextTick,
+  getCurrentInstance,
 } from 'vue';
 
 import { appStore } from '@/core/stores/appStore';
-import { GravitySimulationTask } from '@/core/tasks/GravitySimulation';
-import { Vector2D } from '@/core/tasks/GravitySimulation/geometry/Vector2D';
 import type { Task } from '@/core/tasks';
+import { GravitySimulationTask } from './core';
+import { Vector2D } from './core/geometry/Vector2D';
 
 const scene = ref<HTMLDivElement | null>(null);
 const canvas = ref<HTMLCanvasElement | null>(null);
+const $uid = getCurrentInstance()?.uid;
 
 const emit = defineEmits<{
   fullscreen: [];
@@ -113,7 +115,7 @@ onMounted(async () => {
   state.task = new GravitySimulationTask(canvas.value, scene.value);
 
   state.mouseTask = {
-    id: 'mousetask',
+    id: `mousetask${$uid}`,
     enabled: false,
     async frame() {
       if (this.enabled) {
@@ -154,7 +156,8 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss">
-@import './Scene';
+@use '~styles/utilities' as *;
+@use '../Scene';
 
 .scene--gravity-simulation {
   border-radius: 24px 12px 24px 24px;

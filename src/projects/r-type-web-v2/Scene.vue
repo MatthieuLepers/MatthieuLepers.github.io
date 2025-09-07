@@ -30,7 +30,7 @@ onMounted(() => {
 </script>
 
 <style lang="scss">
-@import './Scene';
+@use '../Scene';
 
 @keyframes backgroundScroll {
   0% {

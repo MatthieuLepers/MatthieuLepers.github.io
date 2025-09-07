@@ -1,5 +1,8 @@
 @use 'sass:math';
 
+@use './colors' as colors;
+@use './fonts' as fonts;
+
 @mixin placeholder {
   #{if(&, '&.placeholder','.placeholder')} { @content; }
   #{if(&, '&:-moz-placeholder',':-moz-placeholder')} { @content; }
@@ -16,8 +19,8 @@
 }
 
 @mixin circle($radius) {
-  width: rem($radius);
-  height: rem($radius);
+  width: fonts.rem($radius);
+  height: fonts.rem($radius);
   border-radius: 50%;
 }
 
@@ -45,7 +48,7 @@
   border-bottom: #{math.div($width, 2)} solid transparent;
 }
 
-@mixin make-accessibility-shadow($color: color(secondary200)) {
+@mixin make-accessibility-shadow($color: colors.color(secondary200)) {
   outline: none;
 
   &::after {
@@ -65,11 +68,11 @@
 
   &:focus::after,
   &--focus::after {
-    box-shadow: 0 0 0 .125rem color(grey800), 0 0 0 .25rem $color;
+    box-shadow: 0 0 0 .125rem colors.color(grey800), 0 0 0 .25rem $color;
   }
 }
 
-@mixin make-accessibility-background($color: color(grey700)) {
+@mixin make-accessibility-background($color: colors.color(grey700)) {
   @include transition(background-color .2s ease);
   outline: none;
 

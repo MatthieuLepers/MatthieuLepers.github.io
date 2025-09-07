@@ -1,3 +1,5 @@
+@use 'sass:map';
+
 $colors: (
   grey000      : #fff,
   grey100      : #F5F5F5,
@@ -18,5 +20,5 @@ $colors: (
 );
 
 @function color($colorName) {
-  @return map-get($colors, $colorName);
+  @return map.get($colors, $colorName);
 }

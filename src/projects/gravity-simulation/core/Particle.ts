@@ -1,5 +1,5 @@
 import { findAchievement } from '@/core/Achievement';
-import { Vector2D } from '@/core/tasks/GravitySimulation/geometry/Vector2D';
+import { Vector2D } from './geometry/Vector2D';
 
 export interface IBody {
   position: Vector2D;

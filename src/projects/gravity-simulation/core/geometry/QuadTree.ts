@@ -1,6 +1,6 @@
-import { Rectangle } from '@/core/tasks/GravitySimulation/geometry/Rectangle';
-import { Vector2D } from '@/core/tasks/GravitySimulation/geometry/Vector2D';
-import type { IBody, Particle } from '@/core/tasks/GravitySimulation/Particle';
+import { Rectangle } from './Rectangle';
+import { Vector2D } from './Vector2D';
+import type { IBody, Particle } from '../Particle';
 
 export interface IQuadTreeOptions {
   x: number;

@@ -1,5 +1,5 @@
 import { getLocalStorage, setLocalStorage } from '@/core/LocalStorage';
-import AchievementsJson from '@/core/achievements.json';
+import { achievements } from '@/projects';
 import { appStore } from '@/core/stores/appStore';
 
 export interface IAchievement {
@@ -70,12 +70,12 @@ export class Achievement {
 }
 
 export const ACHIEVEMENTS = Object
-  .entries(AchievementsJson)
+  .entries(achievements)
   .reduce((acc, [key, val]) => ({
     ...acc,
     [val.project]: [
       ...(acc[val.project] ?? []),
-      new Achievement({ id: key, ...val }),
+      new Achievement({ ...val, id: key }),
     ].sort((a, b) => a.order - b.order),
   }), {} as Record<string, Array<Achievement>>)
 ;

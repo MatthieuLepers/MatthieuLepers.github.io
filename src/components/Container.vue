@@ -11,7 +11,7 @@ defineSlots<{
 </script>
 
 <style lang="scss">
-@import '~styles/utilities';
+@use '~styles/utilities' as *;
 
 .container {
   width: calc(100% - 32px);
