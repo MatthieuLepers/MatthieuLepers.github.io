@@ -1,0 +1,533 @@
+* {
+    -moz-user-select: none;
+}
+
+html, body {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+html {
+	background-color: black;
+	overflow: hidden;
+}
+
+*#canvas {
+	background-image: url('../images/background.png');
+}
+
+*#canvas.animate {
+	background-repeat: reapeat-y;
+	-webkit-animation: backgroundScroll 20s linear infinite;
+	animation: backgroundScroll 7s linear infinite;
+}
+
+@-webkit-keyframes backgroundScroll {
+	from {
+		background-position: 0 0;
+	}
+	to {
+		background-position: -600px 0;
+	}
+}
+
+@keyframes backgroundScroll {
+	from {
+		background-position: 0 0;
+	}
+	to {
+		background-position: -600px 0;
+	}
+}
+
+/* ------- GUI ----- */
+label#fpsDrawer {
+	display: block;
+	position: absolute;
+	bottom: 15px;
+	left: 5px;
+	z-index: 10;
+	font-weight: bold;
+}
+
+label#fpsDrawer:before {
+	content: "Fps: ";
+	color: white;
+}
+
+label#fpsDrawer.green {
+	color: green;
+}
+
+label#fpsDrawer.orange {
+	color: orange;
+}
+
+label#fpsDrawer.red {
+	color: red;
+}
+
+div#scoreboard {
+	border: none;
+	display: block;
+	position: absolute;
+	bottom: 0px;
+	color: white;
+	height: 50px;
+	width: 100%;
+	border-top: 1px solid white;
+	z-index: 3;
+	background-color: #000;
+}
+
+div#scoreboard span {
+	display: block;
+}
+
+div#scoreboard span.scoreP1 {
+	position: absolute;
+	font-weight: bold;
+	top: 6px;
+	left: 10%;
+}
+
+div#scoreboard span.scoreP2{
+	position: absolute;
+	font-weight: bold;
+	top: 6px;
+	right: 234px;
+}
+
+div#scoreboard span.scoreP1:before {
+	content: "1P- ";
+	color: cyan;
+	font-weight: bold;
+}
+
+div#scoreboard span.scoreP2:before {
+	content: "2P- ";
+	color: cyan;
+	font-weight: bold;
+}
+
+div#scoreboard span.scoreP1 span, div#scoreboard span.scoreP2 span {
+	color: white;
+    margin-left: 26px;
+}
+
+div#scoreboard span.power {
+	position: absolute;
+	width: 300px;
+	height: 10px;
+	border: 1px solid #DDD;
+}
+
+div#scoreboard span.power.p1 {
+	left: calc(50% - 150px);
+	top: 5px;
+}
+
+div#scoreboard span.power.p2 {
+	left: calc(50% - 150px);
+	bottom: 11px;
+}
+
+div#scoreboard span.power:before {
+	content: '.';
+	display: block;
+	color: transparent;
+	position: absolute;
+	width: 4px;
+	height: 6px;
+	background-color: #DDD;
+	top: 2px;
+	left: -4px;
+}
+
+div#scoreboard span.power:after {
+	content: '.';
+	display: block;
+	color: transparent;
+	position: absolute;
+	width: 4px;
+	height: 6px;
+	background-color: #DDD;
+	top: 2px;
+	right: -4px;
+}
+
+div#scoreboard span.power span {
+	height: 100%;
+	background-color: blue;
+}
+
+div#scoreboard span.label {
+	display: block;
+	position: absolute;
+	color: cyan;
+	font-weight: bold;
+}
+
+div#scoreboard span.label.p1 {
+	left: calc(50% - 210px);
+	top: 0px;
+}
+
+div#scoreboard span.label.p2 {
+	left: calc(50% - 210px);
+	bottom: 8px;
+}
+
+div#scoreboard div#help {
+	display: block;
+	position: absolute;
+	top: 4px;
+	right: 2px;
+	border: 1px solid white;
+	border-radius: 45px;
+	height: 40px;
+	width: 40px;
+	cursor: pointer;
+	background-image: url('../images/gui/help.png');
+	background-size: cover;
+}
+
+div#scoreboard div#bestScores {
+	position: absolute;
+	left: 60%;
+}
+
+div#scoreboard div#bestScores span.best1P::before {
+	content: "BEST 1P- ";
+	color: cyan;
+}
+
+div#scoreboard div#bestScores span.best2P::before {
+	content: "BEST 2P- ";
+	color: cyan;
+}
+
+body>div#helpMenu {
+	display: block;
+	position: absolute;
+	bottom: 54px;
+	right: 3px;
+	border: 1px solid white;
+	background-color: black;
+	z-index: 9;
+	width: 200px;
+	height: auto;
+	color: white;
+	padding: 5px;
+}
+
+body>div#helpMenu h2 {
+	text-align: center;
+	margin: 5px;
+	padding: 0;
+	border-bottom: 1px solid white;
+}
+
+body>div#helpMenu h2.border {
+	margin-top: 12px;
+}
+
+dl {
+    border-bottom: 1px solid #222;
+    display: block;
+    margin: 0;
+    padding: 2px;
+    width: calc(100% - 4px);
+}
+
+dl dt {
+    display: inline-block;
+    text-align: right;
+    width: calc(20% - 5px);
+}
+
+dl dd {
+    display: block;
+    float: left;
+    margin: 0;
+    width: 80%;
+}
+
+body>div#helpMenu dl  {
+	border: none;
+}
+
+body>div#helpMenu dl dd {
+	display: block;
+	width: 20%;
+}
+
+body>div#helpMenu dl dt {
+	display: block;
+	width: 80%;
+	margin-left: 39px;
+}
+
+body>div#helpMenu span {
+	display: block;
+	width: 100%;
+	text-align: center;
+}
+
+body>div#helpMenu div#skins {
+	display: block;
+	width: 100%;
+	text-align: inherit;
+}
+
+body>div#helpMenu div#skins span.skin {
+	display: inline-block;
+	width: 32%;
+	height: 16px;
+	margin-bottom: 2px;
+}
+
+div#gameOver {
+	display: block;
+	position: absolute;
+	top: 10%;
+	left: calc(50% - 200px);
+	width: 400px;
+	margin: auto;
+	color: white;
+	text-align: center;
+	background-color: black;
+	z-index: 9;
+	border: 1px solid white;
+}
+
+div#gameOver span {
+	display: block;
+	width: 50%;
+	margin-left: 35%;
+	text-align: left;
+}
+
+div#gameOver button {
+	background-color: transparent;
+	border: none;
+	cursor: pointer;
+	color: white;
+	font-weight: bold;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+span.tries {
+	position: absolute;
+	top: 0px;
+}
+
+span.tries.player1 {
+	left: 5px;
+}
+
+span.tries.player2 {
+	right: 350px;
+}
+
+span.tries.player1 img {
+	margin-right: 1px;
+}
+
+span.tries.player2 img {
+	margin-left: 1px;
+}
+
+.hide {
+	display: none;
+}
+
+img.flip {
+	-moz-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: FlipH;
+    -ms-filter: "FlipH";
+}
+
+h2#ctrl {
+	border-top: 1px solid white;
+}
+
+div#tab_control_labels {
+	display: block;
+	margin: 5px;
+}
+
+label.tab {
+	display: inline-block;
+	cursor: pointer;
+	width: 48.9%;
+	text-align: center;
+}
+
+div#achievements {
+	z-index: 10;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+div#achievement {
+	display: block;
+	position: relative;
+	width: 250px;
+	height: 50px;
+	border: 1px solid #444;
+	text-align: center;
+	background-color: black;
+	margin: 2px;
+	border-radius: 50px;
+}
+
+div#achievement>img {
+	width: 31px;
+	height: 32px;
+	position: absolute;
+	top: 8px;
+	left: 10px;
+}
+
+div#achievement>span {
+	display: block;
+	margin-left: 32px;
+	margin-top: 5px;
+	font-weight: bold;
+	color: cyan;
+}
+
+div#achievement>span span {
+	display: block;
+	font-weight: normal;
+	color: white;
+}
+
+div#gameOver div#playersNames {
+	text-align: center;
+}
+
+div#gameOver div#playersNames span.name {
+	display: inline-block;
+	border: 1px solid black;
+	margin: inherit;
+	width: inherit;
+}
+
+div#gameOver div#playersNames span.name.selected {
+	border: 1px solid white;
+}
+
+div#gameOver div#playersNames span.format {
+	display: inline-block;
+	margin-left: 4px;
+	margin-right: 4px;
+	width: inherit;
+}
+
+div#gameOver span.red, div#gameOver span.green {
+	display: inline-block;
+	width: inherit;
+	margin-left: inherit;
+}
+
+span.red {
+	color: red;
+}
+
+span.green {
+	color: green;
+}
+
+div#scoreboard span.sources {
+	position: absolute;
+	right: 55px;
+	top: 5px;
+	width: 300px;
+}
+
+div#scoreboard a.sources {
+    display: block;
+	float: right;
+    color: cyan;
+}
+
+div#scoreboard span.sources span.lastCommit {
+	display: block;
+	float: right;
+}
+
+div#scoreboard span.sources span.lastCommit a {
+	display: inline-block;
+	color: cyan;
+}
+
+/* Tactile Pad */
+.pad {
+	display: block;
+	border: 1px solid grey;
+	border-radius: 50px;
+	opacity: 0.50;
+	position: absolute;
+	width: 64px;
+	height: 64px;
+	z-index: 99;
+}
+
+span#padUp {
+	left: 96px;
+	bottom: 228px;
+	background-image: url('../images/gui/up.png');
+}
+
+span#padLeft {
+	left: 32px;
+	bottom: 160px;
+	background-image: url('../images/gui/left.png');
+}
+
+span#padDown {
+	left: 96px;
+	bottom: 96px;
+	background-image: url('../images/gui/down.png');
+}
+
+span#padRight {
+	left: 160px;
+	bottom: 160px;
+	background-image: url('../images/gui/right.png');
+}
+
+span#padShoot {
+	right: 32px;
+	bottom: 96px;
+	background-image: url('../images/gui/bullet.png');
+}
+
+span#padCharge {
+	right: 118px;
+	bottom: 96px;
+	background-image: url('../images/gui/charged_beam.png');
+}
+
+span#padCallRelease {
+	right: 32px;
+	bottom: 180px;
+	background-image: url('../images/gui/module.png');
+}
+
+span#padPause {
+	right: 32px;
+	top: 32px;
+	width: 48px;
+	height: 48px;
+	background-image: url('../images/gui/pause.png');
+}
