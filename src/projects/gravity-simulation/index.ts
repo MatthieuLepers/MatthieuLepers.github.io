@@ -7,6 +7,13 @@ export const project = {
   scene: Scene,
   github: 'https://github.com/MatthieuLepers/gravity-simulation',
   order: 1,
+  details: {
+    front: {
+      main: ['WebGPU', 'Typescript'],
+      bundler: ['vite'],
+      eslint: ['Airbnb'],
+    },
+  },
 };
 
 export const achievements = {

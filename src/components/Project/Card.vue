@@ -21,11 +21,16 @@
     </div>
 
     <div class="project-card__infos">
-      <h2>
+      <h2 class="project-card__title">
         {{ props.project.name }}
       </h2>
 
-      <p>
+      <p v-if="Array.isArray(props.project.description)">
+        <span  v-for="(line, i) in props.project.description" :key="i">
+          {{ line }}<br v-if="i < props.project.description.length - 1" />
+        </span>
+      </p>
+      <p v-else>
         {{ props.project.description }}
       </p>
 
@@ -54,18 +59,10 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, type Component } from 'vue';
+import { reactive } from 'vue';
 
 import MaterialButton from '@/components/Materials/Button/index.vue';
-
-interface IProject {
-  name: string;
-  description: string;
-  link?: string;
-  github?: string;
-  image?: string;
-  scene?: Component;
-}
+import type { IProject } from '@/projects';
 
 const props = defineProps<{
   project: IProject;
@@ -88,10 +85,13 @@ const state = reactive({
   flex-direction: column;
   gap: rem(16px);
 
-  h2 {
+  &__title {
     @include set-font-scale(l);
     text-shadow: 0 0 5px color(secondary200);
     font-weight: 700;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
   p {

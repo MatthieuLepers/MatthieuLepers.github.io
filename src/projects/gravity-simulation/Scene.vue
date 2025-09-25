@@ -160,7 +160,7 @@ onUnmounted(() => {
 @use '../Scene';
 
 .scene--gravity-simulation {
-  border-radius: 24px 12px 24px 24px;
+  border-radius: 12px 12px 24px 24px;
   position: relative;
 }
 

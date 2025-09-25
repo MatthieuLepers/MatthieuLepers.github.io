@@ -5,4 +5,28 @@ export const project = {
   github: 'https://github.com/MatthieuLepers/my-genshin-impact-characters',
   image: '/img/my-genshin-impact-characters.png',
   order: 3,
+  details: {
+    front: {
+      main: ['Vue.js', 'Typescript'],
+      bundler: ['vite', 'electron-builder'],
+      eslint: ['Airbnb'],
+      packages: [
+        'vue-router',
+        'vue-i18n',
+        'axios',
+        'sass',
+        'electron',
+      ],
+    },
+    back: {
+      main: ['Electron', 'Node.js 22', 'Typescript'],
+      bundler: ['tsc', 'electron-builder'],
+      eslint: ['Airbnb'],
+      packages: [
+        'sequelize-typescript',
+        'sqlite3',
+        'yup',
+      ],
+    },
+  },
 };

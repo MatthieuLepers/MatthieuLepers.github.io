@@ -11,6 +11,22 @@ export interface IProject {
   image?: string;
   visible?: boolean;
   order?: number;
+  details?: IProjectDetails;
+}
+
+export interface IProjectDetails {
+  front?: IProjectTechnologies;
+  back?: IProjectTechnologies;
+  devops?: string[];
+}
+
+export interface IProjectTechnologies {
+  main: string[];
+  bundler?: string[];
+  server?: string[];
+  eslint?: string[];
+  packages?: string[];
+  tests?: string[];
 }
 
 interface IModule {

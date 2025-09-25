@@ -6,4 +6,11 @@ export const project = {
   link: '/r-type-web-v2/',
   scene: Scene,
   order: 0,
+  details: {
+    front: {
+      main: ['Javascript'],
+      eslint: ['Airbnb'],
+      packages: ['sass'],
+    },
+  },
 };

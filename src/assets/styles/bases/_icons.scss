@@ -27,6 +27,7 @@ $icons: (
   fullscreen  : ('icomoon', '\e90a'),
   play        : ('icomoon', '\e90b'),
   pause       : ('icomoon', '\e90c'),
+  info        : ('icomoon', '\e90d'),
 );
 
 @mixin icon($iconName) {
