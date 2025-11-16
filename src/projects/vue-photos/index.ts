@@ -2,7 +2,7 @@ export const project = {
   name: 'Vue GED',
   description: 'Un Google Photos-like auto-hébergé sur mon raspberry pi.',
   image: '/img/vue-photos.png',
-  link: 'https://ged.cosmicnoise.dev/',
+  link: 'https://ged.cosmicnoise.dev/#/request-demo-account',
   order: 1,
   details: {
     front: {
