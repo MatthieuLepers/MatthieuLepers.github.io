@@ -76,4 +76,12 @@
       display: block;
     }
   }
+
+  &__lang {
+    margin-left: rem(8px);
+
+    img {
+      width: 24px;
+    }
+  }
 }

@@ -44,7 +44,7 @@
           font-size="16"
           font-family="Space Grotesk, Arial, sans-serif"
           font-weight="600"
-        >{{ project.name }}</text>
+        >{{ project.name[locale] }}</text>
       </a>
 
       <path
@@ -77,7 +77,7 @@
         <path id="RocketTrust" opacity="0" d="M12.5347 25.8222C12.2338 26.1181 11.7527 26.2289 11.1754 26.3224C9.87777 26.5291 8.74234 25.3986 8.98848 24.091C9.08201 23.5976 9.35309 22.902 9.51586 22.7392C9.61204 22.648 9.61444 22.4975 9.52311 22.4012C9.46881 22.3469 9.39724 22.3197 9.32323 22.3296C8.5979 22.4131 7.91956 22.7311 7.3992 23.2416C6.10447 24.5116 5.9413 29.2709 5.9413 29.2709C5.9413 29.2709 10.7055 29.1965 11.9978 27.9289C12.5181 27.4184 12.8558 26.745 12.9493 26.0197C12.9714 25.8001 12.695 25.6619 12.5347 25.8222Z" fill="url(#rocketTrailGradient)"/>
       </g>
 
-      <a href="" @click.prevent.stop="achievementsStore.actions.acquireByProject('Portfolio', 'voyager_one')">
+      <a href="#" @click.prevent.stop="achievementsStore.actions.acquireByProject('Portfolio', 'voyager_one')">
         <g id="VoyagerOne" transform="translate(21 1002)">
           <path d="M4.49561 3.25001H4.12939L3.96272 3.00002H3.68752C3.68752 3.00006 3.68752 3.00009 3.68752 3.00014C3.68752 3.02394 3.69436 3.048 3.70852 3.06936L3.82894 3.25001H3.8125C3.74341 3.25001 3.6875 3.30592 3.6875 3.37501C3.6875 3.44411 3.74341 3.50001 3.8125 3.50001H4.1875V3.65873C4.2243 3.63742 4.26691 3.62501 4.3125 3.62501C4.35809 3.62501 4.4007 3.63742 4.4375 3.65873V3.50001H4.8125C4.88159 3.50001 4.9375 3.44411 4.9375 3.37501C4.9375 3.30592 4.88159 3.25001 4.8125 3.25001H4.79606L4.9165 3.06934C4.93072 3.04797 4.9375 3.02384 4.9375 3H4.66226L4.49561 3.25001Z" fill="#B6B8BE"/>
           <path d="M5.18749 1.37501H5.13573L5.27587 1.51515C5.34667 1.58594 5.44092 1.62501 5.54101 1.62501H5.81249V1.37501H5.54101C5.50817 1.37501 5.47595 1.36169 5.45263 1.33838L5.31249 1.19824V1.25001C5.31249 1.3191 5.25659 1.37501 5.18749 1.37501Z" fill="#888693"/>
@@ -104,7 +104,7 @@
         </g>
       </a>
 
-      <a href="" @click.prevent.stop="achievementsStore.actions.acquireByProject('Portfolio', '3i_atlas')">
+      <a href="#" @click.prevent.stop="achievementsStore.actions.acquireByProject('Portfolio', '3i_atlas')">
         <g id="3I-Atlas" transform="translate(220 166)">
           <path d="M8.02033 2.61735L1.5457 15.1295L1.53579 18.4732L4.87953 18.4831L8.02033 2.61735Z" fill="#62BBC7"/>
           <path d="M17.4298 12.0828L1.5457 15.1295L1.53579 18.4732L4.87952 18.4832L17.4298 12.0828Z" fill="#62BBC7"/>
@@ -164,6 +164,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { gsap } from 'gsap';
 
 import { appStore } from '@/core/stores/appStore';
@@ -179,6 +180,8 @@ type Trajectory = {
 
 defineOptions({ name: 'AppNavigation' });
 
+const { locale } = useI18n();
+
 const path = ref<SVGPathElement | null>(null);
 
 const trajectories = computed(() => {
@@ -190,7 +193,6 @@ const trajectories = computed(() => {
 
   if (current === undefined) return result;
 
-  // Current trajectory (for animation)
   if (old !== undefined && old !== current) {
     const isForward = current > old;
     result.push({
@@ -201,7 +203,6 @@ const trajectories = computed(() => {
     });
   }
 
-  // All trajectories for current planet
   result.push(
     ...Array.from<never, Trajectory>({ length: current }, (_, i) => ({
       type: 'prev',

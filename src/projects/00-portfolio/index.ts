@@ -2,11 +2,22 @@ import { appStore } from '@/core/stores/appStore';
 import { Earth } from '@/components/Svg';
 
 export const project = {
-  name: 'Présentation',
-  nameOverride: 'Portfolio',
-  description: [
-    'Il s\'agit de ce portfolio. Plus beau que le précedent et surtout plus animé !',
-  ],
+  name: {
+    'fr-FR': 'Présentation',
+    'en-EN': 'Presentation',
+  },
+  nameOverride: {
+    'fr-FR': 'Portfolio',
+    'fr-EN': 'Portfolio',
+  },
+  description: {
+    'fr-FR': [
+      'Il s’agit de ce portfolio. Plus beau que le précedent et surtout plus animé !',
+    ],
+    'en-EN': [
+      'It’s this portfolio. More beautiful than the previous one, and above all, more dynamic!',
+    ],
+  },
   link: 'https://matthieulepers.github.io/',
   medias: [],
   navigationSvg: Earth,
@@ -14,37 +25,98 @@ export const project = {
     appStore.actions.scrollToScreen(0);
   },
   technologies: [
-    { logo: '/img/svg/vuejs.svg', label: 'Vue.JS', tooltip: 'Vue 3' },
+    {
+      logo: '/img/svg/vuejs.svg',
+      label: 'Vue.JS',
+      tooltip: {
+        'fr-FR': 'Vue 3',
+        'en-EN': 'Vue 3',
+      },
+    },
     { logo: '/img/svg/typescript.svg', label: 'TypeScript' },
     { logo: '/img/svg/sass.svg', label: 'SASS' },
     { logo: '/img/svg/vitejs.png', label: 'Vite' },
     { logo: '/img/svg/svg.svg', label: 'SVG' },
-    { logo: '/img/svg/gsap.svg', label: 'GSAP', abbreviation: 'GreenSock Animation Platform', tooltip: 'Framework d\'animations' },
+    {
+      logo: '/img/svg/gsap.svg',
+      label: 'GSAP',
+      abbreviation: 'GreenSock Animation Platform',
+      tooltip: {
+        'fr-FR': 'Framework d’animations',
+        'en-EN': 'Animations framework',
+      },
+    },
   ],
   deployment: [
-    { logo: '/img/svg/github.svg', label: 'GitHub', tooltip: 'GitHub Pages via GitHub Actions' },
+    {
+      logo: '/img/svg/github.svg',
+      label: 'GitHub',
+      tooltip: {
+        'fr-FR': 'GitHub Pages via GitHub Actions',
+        'en-EN': 'GitHub Pages using GitHub Actions',
+      },
+    },
   ],
   tools: [
     { logo: '/img/svg/figma.svg', label: 'Figma' },
-    { logo: '/img/svg/photoshop.svg', label: 'Photoshop', tooltip: 'Retouche du background' },
-    { logo: '/img/svg/illustrator.svg', label: 'Illustrator', tooltip: 'Création d\'illustrations SVG' },
-    { logo: '/img/svg/chatgpt.svg', label: 'ChatGPT', tooltip: 'Assitant technique' },
+    {
+      logo: '/img/svg/photoshop.svg',
+      label: 'Photoshop',
+      tooltip: {
+        'fr-FR': 'Retouche du background',
+        'en-EN': 'Background retouching',
+      },
+    },
+    {
+      logo: '/img/svg/illustrator.svg',
+      label: 'Illustrator',
+      tooltip: {
+        'fr-FR': 'Création d’illustrations SVG',
+        'en-EN': 'Creating SVG illustrations',
+      },
+    },
+    {
+      logo: '/img/svg/chatgpt.svg',
+      label: 'ChatGPT',
+      tooltip: {
+        'fr-FR': 'Assitant technique',
+        'en-EN': 'Technical assistant',
+      },
+    },
   ],
   order: 0,
 };
 
 export const achievements = {
   voyager_one: {
-    name: 'Voyager 1',
-    description: 'S\'éloignant de la Terre à une vitesse d\'environ 17 km/s, elle abrite un disque d\'or contenant diverses informations sur notre civilisation.',
-    clue: 'L\'objet humain le plus lointain jamais envoyé dans l\'espace...',
+    name: {
+      'fr-FR': 'Voyager 1',
+      'en-EN': 'Voyager 1',
+    },
+    description: {
+      'fr-FR': 'S’éloignant de la Terre à une vitesse d’environ 17 km/s, elle abrite un disque d’or contenant diverses informations sur notre civilisation.',
+      'en-EN': 'Moving away from Earth at a speed of approximately 17 km/s, it houses a golden disc containing various information about our civilization.',
+    },
+    clue: {
+      'fr-FR': 'L’objet humain le plus lointain jamais envoyé dans l’espace...',
+      'en-EN': 'The most distant man-made object ever sent into space...',
+    },
     order: 0,
     image: '/img/achievements/icon-voyager-one.png',
   },
   '3i_atlas': {
-    name: '3I/ATLAS',
-    description: 'Une comète formée dans un autre système stellaire, passée dans notre système solaire fin 2025 et qui ne reviendra probablement jamais.',
-    clue: 'Le 3e objet interstellaire découvert le 1er juillet 2025 au Chili...',
+    name: {
+      'fr-FR': '3I/ATLAS',
+      'en-EN': '3I/ATLAS',
+    },
+    description: {
+      'fr-FR': 'Une comète formée dans un autre système stellaire, passée dans notre système solaire fin 2025 et qui ne reviendra probablement jamais.',
+      'en-EN': 'A comet formed in another star system, passed through our solar system at the end of 2025 and will probably never return.',
+    },
+    clue: {
+      'fr-FR': 'Le 3e objet interstellaire découvert le 1er juillet 2025 au Chili...',
+      'en-EN': 'The 3rd interstellar object discovered on July 1st, 2025 in Chile...',
+    },
     order: 1,
     image: '/img/achievements/icon-3iatlas.png',
   },

@@ -270,6 +270,7 @@
 
     p {
       display: none;
+      white-space: pre-line;
 
       @include set-from-screen('xl') {
         display: block;
@@ -322,6 +323,7 @@
         font-size: rem(11px);
         line-height: auto;
         font-weight: 400;
+        white-space: pre-line;
 
         @include set-from-screen('xs') {
           font-size: rem(12px);

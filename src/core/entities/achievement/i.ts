@@ -1,10 +1,12 @@
+type I18nString = Record<string, string>;
+
 export interface IAchievement {
   id: string;
-  name: string;
-  description: string;
+  name: I18nString;
+  description: I18nString;
   order: number;
-  clue: string;
-  project: string;
+  clue: I18nString;
+  project: I18nString;
   image: string;
   hidden?: boolean;
 }

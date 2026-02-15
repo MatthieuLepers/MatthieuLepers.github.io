@@ -4,11 +4,11 @@
       <div class="app-hero__left flexy__col flexy__col--full flexy__col--1of2@from-m">
         <h1 class="app-hero__title">
           <span>
-            Bonjour<span>.</span><br />
-            Moi c’est Matthieu
+            {{ t('Hero.hello') }}<span>.</span><br />
+            {{ t('Hero.iam') }}
           </span>
 
-          Développeur JavaScript
+          {{ t('Hero.jobName') }}
         </h1>
 
         <div class="app-hero__actions">
@@ -17,7 +17,7 @@
             target="_blank"
             class="cta cta--filled"
           >
-            Vous avez un projet ?
+            {{ t('Hero.youGetAProject') }}
           </a>
         </div>
       </div>
@@ -26,28 +26,25 @@
         <img src="/img/Profile.png" alt="Photo de profil de Matthieu LEPERS" />
 
         <div class="app-hero__about">
-          <h2>À propos de moi...</h2>
+          <h2>{{ t('Hero.aboutMe') }}</h2>
           <p>
-            J’ai découvert la programmation au lycée via ma calculatrice TI,<br />
-            par la suite je me suis spécialisé dans le développement web.
+            {{ t('Hero.aboutMeParagraph') }}
           </p>
         </div>
 
         <div class="app-hero__numbers flexy flexy--gutter">
           <div class="number flexy__col flexy__col--1of3 flexy__col--1of2@from-s flexy__col--1of3@from-l">
             <h4>
-              8<span>+</span>
+              {{ years }}<span>+</span>
             </h4>
             <p>
-              Années<br />
-              d'expérience
+              {{ t('Hero.numbers.yearOfExperiences') }}
             </p>
           </div>
           <div class="number flexy__col flexy__col--1of3 flexy__col--1of3 flexy__col--1of2@from-s flexy__col--1of3@from-l">
             <h4>4</h4>
             <p>
-              Missions<br />
-              longues réalisées
+              {{ t('Hero.numbers.accomplishedMissions') }}
             </p>
           </div>
         </div>
@@ -65,12 +62,27 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+
 import ScrollIndicator from '@/components/Svg/ScrollIndicator.vue';
 import Container from '@/components/Container.vue';
 
 import { appStore } from '@/core/stores/appStore';
 
 defineOptions({ name: 'AppHero' });
+
+const { t } = useI18n();
+
+const years = computed(() => {
+  const origineDate = new Date('2017-10-01');
+  const now = new Date();
+
+  const y = now.getFullYear() - origineDate.getFullYear();
+  const m = now.getMonth() - origineDate.getMonth();
+
+  return m < 0 ? y - 1 : y;
+});
 </script>
 
 <style lang="scss" src="./Hero.scss">

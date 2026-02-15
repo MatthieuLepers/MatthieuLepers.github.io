@@ -9,7 +9,7 @@
     >
       <AppTooltip
         v-if="technologie.tooltip"
-        :text="technologie.tooltip"
+        :text="technologie.tooltip[locale]"
       >
         <AppTechnologie
           :technologie="technologie"
@@ -25,10 +25,14 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
+
 import AppTechnologie from '@/components/App/Technologie.vue';
 import AppTooltip from '@/components/App/Tooltip.vue';
 
 import type { ITechnologie } from '@/projects';
+
+const { locale } = useI18n();
 
 const props = withDefaults(defineProps<{
   technologies?: Array<ITechnologie>;

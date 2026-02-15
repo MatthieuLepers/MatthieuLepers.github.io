@@ -3,17 +3,20 @@ import type { Component } from 'vue';
 import type { IAchievement } from '@/core/entities/achievement/i';
 import type { ISVGPlanet } from '@/components/Svg';
 
+type I18nString = Record<string, string>;
+type I18nStringArray = Record<string, Array<string>>;
+
 export interface ITechnologie {
   logo: string;
   label: string;
   abbreviation?: string;
-  tooltip?: string;
+  tooltip?: I18nString;
 }
 
 export interface IProject {
-  name: string;
-  nameOverride?: string;
-  description: string[];
+  name: I18nString;
+  nameOverride?: I18nString;
+  description: I18nStringArray;
   link: string;
   scene?: Component;
   github?: string;

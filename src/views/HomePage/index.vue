@@ -18,7 +18,7 @@
       <template #prev>
         <button
           class="scroll-button scroll-button--up"
-          :title="i === 0 ? 'Revenir à la présentation' : 'Projet précédent'"
+          :title="i === 0 ? t('Page.backToPresentation') : t('Page.previousProject')"
           @click="appStore.actions.scrollToScreen(appStore.state.currentIndex - 1)"
         >
           <ScrollIndicator direction="up" />
@@ -27,7 +27,7 @@
       <template #next v-if="projects?.[i + 1]">
         <button
           class="scroll-button scroll-button--down"
-          title="Project suivant"
+          :title="t('Page.nextProject')"
           @click="appStore.actions.scrollToScreen(appStore.state.currentIndex + 1)"
         >
           <ScrollIndicator direction="down" />
@@ -46,6 +46,7 @@
 
 <script setup lang="ts">
 import { reactive, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import AppHeader from '@/components/App/Header.vue';
 import AppHero from '@/components/App/Hero.vue';
@@ -61,6 +62,8 @@ import type { IProject } from '@/projects';
 import { achievementsStore } from '@/core/entities/achievement/store';
 
 defineOptions({ name: 'HomePage' });
+
+const { t } = useI18n();
 
 const state = reactive<{
   open: boolean;

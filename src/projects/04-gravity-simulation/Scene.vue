@@ -13,7 +13,7 @@
           reset: true,
         })"
         type="button"
-        title="Régénérer"
+        :title="t('Project.GravitySimulation.regenerate')"
         @click.prevent.stop="actions.reset"
       >
         <span v-icon:refresh />
@@ -24,7 +24,7 @@
           on: state.drawQuadTree,
         })"
         type="button"
-        :title="state.drawQuadTree ? 'Masquer le QuadTree' : 'Afficher le QuadTree'"
+        :title="state.drawQuadTree ? t('Project.GravitySimulation.hideQuadTree') : t('Project.GravitySimulation.showQuadTree')"
         @click.prevent.stop="state.drawQuadTree = !state.drawQuadTree"
       >
         <span v-icon:grid />
@@ -35,7 +35,7 @@
           on: state.trackCenterOfMass,
         })"
         type="button"
-        :title="state.trackCenterOfMass ? 'Ne plus suivre le centre de masse' : 'Suivre le centre de masse'"
+        :title="state.trackCenterOfMass ? t('Project.GravitySimulation.untrackCenterOfMass') : t('Project.GravitySimulation.trackCenterOfMass')"
         @click.prevent.stop="state.trackCenterOfMass = !state.trackCenterOfMass"
       >
         <span v-icon:crosshair />
@@ -50,7 +50,7 @@
           start: true,
         })"
         type="button"
-        title="Démarrer"
+        :title="t('Project.GravitySimulation.start')"
         @click.prevent.stop="state.started = true"
       >
         <span v-icon:play />
@@ -69,12 +69,14 @@ import {
   nextTick,
   getCurrentInstance,
 } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import { appStore } from '@/core/stores/appStore';
 import type { Task } from '@/core/tasks';
 import { GravitySimulationTask } from './core';
 import { Vector2D } from './core/geometry/Vector2D';
 
+const { t } = useI18n();
 const scene = ref<HTMLDivElement | null>(null);
 const canvas = ref<HTMLCanvasElement | null>(null);
 const $uid = getCurrentInstance()?.uid;

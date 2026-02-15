@@ -28,7 +28,10 @@
           </div>
         </Slide>
         <Slide v-for="(media, i) in sanityzedMedias" :key="i">
-          <button class="carousel-slide" @click="emit('showMediaCarousel', props.project, i)">
+          <button
+            class="carousel-slide"
+            @click="emit('showMediaCarousel', props.project, i)"
+          >
             <img :src="media" alt="" v-if="media !== 0" />
           </button>
         </Slide>
@@ -41,38 +44,38 @@
 
       <div class="app-project__infos">
         <h2 class="app-project__title">
-          {{ props.project.name }}
+          {{ props.project.name[locale] }}
 
           <div class="app-project__actions">
             <div
-              v-if="achievementsStore.achivementsByProject.value?.[props.project.name]"
+              v-if="achievementsStore.achivementsByProject.value?.[props.project.name[locale]]"
               class="app-project__achievements"
             >
-              <span v-icon:trophy /> {{ achievementsStore.actions.countAcquiredByProject(props.project.name) }} / {{ Object.values(achievementsStore.achivementsByProject.value[props.project.name]).length }}
+              <span v-icon:trophy /> {{ achievementsStore.actions.countAcquiredByProject(props.project.name[locale]) }} / {{ Object.values(achievementsStore.achivementsByProject.value[props.project.name[locale]]).length }}
             </div>
             <a
               v-if="props.project.link"
               class="app-project__link"
               :href="props.project.link"
               target="_blank"
-              :title="`Essayer ${props.project.name}`"
+              :title="t('Project.tryProject', [props.project.name[locale]])"
             >
               <span v-icon:play />
-              Essayer
+              {{ t('Project.tryIt') }}
             </a>
             <a
               v-if="props.project.github"
               class="app-project__github"
               :href="props.project.github"
               target="_blank"
-              :title="`Voir le projet ${props.project.name} sur GitHub`"
+              :title="t('Project.showOnGitHub', [props.project.name[locale]])"
             >
               <span v-icon:github />
             </a>
           </div>
         </h2>
         <p
-          v-for="(p, i) in props.project.description"
+          v-for="(p, i) in props.project.description[locale]"
           :key="i"
           class="app-project__description"
         >
@@ -91,7 +94,7 @@
             'flexy__col--1of2@from-xl': props.project.technologies.length <= 4,
           }"
         >
-          <h3>Technologies</h3>
+          <h3>{{ t('Project.technologies') }}</h3>
 
           <AppTechnologieList
             :technologies="props.project.technologies"
@@ -110,7 +113,7 @@
             'flexy__col--1of2@from-xl': (props.project.technologies?.length ?? 0) > 4 && props.project.deployment.length <= 4,
           }"
         >
-          <h3>Déploiement</h3>
+          <h3>{{ t('Project.deployment') }}</h3>
 
           <AppTechnologieList
             :technologies="props.project.deployment"
@@ -129,7 +132,7 @@
             'flexy__col--1of2@from-xl': (props.project.technologies?.length ?? 0) > 4  && props.project.tools.length <= 4,
           }"
         >
-          <h3>Outils</h3>
+          <h3>{{ t('Project.tools') }}</h3>
 
           <AppTechnologieList
             :technologies="props.project.tools"
@@ -145,6 +148,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import {
   Carousel,
   Slide,
@@ -165,6 +169,7 @@ defineSlots<{
   next(): void;
 }>();
 
+const { t, locale } = useI18n();
 const emit = defineEmits<{
   showMediaCarousel: [project: IProject, mediaIndex: number];
 }>();

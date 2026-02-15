@@ -12,8 +12,8 @@
       v-if="visible"
       class="app-tooltip"
       :style="{
-        left: x + 'px',
-        top: y - props.offset + 'px'
+        left: `${x}px`,
+        top: `${y - props.offset}px`,
       }"
     >
       {{ props.text }}

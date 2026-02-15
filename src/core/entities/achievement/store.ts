@@ -1,5 +1,6 @@
 import { computed, reactive } from 'vue';
 
+import i18n from '@/plugins/i18n';
 import { getAchievements } from '@/projects';
 import type { IAchievement } from '@/core/entities/achievement/i';
 import { getLocalStorage, setLocalStorage } from '@/core/LocalStorage';
@@ -11,6 +12,8 @@ interface IState {
 }
 
 const useAchievementsStore = () => {
+  const { locale } = i18n.global;
+
   const state = reactive<IState>({
     achievements: {},
     acquiredAchievements: [],
@@ -21,8 +24,8 @@ const useAchievementsStore = () => {
     .entries(state.achievements ?? {})
     .reduce((acc, [key, val]) => ({
       ...acc,
-      [val.project]: [
-        ...(acc[val.project] ?? []),
+      [val.project[locale.value]]: [
+        ...(acc[val.project[locale.value]] ?? []),
         { ...val, id: key },
       ].sort((a, b) => a.order - b.order),
     }), {} as Record<string, Array<IAchievement>>));
@@ -63,7 +66,7 @@ const useAchievementsStore = () => {
     countAcquiredByProject(project: string): number {
       return state.acquiredAchievements.reduce((acc, achievementId) => {
         const achivementObj = actions.getAchivementById(achievementId);
-        return acc + Number(achivementObj.project === project && actions.isAcquired(achievementId));
+        return acc + Number(achivementObj.project[locale.value] === project && actions.isAcquired(achievementId));
       }, 0);
     },
     getAchivementById(achivementId: string): IAchievement {
