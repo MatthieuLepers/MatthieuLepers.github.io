@@ -1,0 +1,41 @@
+@use '~styles/utilities' as *;
+
+.app-media-carousel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100dvh;
+  z-index: 999;
+  background-color: rgba(color(primary900), .8);
+  display: none;
+
+  &--open {
+    display: block;
+  }
+
+  &__close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 1000;
+  }
+
+  img {
+    max-width: 100%;
+    max-height: 100dvh;
+    border-radius: 0;
+
+    @include set-from-screen('xl') {
+      max-width: 80vw;
+    }
+  }
+
+  .carousel {
+    width: 100%;
+    height: 100%;
+
+    --vc-nav-width: 50%;
+    --vc-nav-height: 100dvh;
+  }
+}

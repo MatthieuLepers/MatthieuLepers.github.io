@@ -1,0 +1,33 @@
+@use '~styles/utilities' as *;
+
+.app-technologie-list {
+  display: flex;
+  gap: rem(16px);
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+
+  &--grid-8 {
+    .app-technologie-list__item {
+      flex: 0 0 calc(50% - 8px);
+
+      @include set-from-screen('s') {
+        flex: 0 0 calc(25% - 12px);
+      }
+
+      @include set-from-screen('xl') {
+        flex: 0 0 calc(12.5% - 14px);
+      }
+    }
+  }
+
+  &--grid-4 {
+    .app-technologie-list__item {
+      flex: 0 0 calc(50% - 8px);
+
+      @include set-from-screen('xl') {
+        flex: 0 0 calc(25% - 12px);
+      }
+    }
+  }
+}

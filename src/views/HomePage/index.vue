@@ -1,104 +1,90 @@
 <template>
-  <main :class="GenerateModifiers('home-view', { story: appStore.state.storyMode })">
-    <nav
-      v-if="appStore.state.achivements.length"
-      :class="GenerateModifiers('trophy-menu', { open: state.open })"
-    >
-      <div class="menu">
-        <MaterialButton
-          icon="icon-trophy"
-          @click="state.open = !state.open"
-        />
-        <AchievementList />
-      </div>
-    </nav>
+  <main class="home-view">
+    <AppHeader />
 
-    <MaterialFormToggle
-      v-model="appStore.state.storyMode"
-      label="Story mode"
-      class="btn-story-mode"
-    />
-
-    <div class="baseline">
-      <Container>
-        <h1>Bienvenue sur<br />mon Portfolio</h1>
-        <p>
-          Je suis un développeur web passionné depuis avril 2017. Curieux et toujours à l'affût des nouvelles technologies, j'aime concevoir des applications performantes, intuitives et bien structurées. Mon objectif : allier technique et expérience utilisateur pour créer des solutions efficaces et adaptées aux besoins.
-        </p>
-      </Container>
-    </div>
-
-    <Container>
-      <Carousel
-        :itemsToShow="1"
-        :transition="500"
-        :wrapAround="true"
-        :gap="16"
-        :breakpoints="{
-          564: {
-            itemsToShow: appStore.state.storyMode ? 1 : 2,
-          },
-          1024: {
-            itemsToShow: appStore.state.storyMode ? 1 : 3,
-          },
-        }"
-        snapAlign="start"
-        class="carousel"
-      >
-        <Slide v-for="(project, i) in projects" :key="i">
-          <ProjectCard :project="project" />
-        </Slide>
-
-        <template #addons v-if="!appStore.state.storyMode">
-          <Pagination />
-        </template>
-      </Carousel>
-    </Container>
-
+    <AchivementMenu v-if="achievementsStore.actions.hasAnyAchievements()" />
     <AchievementArea />
+
+    <AppHero />
+
+    <AppNavigation />
+
+    <AppProject
+      v-for="(project, i) in projects"
+      :key="i"
+      :project="project"
+      @showMediaCarousel="actions.handleShowMediaCarousel"
+    >
+      <template #prev>
+        <button
+          class="scroll-button scroll-button--up"
+          :title="i === 0 ? 'Revenir à la présentation' : 'Projet précédent'"
+          @click="appStore.actions.scrollToScreen(appStore.state.currentIndex - 1)"
+        >
+          <ScrollIndicator direction="up" />
+        </button>
+      </template>
+      <template #next v-if="projects?.[i + 1]">
+        <button
+          class="scroll-button scroll-button--down"
+          title="Project suivant"
+          @click="appStore.actions.scrollToScreen(appStore.state.currentIndex + 1)"
+        >
+          <ScrollIndicator direction="down" />
+        </button>
+      </template>
+    </AppProject>
+
+    <AppMediaCarousel
+      :open="state.open"
+      :current="state.currentMediaIndex"
+      :medias="state.currentProject?.medias ?? []"
+      @close="actions.handleCloseMediaCarousel"
+    />
   </main>
 </template>
 
 <script setup lang="ts">
-import { reactive, onBeforeMount, watch } from 'vue';
-import { useRoute } from 'vue-router';
-import { Carousel, Slide, Pagination } from 'vue3-carousel';
-import 'vue3-carousel/carousel.css';
+import { reactive, computed } from 'vue';
 
-import MaterialButton from '@/components/Materials/Button/index.vue';
-import MaterialFormToggle from '@/components/Materials/Form/Toggle.vue';
-import Container from '@/components/Container.vue';
-import ProjectCard from '@/components/Project/Card.vue';
+import AppHeader from '@/components/App/Header.vue';
+import AppHero from '@/components/App/Hero.vue';
+import AppNavigation from '@/components/App/Navigation.vue';
+import AppProject from '@/components/App/Project.vue';
+import AppMediaCarousel from '@/components/App/MediaCarousel.vue';
+import ScrollIndicator from '@/components/Svg/ScrollIndicator.vue';
+import AchivementMenu from '@/components/Achievements/Menu.vue';
 import AchievementArea from '@/components/Achievements/Area.vue';
-import AchievementList from '@/components/Achievements/List.vue';
 
 import { appStore } from '@/core/stores/appStore';
-import { projects } from '@/projects';
+import type { IProject } from '@/projects';
+import { achievementsStore } from '@/core/entities/achievement/store';
 
 defineOptions({ name: 'HomePage' });
 
-const route = useRoute();
-
 const state = reactive<{
-  currentSlideIndex: number;
   open: boolean;
+  currentProject: IProject | null;
+  currentMediaIndex: number;
 }>({
-  currentSlideIndex: 0,
   open: false,
+  currentProject: null,
+  currentMediaIndex: 0,
 });
 
-watch(() => route.hash, (hash) => {
-  state.currentSlideIndex = parseInt(hash.replace(/#slide([0-9]+)/, '$1'), 10);
-});
+const projects = computed(() => appStore.state.projects.slice(1));
 
-watch(() => appStore.state.achivements.length, (len) => {
-  state.open = !len ? false : state.open;
-});
-
-onBeforeMount(() => {
-  const hash = route.hash.length ? route.hash : '#slide0';
-  state.currentSlideIndex = parseInt(hash.replace(/#slide([0-9]+)/, '$1'), 10);
-});
+const actions = {
+  handleShowMediaCarousel(project: IProject, mediaIndex: number) {
+    state.open = true;
+    state.currentProject = project;
+    state.currentMediaIndex = mediaIndex;
+  },
+  handleCloseMediaCarousel() {
+    state.open = false;
+    state.currentMediaIndex = 0;
+  },
+};
 </script>
 
 <style lang="scss" src="./index.scss">

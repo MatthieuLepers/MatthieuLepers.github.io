@@ -6,10 +6,13 @@ import i18n from '@/plugins/i18n';
 import GenerateModifiers from '@/plugins/GenerateModifiers';
 import DateFormat from '@/plugins/DateFormat';
 
+window.history.scrollRestoration = 'manual';
+
 const app = createApp(App);
 
 app.directive('icon', {
   created(el, binding) {
+    el.classList.add('icon');
     el.classList.add(`icon-${binding.arg}`);
   },
 });

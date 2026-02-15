@@ -1,128 +1,31 @@
 @use '~styles/utilities' as *;
 
-.btn-story-mode {
-  opacity: 0;
-  position: absolute;
-  top: 16px;
-  right: 16px;
-
-  &:hover {
-    opacity: 1;
-  }
-}
-
 .home-view {
-  background-image: url('/img/background-landing.jpg');
-  background-size: cover;
-  background-position: bottom right;
-  background-repeat: no-repeat;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: rem(32px);
-  position: relative;
-  overflow: hidden;
-
-  @include set-from-screen(m) {
-    background-position: center center;
-  }
-
-  &--story {
-    width: 456px;
-    height: 809px;
-    background-position: bottom right;
-    margin: auto;
-
-    .baseline,
-    .project-card__actions .m-button + .m-button {
-      display: none;
-    }
-
-    .container {
-      width: calc(100% - 68px);
-    }
-  }
-}
-
-.baseline {
   width: 100%;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  position: relative;
 
-  @include set-from-screen(m) {
-    @include set-font-scale(l);
-  }
+  .scroll-button {
+    display: none;
 
-  @include set-from-screen(l) {
-    @include set-font-scale(xl);
-  }
-
-  h1 {
-    @include set-font-scale(xl);
-    text-shadow: 0 0 5px color(secondary200);
-    font-weight: 700;
-    text-align: center;
-
-    @include set-from-screen(m) {
-      @include set-font-scale(xl);
-      text-align: left;
-    }
-
-    @include set-from-screen(l) {
-      font-size: rem(50px);
-      line-height: rem(58px);
-    }
-  }
-}
-
-.carousel {
-  --vc-pgn-background-color: #fff;
-  --vc-pgn-active-color: #181818;
-  --vc-pgn-border-radius: 8px;
-  --vc-pgn-height: 8px;
-  --vc-pgn-width: 8px;
-  filter: drop-shadow(8px 8px 8px color(grey999));
-  padding-bottom: 48px;
-}
-
-.trophy-menu {
-  @include transition(width .5s ease, height .5s ease);
-  position: absolute;
-  top: 16px;
-  left: 16px;
-  overflow: hidden;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: rgba(color(grey900), .9);
-  z-index: 2;
-  transform: translate(calc(-50% + 16px), calc(-50% + 16px));
-  box-shadow: 0 0 8px color(grey999);
-
-  &--open {
-    width: 300vw;
-    height: 300vw;
-  }
-
-  .menu {
-    width: calc(100vw - 32px);
-    height: calc(100vh - 32px);
-    overflow: auto;
-    position: absolute;
-    top: calc(50% - 20px);
-    left: calc(50% - 20px);
-
-    .m-button {
-      position: relative;
-      z-index: 1;
-    }
-
-    .achievement-list {
+    @include set-from-screen('xl') {
+      display: block;
       position: absolute;
-      top: 0;
-      left: 0;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    &--up {
+      top: 18px;
+    }
+
+    &--down {
+      bottom: 18px;
+    }
+
+    .scroll-indicator {
+      height: 24px;
     }
   }
 }

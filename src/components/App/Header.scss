@@ -1,0 +1,79 @@
+@use '~styles/utilities' as *;
+
+.app-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 9;
+  pointer-events: none;
+
+  &--small {
+    @include set-from-screen('m') {
+      .app-header__container {
+        height: 80px;
+      }
+    }
+
+    .app-header__title {
+      opacity: 0;
+    }
+  }
+
+  &__container {
+    @include transition(height .2s ease);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 48px;
+
+    @include set-from-screen('s') {
+      height: 80px;
+    }
+
+    @include set-from-screen('l') {
+      padding: 0 rem(20px);
+      height: 120px;
+    }
+
+    @include set-from-screen('xl') {
+      padding: 0;
+    }
+
+    @include set-from-screen('xxl') {
+      padding: 0 rem(40px);
+    }
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    font-size: rem(16px);
+    font-weight: 700;
+    opacity: 1;
+    transition: opacity 1s ease;
+
+    @include set-from-screen('xs') {
+      font-size: rem(20px);
+    }
+
+    @include set-from-screen('l') {
+      font-size: rem(32px);
+    }
+
+    @include set-from-screen('xl') {
+      padding: 0 0 0 rem(40px);
+    }
+  }
+
+  &__social {
+    display: flex;
+    gap: rem(8px);
+    pointer-events: all;
+
+    a,
+    img {
+      display: block;
+    }
+  }
+}

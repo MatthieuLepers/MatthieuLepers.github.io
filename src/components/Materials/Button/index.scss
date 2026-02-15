@@ -3,7 +3,7 @@
 @use '~styles/utilities' as *;
 
 @mixin set-button-color($background, $text) {
-  background: linear-gradient(90deg, color.adjust($background, $lightness: 20%) 0%, $background 50%, color.adjust($background, $lightness: 20%) 100%);
+  background: $background;
   color: $text;
   box-shadow: 0 5px 10px color(grey999);
 
@@ -13,7 +13,7 @@
 
   &:focus,
   &:hover {
-    background: linear-gradient(90deg, color.adjust($background, $lightness: 30%) 0%, color.adjust($background, $lightness: 10%) 50%, color.adjust($background, $lightness: 30%) 100%);
+    background: color.adjust($background, $lightness: 3%);
   }
 
   &.m-button--iconed:focus .m-button__icon,
@@ -88,7 +88,7 @@
   }
 
   &--secondary {
-    @include set-button-color(color(secondary200), color(grey100));
+    @include set-button-color(color(primary300), color(grey100));
   }
 
   &--warning {

@@ -1,0 +1,24 @@
+@use '~styles/utilities' as *;
+
+.app-technologie {
+  display: flex;
+  gap: rem(8px);
+  align-items: center;
+  position: relative;
+  min-height: 24px;
+  font-size: rem(12px);
+  font-weight: 400;
+
+  @include set-from-screen('l') {
+    font-size: rem(16px);
+  }
+
+  &--with-tooltip {
+    cursor: help;
+  }
+
+  img {
+    max-width: 24px;
+    max-height: 24px;
+  }
+}

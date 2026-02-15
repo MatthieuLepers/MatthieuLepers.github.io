@@ -1,35 +1,69 @@
-import { reactive } from 'vue';
+import { reactive, computed } from 'vue';
+import { gsap } from 'gsap';
 
+import { getProjects, type IProject } from '@/projects';
 import { ProcessManager } from '@/core/ProcessManager';
-import type { Achievement } from '@/core/Achievement';
-import { getLocalStorage } from '@/core/LocalStorage';
 
 interface IState {
-  theme: string;
-  storyMode: boolean;
-  achievementList: Array<Achievement>;
-  achivements: Array<string>;
+  projects: Array<IProject>;
+  oldIndex: number;
+  currentIndex: number;
+  isScrolling: boolean;
+  settings: {
+    showTrajectories: boolean;
+  };
 }
 
 const useAppStore = () => {
   const processManager = new ProcessManager();
 
   const state = reactive<IState>({
-    theme: 'Default',
-    storyMode: false,
-    achievementList: [],
-    achivements: [],
+    projects: [],
+    oldIndex: 0,
+    currentIndex: 0,
+    isScrolling: false,
+    settings: {
+      showTrajectories: false,
+    },
   });
 
+  const hasPrevScreen = computed(() => state.currentIndex > 0);
+
+  const hasNextScreen = computed(() => state.currentIndex < state.projects.length - 1);
+
   const actions = {
-    load() {
-      state.achivements = getLocalStorage<Array<string>>('achievements', '[]');
+    async load() {
+      state.projects = await getProjects();
+    },
+    scrollToScreen(screenIndex: number) {
+      const screens = document.getElementsByClassName('screen');
+
+      if (screenIndex < 0 || screenIndex >= screens.length || state.isScrolling) {
+        return;
+      }
+
+      state.isScrolling = true;
+      state.currentIndex = screenIndex;
+
+      gsap.to(window, {
+        scrollTo: {
+          y: screens[screenIndex],
+          autoKill: false,
+        },
+        duration: 1,
+        ease: 'expo.out',
+        onComplete() {
+          state.isScrolling = false;
+        },
+      });
     },
   };
 
   return {
     state,
     processManager,
+    hasPrevScreen,
+    hasNextScreen,
     actions,
   };
 };

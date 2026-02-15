@@ -4,7 +4,7 @@
 @use './icons' as icons;
 
 body {
-  @include fonts.font-family('Open Sans');
+  @include fonts.font-family('Space Grotesk');
   font-size: 16px;
 }
 

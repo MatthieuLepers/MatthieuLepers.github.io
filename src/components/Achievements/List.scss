@@ -9,6 +9,7 @@
     padding: 0 0 0 rem(56px);
     margin: 0 0 rem(8px);
     font-weight: 700;
+    text-transform: uppercase;
   }
 
   h3 {
@@ -17,6 +18,21 @@
     padding: 0 0 0 rem(8px);
     margin: rem(8px) 0;
     font-weight: 600;
+    text-align: left;
+    text-transform: uppercase;
+    position: relative;
+    padding-right: rem(48px);
+
+    button {
+      position: absolute;
+      right: 16px;
+      top: calc(50% - 16px);
+      border: 2px solid color(danger300);
+      width: 32px;
+      height: 32px;
+      border-radius: 16px;
+      font-size: rem(12px);
+    }
   }
 
   ul {

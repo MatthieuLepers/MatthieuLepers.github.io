@@ -2,7 +2,7 @@
   <div :class="GenerateModifiers('achievement', {
     popup: props.acquire,
     'popup-in': props.acquire && state.visible,
-    acquired: props.achievement.isAcquired,
+    acquired: isAcquired,
   })">
     <img
       :src="props.achievement.image"
@@ -13,22 +13,34 @@
         {{ props.achievement.name }}
       </span>
       <span class="achievement__description">
-        {{ props.achievement.isAcquired ? props.achievement.description : props.achievement.clue }}
+        {{
+          isAcquired
+            ? props.achievement.description
+            : props.achievement.clue
+        }}
       </span>
+
+      <button
+        v-if="isAcquired"
+        :title='`Réinitialiser le succès "${props.achievement.name}"`'
+        @click.prevent.stop="achievementsStore.actions.remove(props.achievement)"
+      >
+        <span v-icon:trash />
+      </button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { reactive, onMounted } from 'vue';
+import { reactive, computed, onMounted } from 'vue';
 
-import { appStore } from '@/core/stores/appStore';
-import type { Achievement } from '@/core/Achievement';
+import { achievementsStore } from '@/core/entities/achievement/store';
+import type { IAchievement } from '@/core/entities/achievement/i';
 
 defineOptions({ name: 'Achievement' });
 
 const props = withDefaults(defineProps<{
-  achievement: Achievement;
+  achievement: IAchievement;
   acquire?: boolean;
 }>(), {
   acquire: false,
@@ -38,12 +50,14 @@ const state = reactive({
   visible: true,
 });
 
+const isAcquired = computed(() => achievementsStore.actions.isAcquired(props.achievement.id));
+
 onMounted(() => {
   if (props.acquire) {
     setTimeout(() => {
       state.visible = false;
       setTimeout(() => {
-        appStore.state.achievementList.splice(appStore.state.achievementList.indexOf(props.achievement), 1);
+        achievementsStore.actions.acquire(props.achievement);
       }, 1000);
     }, 5000);
   }

@@ -1,0 +1,351 @@
+@use '~styles/utilities' as *;
+
+.app-hero {
+  width: 100%;
+  height: 100dvh;
+  background-image: url('/img/hero.png');
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  background-size: cover;
+  padding-top: rem(64px);
+
+  @include set-from-screen('s') {
+    padding-top: rem(80px);
+  }
+
+  @include set-from-screen('l') {
+    padding-top: rem(120px);
+  }
+
+  &__container {
+    min-height: 100%;
+    align-items: initial;
+    position: relative;
+
+    @include set-from-screen('xxl') {
+      padding: 0 rem(60px);
+      height: 100%;
+    }
+  }
+
+  &__left {
+    grid-row: 3;
+
+    @include set-from-screen('s') {
+      padding: rem(30px) 0 0 0;
+    }
+
+    @include set-from-screen('m') {
+      padding: rem(30px) 0 0 rem(60px);
+    }
+
+    @include set-from-screen('xl') {
+      grid-column: 1;
+      grid-row: auto;
+      padding: rem(30px) 0 0 rem(60px);
+      height: 100%;
+    }
+  }
+
+  &__right {
+    grid-row: 4;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    margin-bottom: rem(64px);
+    position: relative;
+
+    @include set-from-screen('xs') {
+      margin-bottom: rem(76px);
+    }
+
+    @include set-from-screen('s') {
+      margin-bottom: rem(24px);
+      padding-left: calc(50% + 64px);
+    }
+
+    @include set-from-screen('m') {
+      padding-left: rem(60px);
+    }
+
+    @include set-from-screen('xl') {
+      justify-content: flex-end;
+      grid-column: 2;
+      grid-row: auto;
+      padding: 0 0 rem(112px) rem(310px);
+      margin-bottom: 0;
+      height: 100%;
+    }
+
+    img {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      display: block;
+      margin: 48px auto;
+
+      @include set-from-screen('xs') {
+        width: 200px;
+        height: 200px;
+      }
+
+      @include set-from-screen('s') {
+        margin: 0;
+        position: absolute;
+        bottom: calc(100% - 200px);
+      }
+
+      @include set-from-screen('m') {
+        margin: 0 auto;
+        position: static;
+      }
+
+      @include set-from-screen('xl') {
+        width: 406px;
+        height: 406px;
+        margin: 0 auto;
+        position: static;
+      }
+    }
+  }
+
+  &__title {
+    display: block;
+    font-size: rem(20px);
+    line-height: rem(24px);
+    font-weight: 700;
+    text-align: center;
+
+    @include set-from-screen('xs') {
+      font-size: rem(24px);
+      line-height: rem(32px);
+    }
+
+    @include set-from-screen('s') {
+      text-align: left;
+    }
+
+    @include set-from-screen('l') {
+      font-size: rem(48px);
+    }
+
+    &>span {
+      display: block;
+      font-size: rem(16px);
+      line-height: rem(24px);
+      margin-bottom: rem(12px);
+      position: relative;
+
+      @include set-from-screen('xs') {
+        font-size: rem(20px);
+        line-height: rem(28px);
+        margin-bottom: rem(16px);
+      }
+
+      @include set-from-screen('l') {
+        font-size: rem(32px);
+        line-height: rem(40px);
+        margin-bottom: rem(32px);
+      }
+
+      span {
+        color: color(primary300);
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: calc(100% + 3px);
+        left: calc(50% - 70px);
+        background-color: color(primary300);
+        width: 40px;
+        height: 2px;
+
+        @include set-from-screen('xs') {
+          left: calc(50% - 86px);
+        }
+
+        @include set-from-screen('s') {
+          width: 60px;
+          height: 3px;
+          left: 0;
+        }
+
+        @include set-from-screen('l') {
+          width: 94px;
+        }
+      }
+    }
+  }
+
+  &__actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: rem(8px);
+    margin-top: rem(20px);
+
+    @include set-from-screen('xs') {
+      gap: rem(16px);
+      margin-top: rem(32px);
+    }
+
+    @include set-from-screen('s') {
+      flex-direction: row;
+    }
+
+    @include set-from-screen('l') {
+      gap: rem(32px);
+      margin-top: rem(65px);
+    }
+
+    .cta {
+      @include font-family('Space Grotesk', 700);
+      font-size: rem(11px);
+      text-decoration: none;
+      width: 150px;
+      height: 32px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 45px;
+
+      @include set-from-screen('xs') {
+        font-size: rem(16px);
+        width: 225px;
+        height: 42px;
+      }
+
+      @include set-from-screen('l') {
+        width: 300px;
+        height: 85px;
+        font-size: rem(24px);
+      }
+
+      &--filled {
+        background-color: color(primary300);
+        color: color(text300);
+      }
+
+      &--stroked {
+        border: 2px solid color(primary300);
+        color: color(text300);
+
+        @include set-from-screen('xs') {
+          border-width: 3px;
+        }
+
+        @include set-from-screen('s') {
+          border-width: 5px;
+        }
+      }
+    }
+  }
+
+  &__about {
+    @include set-from-screen('m') {
+      margin-top: rem(48px);
+    }
+
+    @include set-from-screen('l') {
+      margin-top: rem(80px);
+    }
+
+    h2 {
+      font-size: rem(16px);
+      line-height: auto;
+      font-weight: 700;
+      margin-bottom: rem(4px);
+
+      @include set-from-screen('xs') {
+        font-size: rem(20px);
+        margin-bottom: rem(12px);
+      }
+
+      @include set-from-screen('l') {
+        font-size: rem(32px);
+        margin-bottom: rem(24px);
+      }
+    }
+
+    p {
+      display: none;
+
+      @include set-from-screen('xl') {
+        display: block;
+        font-size: rem(20px);
+        font-weight: 400;
+        line-height: auto;
+        margin: 0;
+      }
+    }
+  }
+
+  &__numbers {
+    margin-top: rem(12px);
+
+    @include set-from-screen('xs') {
+      margin-top: rem(20px);
+    }
+
+    @include set-from-screen('s') {
+      margin-bottom: rem(48px);
+    }
+
+    @include set-from-screen('l') {
+      margin: rem(32px) 0 0 0;
+    }
+
+    .number {
+      h4 {
+        font-size: rem(16px);
+        line-height: auto;
+        font-weight: 700;
+        margin-bottom: rem(8px);
+
+        @include set-from-screen('xs') {
+          font-size: rem(20px);
+          margin-bottom: rem(12px);
+        }
+
+        @include set-from-screen('l') {
+          font-size: rem(32px);
+          margin-bottom: rem(16px);
+        }
+
+        span {
+          color: color(primary300);
+        }
+      }
+
+      p {
+        font-size: rem(11px);
+        line-height: auto;
+        font-weight: 400;
+
+        @include set-from-screen('xs') {
+          font-size: rem(12px);
+        }
+
+        @include set-from-screen('l') {
+          font-size: rem(18px);
+        }
+      }
+    }
+  }
+
+  &__scroll-button {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    @include set-from-screen('xs') {
+      bottom: 24px;
+    }
+
+    @include set-from-screen('s') {
+      bottom: 50px;
+    }
+  }
+}
