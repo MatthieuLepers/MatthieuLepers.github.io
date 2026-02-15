@@ -1,0 +1,62 @@
+@use '~styles/utilities' as *;
+
+.achivement-menu {
+  --button-width: 42px;
+  --button-top: 39px;
+  --button-left: 24px;
+  display: none;
+
+  @include set-from-screen('s') {
+    display: block;
+  }
+
+  &--small {
+    --button-top: 19px;
+  }
+
+  &__button {
+    position: fixed;
+    top: var(--button-top);
+    left: var(--button-left);
+    width: var(--button-width);
+    height: var(--button-width);
+    border-radius: 50%;
+    background-color: color(primary300);
+    border: none;
+    cursor: pointer;
+    color: color(text300);
+    font-size: rem(18px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    transition: transform 0.5s ease, top .5s ease;
+  }
+
+  &__circle {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(color(primary800), .9);
+    clip-path: circle(0px at var(--button-top) var(--button-left));
+    transition: clip-path 0.5s ease-in-out;
+    z-index: 900;
+
+    &--open {
+      clip-path: circle(150vmax at var(--button-top) var(--button-left));
+    }
+  }
+
+  &__list {
+    position: absolute;
+    top: var(--button-width);
+    left: var(--button-width);
+    list-style: none;
+    text-align: center;
+    z-index: 950;
+    color: color(text300);
+    max-width: calc(100% - (var(--button-width) * 2));
+  }
+}

@@ -1,32 +1,30 @@
 import type { Component } from 'vue';
 
-import type { IAchievement } from '@/core/Achievement';
+import type { IAchievement } from '@/core/entities/achievement/i';
+import type { ISVGPlanet } from '@/components/Svg';
+
+export interface ITechnologie {
+  logo: string;
+  label: string;
+  abbreviation?: string;
+  tooltip?: string;
+}
 
 export interface IProject {
   name: string;
-  description: string;
+  nameOverride?: string;
+  description: string[];
   link: string;
   scene?: Component;
   github?: string;
-  image?: string;
+  medias?: string[];
+  navigationSvg: ISVGPlanet;
+  navigationOnClick: () => void;
+  technologies?: ITechnologie[];
+  deployment?: ITechnologie[];
+  tools?: ITechnologie[];
   visible?: boolean;
   order?: number;
-  details?: IProjectDetails;
-}
-
-export interface IProjectDetails {
-  front?: IProjectTechnologies;
-  back?: IProjectTechnologies;
-  devops?: string[];
-}
-
-export interface IProjectTechnologies {
-  main: string[];
-  bundler?: string[];
-  server?: string[];
-  eslint?: string[];
-  packages?: string[];
-  tests?: string[];
 }
 
 interface IModule {
@@ -35,19 +33,39 @@ interface IModule {
   achievements?: Record<string, IAchievement>;
 }
 
-const glob: Record<string, IModule> = import.meta.glob('@/projects/*/index.(ts|js)', { eager: true });
+const glob = import.meta.glob<boolean, string, IModule>('@/projects/*/index.(ts|js)');
 
-export const projects = Object
-  .values(glob)
-  .map((m) => m.project)
-  .filter((p) => p.visible === undefined || p.visible)
-  .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
-;
+export async function getProjects() {
+  const modules = await Promise.all(
+    Object.values(glob).map((load) => load()),
+  );
 
-export const achievements = Object
-  .values(glob)
-  .reduce((acc, m) => ({
-    ...acc,
-    ...(m.achievements ?? {}),
-  }), {} as Record<string, IAchievement>)
-;
+  return modules
+    .map((m) => m.project)
+    .filter((p) => p.visible === undefined || p.visible)
+    .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+  ;
+}
+
+export async function getAchievements() {
+  const modules = await Promise.all(
+    Object.values(glob).map((load) => load()),
+  );
+
+  return modules
+    .reduce((acc, m) => ({
+      ...acc,
+      ...(Object
+        .entries(m.achievements ?? {})
+        .reduce((ac, [name, achievement]) => ({
+          ...ac,
+          [name]: {
+            ...achievement,
+            id: name,
+            project: m.project.nameOverride ?? m.project.name,
+          },
+        }), {})
+      ),
+    }), {} as Record<string, IAchievement>)
+  ;
+}

@@ -6,17 +6,31 @@
   gap: rem(16px);
   padding: rem(8px);
   border-radius: 12px;
-  background-color: rgba(color(grey800), .6);
+  background-color: rgba(color(grey700), .8);
+  filter: grayscale(1) opacity(0.5);
+  position: relative;
 
   img {
-    width: 64px;
-    filter: grayscale(1);
+    width: 48px;
   }
 
   &__infos {
     display: flex;
     flex-direction: column;
     gap: rem(4px);
+    text-align: left;
+    padding-right: rem(48px);
+
+    button {
+      position: absolute;
+      right: 16px;
+      top: calc(50% - 16px);
+      border: 2px solid color(danger300);
+      width: 32px;
+      height: 32px;
+      border-radius: 16px;
+      font-size: rem(12px);
+    }
   }
 
   &__name {
@@ -30,14 +44,15 @@
   }
 
   &--popup {
+    @include transition(transform .3s ease-out);
     border: 1px solid color(grey700);
     border-radius: 12px;
     padding: rem(8px);
-    background-color: color(grey700);
     max-width: 408px;
     box-shadow: 0 0 8px color(grey999);
-    @include transition(transform .3s ease-out);
     transform: translateX(-100%);
+    background-color: color(primary900);
+    filter: none;
 
     &-in {
       transform: translateX(16px);
@@ -46,16 +61,15 @@
   }
 
   &--acquired {
+    background-color: rgba(color(primary900), .6);
+    filter: none;
+
     .achievement__name {
       color: color(secondary200);
     }
 
     .achievement__description {
       color: color(grey200);
-    }
-
-    img {
-      filter: none;
     }
   }
 }

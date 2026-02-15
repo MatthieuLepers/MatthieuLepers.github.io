@@ -1,8 +1,17 @@
 @use '~styles/utilities' as *;
 
 .achievement-area {
-  position: absolute;
+  display: none;
+  position: fixed;
   top: 16px;
   left: 0;
-  z-index: 2;
+  z-index: 1050;
+
+  .achievement {
+    margin-bottom: rem(8px);
+  }
+
+  @include set-from-screen('s') {
+    display: block;
+  }
 }

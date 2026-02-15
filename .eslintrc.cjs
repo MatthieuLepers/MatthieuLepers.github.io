@@ -57,6 +57,10 @@ module.exports = {
     'max-len': ['error', {
       code: 512,
       tabWidth: 2,
+      ignorePattern: 'd="([\\s\\S]*?)"',
+      ignoreUrls: true,
+      ignoreStrings: true,
+      ignoreTemplateLiterals: true,
     }],
     'semi-style': 'off',
     'class-methods-use-this': 'off',

@@ -1,19 +1,16 @@
 @use './colors' as colors;
 @use './mixins' as mixins;
 
-html {
-  scroll-behavior: smooth;
-}
-
 html,
 body {
   width: 100%;
   height: 100%;
   margin: 0;
   padding: 0;
-  background-color: colors.color(grey900);
-  color: colors.color(grey100);
+  background-color: colors.color(primary800);
+  color: colors.color(text300);
   outline: none;
+  scrollbar-gutter: stable;
 }
 
 html,

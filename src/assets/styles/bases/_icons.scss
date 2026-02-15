@@ -3,11 +3,11 @@
 
 @font-face {
   font-family: 'icomoon';
-  src: url('~fonts/icomoon/icomoon.eot?ws6lg2');
-  src: url('~fonts/icomoon/icomoon.eot?ws6lg2#iefix') format('embedded-opentype'),
-       url('~fonts/icomoon/icomoon.ttf?ws6lg2') format('truetype'),
-       url('~fonts/icomoon/icomoon.woff?ws6lg2') format('woff'),
-       url('~fonts/icomoon/icomoon.svg?ws6lg2#icomoon') format('svg');
+  src: url('/fonts/icomoon/icomoon.eot?ws6lg2');
+  src: url('/fonts/icomoon/icomoon.eot?ws6lg2#iefix') format('embedded-opentype'),
+       url('/fonts/icomoon/icomoon.ttf?ws6lg2') format('truetype'),
+       url('/fonts/icomoon/icomoon.woff?ws6lg2') format('woff'),
+       url('/fonts/icomoon/icomoon.svg?ws6lg2#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -28,6 +28,7 @@ $icons: (
   play        : ('icomoon', '\e90b'),
   pause       : ('icomoon', '\e90c'),
   info        : ('icomoon', '\e90d'),
+  close       : ('icomoon', '\e90e'),
 );
 
 @mixin icon($iconName) {

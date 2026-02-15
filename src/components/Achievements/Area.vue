@@ -1,9 +1,9 @@
 <template>
   <div class="achievement-area">
     <Achievement
-      v-for="(ach, i) in appStore.state.achievementList"
+      v-for="(achivementId, i) in achievementsStore.state.waitForAcquire"
       :key="i"
-      :achievement="ach"
+      :achievement="achievementsStore.actions.getAchivementById(achivementId)"
       :acquire="true"
     />
   </div>
@@ -12,7 +12,7 @@
 <script setup lang="ts">
 import Achievement from '@/components/Achievements/Item.vue';
 
-import { appStore } from '@/core/stores/appStore';
+import { achievementsStore } from '@/core/entities/achievement/store';
 </script>
 
 <style lang="scss" src="./Area.scss">

@@ -1,0 +1,341 @@
+@use 'sass:color';
+@use '~styles/utilities' as *;
+
+.app-project {
+  position: relative;
+  width: 100%;
+  height: auto;
+
+  &:nth-child(odd) {
+    background-color: color(primary800);
+  }
+
+  &:nth-child(even) {
+    background-color: color.adjust(color(primary800), $lightness: 3%);
+  }
+
+  @include set-from-screen('m') {
+    height: 100vh;
+    padding-left: rem(240px);
+
+    &:nth-child(odd),
+    &:nth-child(even) {
+      background-color: color(primary800);
+    }
+  }
+
+  @include set-from-screen('l') {
+    padding-left: rem(396px);
+  }
+
+  @include set-from-screen('xxl') {
+    padding-left: 0;
+  }
+
+  &__content {
+    width: 100%;
+    min-height: 100dvh;
+    height: auto;
+    padding: rem(24px) rem(16px);
+
+    @include set-from-screen('s') {
+      padding: rem(42px) rem(16px);
+    }
+
+    @include set-from-screen('m') {
+      padding: rem(24px) rem(16px);
+      height: 100%;
+    }
+
+    @include set-from-screen('l') {
+      padding: rem(80px) rem(87px);
+    }
+
+    @include set-from-screen('xxl') {
+      padding-left: rem(396px);
+      max-width: 1920px;
+      margin: 0 auto;
+    }
+  }
+
+  &__infos {
+    width: 100%;
+    margin-top: rem(24px);
+
+    @include set-from-screen('s') {
+      padding: 0 rem(40px);
+    }
+
+    @include set-from-screen('m') {
+      margin-top: rem(28px);
+      padding: 0;
+    }
+
+    @include set-from-screen('l') {
+      margin-top: rem(48px);
+    }
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: rem(8px);
+
+    @include set-from-screen('s') {
+      gap: rem(16px);
+    }
+
+    @include set-from-screen('l') {
+      gap: rem(24px);
+    }
+  }
+
+  &__achievements {
+    display: none;
+    gap: rem(4px);
+    align-items: center;
+    font-size: rem(12px);
+    line-height: rem(16px);
+    color: color(text300);
+    font-weight: 500;
+
+    @include set-from-screen('s') {
+      display: flex;
+      gap: rem(8px);
+      font-size: rem(12px);
+      line-height: rem(16px);
+    }
+
+    @include set-from-screen('m') {
+      gap: rem(8px);
+      font-size: rem(12px);
+      line-height: rem(16px);
+    }
+
+    @include set-from-screen('l') {
+      gap: rem(16px);
+      font-size: rem(16px);
+      line-height: rem(24px);
+    }
+
+    .icon {
+      font-size: rem(18px);
+
+      @include set-from-screen('l') {
+        font-size: rem(24px);
+      }
+    }
+  }
+
+  &__link {
+    display: flex;
+    gap: rem(6px);
+    align-items: center;
+    font-size: rem(12px);
+    line-height: rem(16px);
+    color: color(text300);
+    font-weight: 500;
+    background-color: color(primary300);
+    border-radius: 24px;
+    padding: rem(8px) rem(12px);
+    min-width: none;
+    min-height: 32px;
+    text-decoration: none;
+    text-transform: none;
+
+    @include set-from-screen('l') {
+      font-size: rem(18px);
+      line-height: rem(24px);
+      min-width: 140px;
+      min-height: 48px;
+      padding: rem(12px) rem(16px);
+      gap: rem(16px);
+    }
+
+    .icon {
+      font-size: rem(12px);
+
+      @include set-from-screen('l') {
+        font-size: rem(16px);
+      }
+    }
+  }
+
+  &__github {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: rem(26px);
+    line-height: (26px);
+    border: 3px solid color(primary300);
+    border-radius: 24px;
+    min-height: 26px;
+    background-color: color(text300);
+    overflow: hidden;
+
+    @include set-from-screen('l') {
+      font-size: rem(38px);
+      line-height: (38px);
+      min-height: 48px;
+      border: 5px solid color(primary300);
+    }
+
+    .icon {
+      color: color(primary900);
+    }
+  }
+
+  &__title {
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: rem(18px);
+    line-height: rem(24px);
+    margin-bottom: rem(16px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    @include set-from-screen('s') {
+      font-size: rem(24px);
+      line-height: rem(32px);
+      margin-bottom: rem(32px);
+    }
+
+    @include set-from-screen('m') {
+      font-size: rem(18px);
+      line-height: rem(24px);
+      margin-bottom: rem(24px);
+    }
+
+    @include set-from-screen('l') {
+      font-size: rem(32px);
+      line-height: rem(48px);
+      margin-bottom: rem(24px);
+    }
+  }
+
+  &__description {
+    font-size: rem(12px);
+    line-height: rem(16px);
+    font-weight: 400;
+    color: color(text300);
+
+    @include set-from-screen('s') {
+      font-size: rem(16px);
+      line-height: rem(24px);
+    }
+
+    @include set-from-screen('m') {
+      font-size: rem(12px);
+      line-height: rem(16px);
+    }
+
+    @include set-from-screen('l') {
+      font-size: rem(16px);
+      line-height: rem(24px);
+    }
+  }
+
+  &__technoblock+&__technoblock {
+    margin-top: rem(16px);
+  }
+
+  h3 {
+    font-weight: 700;
+    font-size: rem(16px);
+    line-height: rem(24px);
+    margin-bottom: rem(16px);
+
+    @include set-from-screen('s') {
+      font-size: rem(18px);
+      line-height: rem(26px);
+      margin-bottom: rem(18px);
+    }
+
+    @include set-from-screen('m') {
+      font-size: rem(16px);
+      line-height: rem(24px);
+      margin-bottom: rem(16px);
+    }
+
+    @include set-from-screen('l') {
+      font-size: rem(24px);
+      line-height: rem(32px);
+      margin-bottom: rem(24px);
+    }
+  }
+
+  .carousel {
+    --vc-pgn-background-color: #E6E8EF;
+    --vc-pgn-active-color: #051630;
+    --vc-pgn-border-radius: 8px;
+    --vc-pgn-height: 10px;
+    --vc-pgn-width: 10px;
+    --vc-png-bottom: 0px;
+    --vc-pgn-gap: 8px;
+    --vc-nav-color: #E6E8EF;
+    padding-bottom: rem(26px);
+    filter: drop-shadow(0 0 10px color(primary900));
+
+    @include set-from-screen('s') {
+      padding: 0 rem(40px) rem(26px);
+    }
+
+    @include set-from-screen('l') {
+      padding: 0 0 rem(26px);
+    }
+
+    &-slide {
+      width: 240px;
+      height: 135px;
+      background-color: transparent;
+
+      @include set-from-screen('s') {
+        width: 320px;
+        height: 180px;
+      }
+
+      @include set-from-screen('m') {
+        width: 213px;
+        height: 118px;
+      }
+
+      @include set-from-screen('l') {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 16 / 9;
+      }
+    }
+
+    &__pagination-button {
+      border: 2px solid color(text300);
+    }
+
+    &__next {
+      left: calc(100% - 36px);
+      transform: translateY(calc(-50% - 13px));
+
+      @include set-from-screen('s') {
+        left: calc(100% - 28px);
+      }
+
+      @include set-from-screen('l') {
+        left: calc(100% + 12px);
+      }
+    }
+
+    &__prev {
+      right: calc(100% - 36px);
+      transform: translateY(calc(-50% - 13px));
+      inset-inline-start: auto;
+
+      @include set-from-screen('s') {
+        right: calc(100% - 28px);
+      }
+
+      @include set-from-screen('l') {
+        right: calc(100% + 12px);
+      }
+    }
+  }
+}

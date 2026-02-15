@@ -1,0 +1,14 @@
+@use '~styles/utilities' as *;
+
+.app-tooltip {
+  position: fixed;
+  transform: translate(-50%, -100%);
+  pointer-events: none;
+  background: rgba(color(primary900), 0.9);
+  color: color(text300);
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 9;
+}
