@@ -74,12 +74,8 @@
             </a>
           </div>
         </h2>
-        <p
-          v-for="(p, i) in props.project.description[locale]"
-          :key="i"
-          class="app-project__description"
-        >
-          {{ p }}
+        <p class="app-project__description">
+          {{ props.project.description[locale] }}
         </p>
       </div>
 

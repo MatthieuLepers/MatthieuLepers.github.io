@@ -8,15 +8,15 @@ export const project = {
   },
   description: {
     'fr-FR': [
-      'Étant un gros joueur Genshin Imapct, j’ai eu besoin d’une app pour la gestion de mes personnages.',
-      'Cette app permet de savoir quoi farmer et dans quelle proportion selon nos propres objectifs en jeu.',
-      'Cela peut être de la collecte de personnages, d’armes, d’artéfacts ou de l’optimisation de build de personnages.',
-    ],
+      'Application desktop multiplateforme dédiée à la gestion et l’optimisation de données complexes.',
+      'Modélisation des entités, calcul dynamique d’objectifs et suivi de progression personnalisée.',
+      'Conception d’une interface orientée productivité, distribuée en application standalone.',
+    ].join('\n'),
     'en-EN': [
-      'As a big Genshin Impact player, I needed an app to manage my characters.',
-      'This app lets you know what to farm and in what proportion according to your own in-game objectives.',
-      'This can involve collecting characters, weapons, artifacts, or optimizing character builds.',
-    ],
+      'Cross-platform desktop application designed for managing and optimizing complex datasets.',
+      'Entity modeling, dynamic goal calculation and personalized progression tracking.',
+      'Productivity-oriented interface distributed as a standalone application.',
+    ].join('\n'),
   },
   link: '/my-genshin-impact-characters/',
   github: 'https://github.com/MatthieuLepers/my-genshin-impact-characters',

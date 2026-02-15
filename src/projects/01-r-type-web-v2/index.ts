@@ -11,17 +11,18 @@ export const project = {
   },
   description: {
     'fr-FR': [
-      'Grandement inspiré du jeu du même nom de chez IREM, sortie en 1987. Initialement calculé en position: absolute, je suis ensuite passé sur un canvas HTML.',
-      'Tout est fait main : le moteur graphique, le moteur physique, la gestion des projectiles, etc...',
-      'Ce projet me tiens depuis ma 2nde année de FAC, soit en 2015, et à été extrêmement formateur dans l’apprentissage du JavaScript ainsi que sur la programmation orientée objet.',
-    ],
+      'Recréation moderne d’un shoot’em up inspiré du classique d’IREM (1987), entièrement développé en JavaScript.',
+      'Conception d’un moteur temps réel sur HTML Canvas : rendu graphique, moteur physique, gestion des collisions et des projectiles.',
+      'Architecture modulaire et évolutive, avec un focus particulier sur la performance et la structuration du code.',
+    ].join('\n'),
     'en-EN': [
-      'Greatly inspired by the game of the same name from IREM, released in 1987. Initially calculated in position: absolute, I then switched to an HTML canvas.',
-      'Everything is done by hand: the graphics engine, the physics engine, the projectile management, etc...',
-      'This project has been with me since my second year of university, in 2015, and has been extremely formative in learning JavaScript as well as object-oriented programming.',
-    ],
+      'Modern reinterpretation of a classic shoot’em up inspired by IREM (1987), fully developed in JavaScript.',
+      'Custom real-time engine built on HTML Canvas: rendering pipeline, physics engine, collision and projectile systems.',
+      'Modular and scalable architecture with a strong focus on performance and code structure.',
+    ].join('\n'),
   },
   link: '/r-type-web-v2/',
+  github: 'https://github.com/MatthieuLepers/MatthieuLepers.github.io/tree/main/public/r-type-web-v2',
   scene: markRaw(Scene),
   medias: [
     '/img/projects/r-type-web-v2-charged-shot.png',

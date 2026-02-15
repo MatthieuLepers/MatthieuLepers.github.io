@@ -8,15 +8,15 @@ export const project = {
   },
   description: {
     'fr-FR': [
-      'Minecraft: Dungeons, sortie en mai 2020, offre une multitude de combinaisons de gameplay différents, mais avec un énorme défaut : le farming. Les équipement sont générés aléatoirement et obtenir les bons perks sur les bonnes armes ou armures peut prendre beaucoup de temps.',
-      'C’est là qu’interviens cet éditeur de sauvegarde 😈',
-      'Il est disponible en format app téléchargeable ou en version WebApp, un tutoriel inclus permet d’apprendre à l’utiliser.',
-    ],
+      'Application desktop développée avec Electron permettant l’édition et la manipulation de fichiers de sauvegarde complexes.',
+      'Reverse engineering des structures de données, parsing et transformation de formats binaires/JSON.',
+      'Interface multiplateforme orientée utilisateur, avec distribution en application standalone.',
+    ].join('\n'),
     'en-EN': [
-      'Minecraft: Dungeons, released in May 2020, offers a multitude of different gameplay combinations, but with one major flaw: grinding. Equipment is randomly generated, and obtaining the right perks on the right weapons or armor can be very time-consuming.',
-      'That’s where this backup editor comes in 😈',
-      'It is available as a downloadable app or as a WebApp, and includes a tutorial to help you learn how to use it.',
-    ],
+      'Desktop application built with Electron for editing and manipulating complex save files.',
+      'Reverse engineering of data structures, parsing and transformation of binary/JSON formats.',
+      'Cross-platform user-oriented interface distributed as a standalone application.',
+    ].join('\n'),
   },
   link: '/mcd-save-editor/',
   github: 'https://github.com/MatthieuLepers/mcd-save-editor',

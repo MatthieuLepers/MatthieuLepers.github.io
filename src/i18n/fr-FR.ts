@@ -22,10 +22,10 @@ export default {
   Hero: {
     hello: 'Bonjour',
     iam: 'Moi c’est Matthieu',
-    jobName: 'Développeur JavaScript',
-    youGetAProject: 'Vous avez un projet ?',
+    jobName: 'Ingénieur JavaScript',
+    youGetAProject: 'Besoin d’une app complexe ?',
     aboutMe: 'À propos de moi...',
-    aboutMeParagraph: 'J’ai découvert la programmation au lycée via ma calculatrice TI, par la suite je me suis spécialisé dans le développement web.',
+    aboutMeParagraph: 'Développeur JS senior, spécialisé dans les apps interactives et systèmes complexes, je livre des solutions performantes et évolutives.',
     numbers: {
       yearOfExperiences: 'Années\nd’expérience',
       accomplishedMissions: 'Missions\nlongues réalisées',

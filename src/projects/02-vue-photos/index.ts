@@ -8,13 +8,15 @@ export const project = {
   },
   description: {
     'fr-FR': [
-      'Une plateforme multimédia perso inspirée de Google Photos et auto-hébergé sur mon raspberry pi. C’est un de mes plus gros projet, il mêle front, back for front avec API REST, stockage de fichier, cybersécurité, gestion d’archi et d’infra, optimisation...',
-      'Une version de démo est accéssible pour les plus curieux.',
-    ],
+      'Conception d’une plateforme multimédia auto-hébergée, pensée comme un produit complet : front, BFF, API REST et infrastructure.',
+      'Gestion sécurisée des médias (upload chunké, traitement vidéo, queues Redis), architecture conteneurisée et déploiement Docker/Nginx.',
+      'Une version de démo est disponible pour découvrir la plateforme.',
+    ].join('\n'),
     'en-EN': [
-      'A personal multimedia platform inspired by Google Photos and self-hosted on my Raspberry Pi. It’s one of my biggest projects, combining front-end, back-end with REST API, file storage, cybersecurity, architecture and infrastructure management, optimization...',
-      'A demo version is available for those who are curious.',
-    ],
+      'Design and development of a self-hosted multimedia platform built as a complete product: front-end, BFF, REST API and infrastructure.',
+      'Secure media management (chunked uploads, video processing, Redis queues), containerized architecture and Docker/Nginx deployment.',
+      'A demo version is available to explore the platform.',
+    ].join('\n'),
   },
   link: 'https://ged.cosmicnoise.dev/#/request-demo-account',
   medias: [

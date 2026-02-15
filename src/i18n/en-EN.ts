@@ -22,10 +22,10 @@ export default {
   Hero: {
     hello: 'Hello',
     iam: 'I’m Matthieu',
-    jobName: 'JavaScript Developper',
-    youGetAProject: 'You get a project?',
+    jobName: 'JavaScript Engineer',
+    youGetAProject: 'Need a complex app?',
     aboutMe: 'About me...',
-    aboutMeParagraph: 'I discovered programming in high school via my TI calculator, later I specialized in web development.',
+    aboutMeParagraph: 'As a senior JS developer specializing in interactive apps and complex systems, I deliver high-performance and scalable solutions.',
     numbers: {
       yearOfExperiences: 'Years\nof experience',
       accomplishedMissions: 'Long\nmissions completed',

@@ -219,6 +219,7 @@
     line-height: rem(16px);
     font-weight: 400;
     color: color(text300);
+    white-space: pre-line;
 
     @include set-from-screen('s') {
       font-size: rem(16px);

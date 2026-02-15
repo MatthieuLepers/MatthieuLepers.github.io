@@ -4,7 +4,6 @@ import type { IAchievement } from '@/core/entities/achievement/i';
 import type { ISVGPlanet } from '@/components/Svg';
 
 type I18nString = Record<string, string>;
-type I18nStringArray = Record<string, Array<string>>;
 
 export interface ITechnologie {
   logo: string;
@@ -16,7 +15,7 @@ export interface ITechnologie {
 export interface IProject {
   name: I18nString;
   nameOverride?: I18nString;
-  description: I18nStringArray;
+  description: I18nString;
   link: string;
   scene?: Component;
   github?: string;
