@@ -35,30 +35,29 @@ onMounted(() => {
 
   const earthCenter = { x: 33.15, y: 33.15 };
 
-  function onUpdate() {
-    // theta de 0 à 2π
-    const t = this.progress(); // 0 → 1
-    const theta = t * Math.PI * 2;
-
-    const x0 = orbitRadiusX * Math.cos(theta) - incline * orbitRadiusY * Math.sin(theta);
-    const y0 = orbitRadiusY * Math.sin(theta) + incline * orbitRadiusX * Math.cos(theta);
-
-    const moonX = earthCenter.x + x0;
-    const moonY = earthCenter.y + y0;
-
-    gsap.set(moonFront, { x: moonX - 6.6, y: moonY - 6.6 });
-    gsap.set(moonBack, { x: moonX - 6.6, y: moonY - 6.6 });
-
-    // masque derrière Terre
-    moonFront.style.opacity = moonY < earthCenter.y ? '0' : '1';
-    moonBack.style.opacity = moonY < earthCenter.y ? '1' : '0';
-  }
-
   gsap.to({}, {
     duration: 10,
     repeat: -1,
     ease: 'linear',
-    onUpdate,
+    // eslint-disable-next-line @typescript-eslint/space-before-function-paren, object-shorthand
+    onUpdate: function() {
+    // theta de 0 à 2π
+      const t = this.progress(); // 0 → 1
+      const theta = t * Math.PI * 2;
+
+      const x0 = orbitRadiusX * Math.cos(theta) - incline * orbitRadiusY * Math.sin(theta);
+      const y0 = orbitRadiusY * Math.sin(theta) + incline * orbitRadiusX * Math.cos(theta);
+
+      const moonX = earthCenter.x + x0;
+      const moonY = earthCenter.y + y0;
+
+      gsap.set(moonFront, { x: moonX - 6.6, y: moonY - 6.6 });
+      gsap.set(moonBack, { x: moonX - 6.6, y: moonY - 6.6 });
+
+      // masque derrière Terre
+      moonFront.style.opacity = moonY < earthCenter.y ? '0' : '1';
+      moonBack.style.opacity = moonY < earthCenter.y ? '1' : '0';
+    },
   });
 });
 </script>
