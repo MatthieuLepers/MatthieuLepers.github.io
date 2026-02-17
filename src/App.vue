@@ -10,6 +10,7 @@ import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
 
 import { appStore } from '@/core/stores/appStore';
 import { achievementsStore } from '@/core/entities/achievement/store';
+import { analyticsStore } from '@/core/analytics/store';
 
 gsap.registerPlugin(ScrollToPlugin, MotionPathPlugin);
 
@@ -19,6 +20,7 @@ onBeforeMount(async () => {
 });
 
 onMounted(() => {
+  analyticsStore.actions.setup();
   appStore.processManager.start();
 
   window.addEventListener('wheel', (e) => {
@@ -28,7 +30,7 @@ onMounted(() => {
 
     const direction = e.deltaY > 0 ? 1 : -1;
 
-    appStore.actions.scrollToScreen(appStore.state.currentIndex + direction);
+    appStore.actions.scrollToScreen(appStore.state.currentIndex + direction, 'scroll');
   }, { passive: false });
 });
 </script>

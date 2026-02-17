@@ -2,7 +2,10 @@ import { reactive, computed } from 'vue';
 import { gsap } from 'gsap';
 
 import { getProjects, type IProject } from '@/projects';
+import i18n from '@/plugins/i18n';
 import { ProcessManager } from '@/core/ProcessManager';
+import { analyticsStore } from '@/core/analytics/store';
+import type { SectionEventOrigin } from '@/core//analytics/types';
 
 interface IState {
   projects: Array<IProject>;
@@ -35,7 +38,7 @@ const useAppStore = () => {
     async load() {
       state.projects = await getProjects();
     },
-    scrollToScreen(screenIndex: number) {
+    scrollToScreen(screenIndex: number, origin?: SectionEventOrigin) {
       const screens = document.getElementsByClassName('screen');
 
       if (screenIndex < 0 || screenIndex >= screens.length || state.isScrolling) {
@@ -54,6 +57,11 @@ const useAppStore = () => {
         ease: 'expo.out',
         onComplete() {
           state.isScrolling = false;
+          analyticsStore.actions.onEnterSection({
+            type: 'project',
+            origin,
+            projectName: state.projects?.[state.currentIndex]?.name?.[i18n.global.locale.value],
+          });
         },
       });
     },

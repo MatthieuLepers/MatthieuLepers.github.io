@@ -36,7 +36,7 @@ export const project = {
   ],
   navigationSvg: Planet2,
   navigationOnClick() {
-    appStore.actions.scrollToScreen(1);
+    appStore.actions.scrollToScreen(1, 'navigation');
   },
   technologies: [
     {

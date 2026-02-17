@@ -16,6 +16,9 @@
             href="https://calendly.com/matthieu-lepers/prise-de-contact"
             target="_blank"
             class="cta cta--filled"
+            @click="analyticsStore.actions.onClickCTA({
+              type: 'calendly',
+            })"
           >
             {{ t('Hero.youGetAProject') }}
           </a>
@@ -53,7 +56,7 @@
       <button
         class="app-hero__scroll-button"
         title="Voir mes derniers projets personnels"
-        @click="appStore.actions.scrollToScreen(1)"
+        @click="appStore.actions.scrollToScreen(1, 'hero_arrow_down')"
       >
         <ScrollIndicator />
       </button>
@@ -69,6 +72,7 @@ import ScrollIndicator from '@/components/Svg/ScrollIndicator.vue';
 import Container from '@/components/Container.vue';
 
 import { appStore } from '@/core/stores/appStore';
+import { analyticsStore } from '@/core/analytics/store';
 
 defineOptions({ name: 'AppHero' });
 

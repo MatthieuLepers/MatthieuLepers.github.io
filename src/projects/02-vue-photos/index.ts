@@ -28,7 +28,7 @@ export const project = {
   ],
   navigationSvg: Jupiter,
   navigationOnClick() {
-    appStore.actions.scrollToScreen(2);
+    appStore.actions.scrollToScreen(2, 'navigation');
   },
   technologies: [
     {

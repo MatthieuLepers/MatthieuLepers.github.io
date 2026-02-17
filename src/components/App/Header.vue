@@ -12,6 +12,9 @@
           href="https://www.linkedin.com/in/matthieu-lepers/"
           target="_blank"
           :title="t('Header.myProfilOnLinkedIn')"
+          @click="analyticsStore.actions.onClickCTA({
+            type: 'profil_linkedin',
+          })"
         >
           <img src="/img/linkedin.svg" alt="" />
         </a>
@@ -19,6 +22,9 @@
           href="https://www.malt.fr/profile/matthieulepers"
           target="_blank"
           :title="t('Header.myProfilOnMalt')"
+          @click="analyticsStore.actions.onClickCTA({
+            type: 'profil_malt',
+          })"
         >
           <img src="/img/malt.svg" alt="" />
         </a>
@@ -26,6 +32,9 @@
           href="https://github.com/MatthieuLepers"
           target="_blank"
           :title="t('Header.myProfilOnGitHub')"
+          @click="analyticsStore.actions.onClickCTA({
+            type: 'profil_github',
+          })"
         >
           <img src="/img/github.svg" alt="" />
         </a>
@@ -51,6 +60,7 @@ import { useI18n } from 'vue-i18n';
 import Container from '@/components/Container.vue';
 
 import { appStore } from '@/core/stores/appStore';
+import { analyticsStore } from '@/core/analytics/store';
 
 defineOptions({ name: 'AppHeader' });
 
@@ -69,6 +79,10 @@ const actions = {
       query: {
         lang: iso,
       },
+    });
+    analyticsStore.actions.onClickCTA({
+      type: 'i18n',
+      lang: iso,
     });
   },
 };

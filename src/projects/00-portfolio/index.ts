@@ -22,7 +22,7 @@ export const project = {
   medias: [],
   navigationSvg: Earth,
   navigationOnClick() {
-    appStore.actions.scrollToScreen(0);
+    appStore.actions.scrollToScreen(0, 'navigation');
   },
   technologies: [
     {

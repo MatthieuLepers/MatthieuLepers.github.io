@@ -30,7 +30,7 @@ export const project = {
   ],
   navigationSvg: Saturn,
   navigationOnClick() {
-    appStore.actions.scrollToScreen(5);
+    appStore.actions.scrollToScreen(5, 'navigation');
   },
   technologies: [
     {

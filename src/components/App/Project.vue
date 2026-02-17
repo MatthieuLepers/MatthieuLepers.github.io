@@ -59,6 +59,10 @@
               :href="props.project.link"
               target="_blank"
               :title="t('Project.tryProject', [props.project.name[locale]])"
+              @click="analyticsStore.actions.onClickCTA({
+                type: 'project_try',
+                projectName: props.project.name[locale],
+              })"
             >
               <span v-icon:play />
               {{ t('Project.tryIt') }}
@@ -69,6 +73,10 @@
               :href="props.project.github"
               target="_blank"
               :title="t('Project.showOnGitHub', [props.project.name[locale]])"
+              @click="analyticsStore.actions.onClickCTA({
+                type: 'project_github',
+                projectName: props.project.name[locale],
+              })"
             >
               <span v-icon:github />
             </a>
@@ -157,6 +165,7 @@ import AppTechnologieList from '@/components/App/TechnologieList.vue';
 
 import type { IProject } from '@/projects';
 import { achievementsStore } from '@/core/entities/achievement/store';
+import { analyticsStore } from '@/core/analytics/store';
 
 defineOptions({ name: 'AppProject' });
 

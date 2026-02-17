@@ -34,7 +34,7 @@ export const project = {
   ],
   navigationSvg: Uranus,
   navigationOnClick() {
-    appStore.actions.scrollToScreen(4);
+    appStore.actions.scrollToScreen(4, 'navigation');
   },
   technologies: [
     { logo: '/img/svg/webgpu.svg', label: 'WebGPU' },

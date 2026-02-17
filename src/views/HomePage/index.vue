@@ -19,7 +19,7 @@
         <button
           class="scroll-button scroll-button--up"
           :title="i === 0 ? t('Page.backToPresentation') : t('Page.previousProject')"
-          @click="appStore.actions.scrollToScreen(appStore.state.currentIndex - 1)"
+          @click="appStore.actions.scrollToScreen(appStore.state.currentIndex - 1, 'project_arrow_up')"
         >
           <ScrollIndicator direction="up" />
         </button>
@@ -28,7 +28,7 @@
         <button
           class="scroll-button scroll-button--down"
           :title="t('Page.nextProject')"
-          @click="appStore.actions.scrollToScreen(appStore.state.currentIndex + 1)"
+          @click="appStore.actions.scrollToScreen(appStore.state.currentIndex + 1, 'project_arrow_down')"
         >
           <ScrollIndicator direction="down" />
         </button>
@@ -45,7 +45,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, computed } from 'vue';
+import { reactive, computed, onBeforeMount } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import AppHeader from '@/components/App/Header.vue';
@@ -60,6 +60,7 @@ import AchievementArea from '@/components/Achievements/Area.vue';
 import { appStore } from '@/core/stores/appStore';
 import type { IProject } from '@/projects';
 import { achievementsStore } from '@/core/entities/achievement/store';
+import { analyticsStore } from '@/core/analytics/store';
 
 defineOptions({ name: 'HomePage' });
 
@@ -88,6 +89,13 @@ const actions = {
     state.currentMediaIndex = 0;
   },
 };
+
+onBeforeMount(() => {
+  analyticsStore.actions.onLand();
+  analyticsStore.actions.onEnterSection({
+    type: 'hero',
+  });
+});
 </script>
 
 <style lang="scss" src="./index.scss">
