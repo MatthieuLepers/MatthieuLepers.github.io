@@ -24,8 +24,13 @@ jobs:
           VITE_SERVER_BASE_URL: ${{ secrets.PORTFOLIO_API_BASE_URL }}
         run: npm run build
 
+      - name: Force redeploy
+        run: |
+          echo "$(date)" >> dist/.deploy_timestamp
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
+          force_orphan: true
