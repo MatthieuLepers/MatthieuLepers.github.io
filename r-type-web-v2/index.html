@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
+	<head>
+		<title>R-Type Web (v2)</title>
+		<meta charset="UTF-8" />
+		<link rel="icon" type="images/gif" href="images/gui/icons/module_t2.gif">
+		<link rel="stylesheet" href="styles/style.css">
+		<link rel="stylesheet" href="styles/stats.css">
+		<script type="text/javascript" src="scripts/TactilePad.class.js"></script>
+		<script type="text/javascript" src="scripts/Sound.class.js"></script>
+		<script type="text/javascript" src="scripts/Point.class.js"></script>
+		<script type="text/javascript" src="scripts/Hitbox.class.js"></script>
+		<script type="text/javascript" src="scripts/Renderer.class.js"></script>
+		<script type="text/javascript" src="scripts/scheduler/Scheduler.class.js"></script>
+		<script type="text/javascript" src="scripts/scheduler/Task.class.js"></script>
+		<script type="text/javascript" src="scripts/events/Event.class.js"></script>
+		<script type="text/javascript" src="scripts/events/EventListener.class.js"></script>
+		<script type="text/javascript" src="scripts/events/EventsEmitter.class.js"></script>
+		
+		<script type="text/javascript" src="scripts/Sprite.class.js"></script>
+		<script type="text/javascript" src="scripts/MultipleWidthSprite.class.js"></script>
+		<script type="text/javascript" src="scripts/entities/Entity.class.js"></script>
+		<script type="text/javascript" src="scripts/entities/ExplosionEntity.class.js"></script>
+		<script type="text/javascript" src="scripts/entities/SpawnableEntity.class.js"></script>
+		<script type="text/javascript" src="scripts/entities/DestroyableEntity.class.js"></script>
+		<script type="text/javascript" src="scripts/entities/upgrades/Upgrade.class.js"></script>
+		<script type="text/javascript" src="scripts/entities/upgrades/UpgradeWithGun.class.js"></script>
+		<script type="text/javascript" src="scripts/entities/upgrades/SpeedUpgrade.class.js"></script>
+		<script type="text/javascript" src="scripts/entities/upgrades/RocketsUpgrade.class.js"></script>
+		<script type="text/javascript" src="scripts/entities/upgrades/DnaUpgrade.class.js"></script>
+		<script type="text/javascript" src="scripts/entities/upgrades/LaserUpgrade.class.js"></script>
+		<script type="text/javascript" src="scripts/entities/upgrades/FireUpgrade.class.js"></script>
+		<script type="text/javascript" src="scripts/entities/upgrades/BitModuleUpgrade.class.js"></script>
+		<script type="text/javascript" src="scripts/entities/upgrades/ForceFieldUpgrade.class.js"></script>
+		<script type="text/javascript" src="scripts/entities/BitModule.class.js"></script>
+		<script type="text/javascript" src="scripts/entities/Module.class.js"></script>
+		<script type="text/javascript" src="scripts/entities/PlayerShip.class.js"></script>
+		<script type="text/javascript" src="scripts/entities/enemies/Enemy.class.js"></script>
+		<script type="text/javascript" src="scripts/entities/enemies/EnemyShooter.class.js"></script>
+		<script type="text/javascript" src="scripts/entities/enemies/PataPataEnemy.class.js"></script>
+		<script type="text/javascript" src="scripts/entities/enemies/MidEnemy.class.js"></script>
+		<script type="text/javascript" src="scripts/entities/enemies/PowArmorEnemy.class.js"></script>
+		<script type="text/javascript" src="scripts/entities/enemies/CheetahEnemy.class.js"></script>
+		<script type="text/javascript" src="scripts/entities/enemies/ScantEnemy.class.js"></script>
+		<script type="text/javascript" src="scripts/entities/enemies/BoldEnemy.class.js"></script>
+		<script type="text/javascript" src="scripts/entities/enemies/BugEnemy.class.js"></script>
+		
+		<script type="text/javascript" src="scripts/guns/Gun.class.js"></script>
+		<script type="text/javascript" src="scripts/guns/DnaGun.class.js"></script>
+		<script type="text/javascript" src="scripts/guns/LaserGun.class.js"></script>
+		<script type="text/javascript" src="scripts/guns/FireGun.class.js"></script>
+		
+		<script type="text/javascript" src="scripts/entities/projectiles/Projectile.class.js"></script>
+		<script type="text/javascript" src="scripts/entities/projectiles/PlayerProjectile.class.js"></script>
+		<script type="text/javascript" src="scripts/entities/projectiles/Bullet.class.js"></script>
+		<script type="text/javascript" src="scripts/entities/projectiles/ChargedBullet.class.js"></script>
+		<script type="text/javascript" src="scripts/entities/projectiles/ModuleAngleBullet.class.js"></script>
+		<script type="text/javascript" src="scripts/entities/projectiles/DnaBullet.class.js"></script>
+		<script type="text/javascript" src="scripts/entities/projectiles/DnaBeam.class.js"></script>
+		<script type="text/javascript" src="scripts/entities/projectiles/Fireball.class.js"></script>
+		<script type="text/javascript" src="scripts/entities/projectiles/BlueLaser.class.js"></script>
+		<script type="text/javascript" src="scripts/entities/projectiles/Rocket.class.js"></script>
+		<script type="text/javascript" src="scripts/entities/projectiles/EnemyProjectileAbsorbable.class.js"></script>
+		<script type="text/javascript" src="scripts/entities/projectiles/PiercingEnemyProjectile.class.js"></script>
+		<script type="text/javascript" src="scripts/entities/projectiles/PlasmaBall.class.js"></script>
+		<script type="text/javascript" src="scripts/entities/projectiles/RedLaser.class.js"></script>
+		<script type="text/javascript" src="scripts/entities/projectiles/ScantChargedBullet.class.js"></script>
+		
+		<script type="text/javascript" src="scripts/entities/enemies/bosses/Boss.class.js"></script>
+		<script type="text/javascript" src="scripts/entities/enemies/bosses/compiler/CompilerPart.class.js"></script>
+		<script type="text/javascript" src="scripts/entities/enemies/bosses/compiler/CompilerPlasmaBall.class.js"></script>
+		<script type="text/javascript" src="scripts/entities/enemies/bosses/compiler/CompilerTurret.class.js"></script>
+		<script type="text/javascript" src="scripts/entities/enemies/bosses/compiler/CompilerCannon.class.js"></script>
+		<script type="text/javascript" src="scripts/entities/enemies/bosses/compiler/CompilerTopPart.class.js"></script>
+		<script type="text/javascript" src="scripts/entities/enemies/bosses/compiler/CompilerBottomPart.class.js"></script>
+		<script type="text/javascript" src="scripts/entities/enemies/bosses/compiler/CompilerRightPart.class.js"></script>
+		<script type="text/javascript" src="scripts/entities/enemies/bosses/compiler/CompilerBoss.class.js"></script>
+		
+		<script type="text/javascript" src="scripts/Achievements.class.js"></script>
+		<script type="text/javascript" src="scripts/Statistics.class.js"></script>
+		<script type="text/javascript" src="scripts/Scoreboard.class.js"></script>
+		<script type="text/javascript" src="scripts/EnemySpawner.class.js"></script>
+		<script type="text/javascript" src="scripts/Game.class.js"></script>
+		<script type="text/javascript" src="scripts/Main.js"></script>
+		
+		<script type="text/javascript" src="scripts/IA.class.js"></script>
+	</head>
+	<body id ="background">
+		<div id="achievements"></div>
+		<canvas id="canvas" class="animate"></canvas>
+	</body>
+</html>
