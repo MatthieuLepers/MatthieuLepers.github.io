@@ -86,12 +86,10 @@ const useAnalyticsStore = () => {
 
   const setup = () => {
     window.addEventListener('load', () => {
-      // Flush périodique
       window.setInterval(() => {
         privates.flush();
       }, 5000);
 
-      // Flush initial si backlog
       privates.flush();
     });
 
@@ -99,7 +97,6 @@ const useAnalyticsStore = () => {
       flushCurrentSection();
       events.emit('leave');
 
-      // sendBeacon fallback
       queue.flush((payloads) => {
         const blob = new Blob([JSON.stringify(payloads)], {
           type: 'application/json',
