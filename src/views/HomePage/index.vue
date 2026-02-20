@@ -45,7 +45,12 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, computed, onBeforeMount } from 'vue';
+import {
+  reactive,
+  computed,
+  onBeforeMount,
+  onMounted,
+} from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import AppHeader from '@/components/App/Header.vue';
@@ -61,6 +66,7 @@ import { appStore } from '@/core/stores/appStore';
 import type { IProject } from '@/projects';
 import { achievementsStore } from '@/core/entities/achievement/store';
 import { analyticsStore } from '@/core/analytics/store';
+import { mobileScrollTracker } from '@/core/analytics/MobileScrollTracker';
 
 defineOptions({ name: 'HomePage' });
 
@@ -95,6 +101,10 @@ onBeforeMount(() => {
   analyticsStore.actions.onEnterSection({
     type: 'hero',
   });
+});
+
+onMounted(() => {
+  mobileScrollTracker.setup();
 });
 </script>
 

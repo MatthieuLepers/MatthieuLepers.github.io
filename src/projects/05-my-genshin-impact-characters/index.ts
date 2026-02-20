@@ -1,4 +1,4 @@
-import { Saturn } from '@/components/Svg';
+import { IcyPlanet } from '@/components/Svg';
 import { appStore } from '@/core/stores/appStore';
 
 export const project = {
@@ -28,7 +28,7 @@ export const project = {
     '/img/projects/my-genshin-impact-characters-builds.png',
     '/img/projects/my-genshin-impact-characters-builds-details.png',
   ],
-  navigationSvg: Saturn,
+  navigationSvg: IcyPlanet,
   navigationOnClick() {
     appStore.actions.scrollToScreen(5, 'navigation');
   },

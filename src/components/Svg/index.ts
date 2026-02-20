@@ -5,6 +5,7 @@ import SVGPathPlanet2 from '@/components/Svg/Planet2.vue';
 import SVGPathJupiter from '@/components/Svg/Jupiter.vue';
 import SVGPathSaturn from '@/components/Svg/Saturn.vue';
 import SVPPathUranus from '@/components/Svg/Uranus.vue';
+import SVGPathIcyPlanet from '@/components/Svg/Icy.vue';
 
 export interface ISVGPlanet {
   component: Component;
@@ -40,4 +41,10 @@ export const Uranus = {
   component: markRaw(SVPPathUranus),
   width: 83,
   height: 83,
+};
+
+export const IcyPlanet = {
+  component: markRaw(SVGPathIcyPlanet),
+  width: 61,
+  height: 61,
 };
