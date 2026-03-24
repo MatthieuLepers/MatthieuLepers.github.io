@@ -5,6 +5,7 @@ import { EventQueue } from '@/core/analytics/EventQueue';
 import type { AnalyticsEventType, CTAEvent, SectionEvent } from '@/core/analytics/types';
 
 const useAnalyticsStore = () => {
+  const trackingEnabled = import.meta.env.VITE_TRACKING_ENABLED !== 'false';
   let currentSection: SectionEvent | null = null;
 
   const queue = new EventQueue({
@@ -35,6 +36,7 @@ const useAnalyticsStore = () => {
 
   const events = {
     emit(eventType: AnalyticsEventType, data: Record<string, any> = {}) {
+      if (!trackingEnabled) return;
       queue.enqueue({
         eventType,
         sessionId: privates.getSessionId(),
@@ -72,7 +74,7 @@ const useAnalyticsStore = () => {
   };
 
   const flushCurrentSection = () => {
-    if (!currentSection) return;
+    if (!currentSection || !trackingEnabled) return;
 
     const duration = Date.now() - currentSection.enteredAt;
 
@@ -85,6 +87,8 @@ const useAnalyticsStore = () => {
   };
 
   const setup = () => {
+    if (!trackingEnabled) return;
+
     window.addEventListener('load', () => {
       window.setInterval(() => {
         privates.flush();

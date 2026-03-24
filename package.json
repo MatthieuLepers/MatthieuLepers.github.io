@@ -16,6 +16,7 @@
     "gsap": "^3.14.2",
     "idb": "^8.0.3",
     "vue": "^3.5.12",
+    "vue-3-slider-component": "^1.0.2",
     "vue-i18n": "^10.0.4",
     "vue-router": "^4.4.5",
     "vue3-carousel": "^0.14.0"

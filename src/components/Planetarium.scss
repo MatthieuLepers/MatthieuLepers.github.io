@@ -1,0 +1,29 @@
+@use '~styles/utilities' as *;
+
+.planetarium {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: color(primary900);
+  z-index: 999;
+
+  &__zoom {
+    position: absolute !important;
+    top: calc(50% - 150px);
+    left: 35px;
+  }
+
+  &__svg {
+    user-select: none;
+
+    &--grab {
+      cursor: grab;
+    }
+
+    &--grabbing {
+      cursor: grabbing;
+    }
+  }
+}

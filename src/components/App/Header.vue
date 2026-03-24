@@ -4,7 +4,7 @@
   })">
     <Container class="app-header__container">
       <span class="app-header__title">
-        Matthieu LEPERS
+        <slot>Matthieu LEPERS</slot>
       </span>
 
       <div class="app-header__social">
@@ -63,6 +63,10 @@ import { appStore } from '@/core/stores/appStore';
 import { analyticsStore } from '@/core/analytics/store';
 
 defineOptions({ name: 'AppHeader' });
+
+defineSlots<{
+  default(): void;
+}>();
 
 const { t, locale, availableLocales } = useI18n();
 const router = useRouter();

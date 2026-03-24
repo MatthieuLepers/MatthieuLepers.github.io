@@ -41,6 +41,8 @@
       :medias="state.currentProject?.medias ?? []"
       @close="actions.handleCloseMediaCarousel"
     />
+
+    <Planetarium />
   </main>
 </template>
 
@@ -61,6 +63,7 @@ import AppMediaCarousel from '@/components/App/MediaCarousel.vue';
 import ScrollIndicator from '@/components/Svg/ScrollIndicator.vue';
 import AchivementMenu from '@/components/Achievements/Menu.vue';
 import AchievementArea from '@/components/Achievements/Area.vue';
+import Planetarium from '@/components/Planetarium.vue';
 
 import { appStore } from '@/core/stores/appStore';
 import type { IProject } from '@/projects';

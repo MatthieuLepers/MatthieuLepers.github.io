@@ -74,3 +74,5 @@ export function openLink(url: string, target = '_blank') {
 
   document.body.removeChild(element);
 }
+
+export const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
