@@ -7,7 +7,7 @@ interface IModule {
   achievements?: Record<string, IAchievement>;
 }
 
-const glob = import.meta.glob<boolean, string, IModule>('@/projects/*/index.(ts|js)');
+const glob = import.meta.glob<IModule>('@/projects/*/index.{ts,js}');
 
 export async function getProjectsAsRecord() {
   const modules = await Promise.all(
