@@ -4,11 +4,11 @@
 @use './fonts' as fonts;
 
 @mixin placeholder {
-  #{if(&, '&.placeholder','.placeholder')} { @content; }
-  #{if(&, '&:-moz-placeholder',':-moz-placeholder')} { @content; }
-  #{if(&, '&::-moz-placeholder','::-moz-placeholder')} { @content; }
-  #{if(&, '&:-ms-input-placeholder',':-ms-input-placeholder')} { @content; }
-  #{if(&, '&::-webkit-input-placeholder','::-webkit-input-placeholder')} { @content; }
+  #{if(sass(&): '&.placeholder'               ; else: '.placeholder')               } { @content; }
+  #{if(sass(&): '&:-moz-placeholder'          ; else: ':-moz-placeholder')          } { @content; }
+  #{if(sass(&): '&::-moz-placeholder'         ; else: '::-moz-placeholder')         } { @content; }
+  #{if(sass(&): '&:-ms-input-placeholder'     ; else: ':-ms-input-placeholder')     } { @content; }
+  #{if(sass(&): '&::-webkit-input-placeholder'; else: '::-webkit-input-placeholder')} { @content; }
 }
 
 @mixin transition($transition...) {

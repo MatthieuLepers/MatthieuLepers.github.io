@@ -1,4 +1,4 @@
-import { reactive, nextTick } from 'vue';
+import { nextTick, reactive } from 'vue';
 
 export interface IModal {
   name: string;

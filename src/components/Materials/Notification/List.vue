@@ -27,7 +27,7 @@ import { ref, watch } from 'vue';
 
 import MaterialButton from '@/components/Materials/Button/index.vue';
 
-import { notificationStore, type INotification } from '@/components/Materials/Notification/Store';
+import { type INotification, notificationStore } from '@/components/Materials/Notification/Store';
 
 defineOptions({ name: 'NotificationList' });
 
@@ -43,7 +43,7 @@ const actions = {
 };
 
 watch(() => notificationStore.notifications, (newNotifications) => {
-  // @ts-ignore type is valid
+  // @ts-expect-error type is valid
   notifications.value = newNotifications;
 });
 </script>

@@ -2,6 +2,7 @@ import { appStore } from '@/core/stores/appStore';
 import { Jupiter } from '@/components/Svg';
 
 export const project = {
+  id: 'vue-photos',
   name: {
     'fr-FR': 'GED Multimédia',
     'en-EN': 'Multimedia Plateform',

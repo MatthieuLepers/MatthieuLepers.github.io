@@ -3,14 +3,14 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onBeforeMount } from 'vue';
 import { gsap } from 'gsap';
-import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
+import { onBeforeMount,onMounted } from 'vue';
 
-import { appStore } from '@/core/stores/appStore';
-import { achievementsStore } from '@/core/entities/achievement/store';
 import { analyticsStore } from '@/core/analytics/store';
+import { achievementsStore } from '@/core/entities/achievement/store';
+import { appStore } from '@/core/stores/appStore';
 
 gsap.registerPlugin(ScrollToPlugin, MotionPathPlugin);
 

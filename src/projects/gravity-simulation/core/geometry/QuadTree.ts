@@ -1,6 +1,6 @@
+import type { IBody, Particle } from '../Particle';
 import { Rectangle } from './Rectangle';
 import { Vector2D } from './Vector2D';
-import type { IBody, Particle } from '../Particle';
 
 export interface IQuadTreeOptions {
   x: number;

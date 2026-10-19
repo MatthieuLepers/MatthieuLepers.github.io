@@ -2,9 +2,11 @@ import { markRaw } from 'vue';
 
 import { appStore } from '@/core/stores/appStore';
 import { Planet2 } from '@/components/Svg';
+
 import Scene from './Scene.vue';
 
 export const project = {
+  id: 'r-type-web-v2',
   name: {
     'fr-FR': 'R-Type Web V2',
     'en-EN': 'R-Type Web V2',

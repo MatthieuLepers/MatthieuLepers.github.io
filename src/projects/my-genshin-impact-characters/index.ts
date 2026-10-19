@@ -1,7 +1,8 @@
-import { IcyPlanet } from '@/components/Svg';
 import { appStore } from '@/core/stores/appStore';
+import { IcyPlanet } from '@/components/Svg';
 
 export const project = {
+  id: 'my-genshin-impact-characters',
   name: {
     'fr-FR': 'My Genshin Impact Characters',
     'en-EN': 'My Genshin Impact Characters',
@@ -75,5 +76,6 @@ export const project = {
       },
     },
   ],
+  visible: false,
   order: 5,
 };

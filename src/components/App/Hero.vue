@@ -68,24 +68,32 @@
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import ScrollIndicator from '@/components/Svg/ScrollIndicator.vue';
 import Container from '@/components/Container.vue';
+import ScrollIndicator from '@/components/Svg/ScrollIndicator.vue';
 
-import { appStore } from '@/core/stores/appStore';
 import { analyticsStore } from '@/core/analytics/store';
+import { appStore } from '@/core/stores/appStore';
 
 defineOptions({ name: 'AppHero' });
 
 const { t } = useI18n();
 
 const years = computed(() => {
-  const origineDate = new Date('2017-10-01');
+  const origineDate = new Date('2017-10-20');
   const now = new Date();
 
-  const y = now.getFullYear() - origineDate.getFullYear();
-  const m = now.getMonth() - origineDate.getMonth();
+  let years = now.getFullYear() - origineDate.getFullYear();
 
-  return m < 0 ? y - 1 : y;
+  const anniversaryNotReached =
+    now.getMonth() < origineDate.getMonth()
+    || (now.getMonth() === origineDate.getMonth() && now.getDate() < origineDate.getDate())
+  ;
+
+  if (anniversaryNotReached) {
+    years--;
+  }
+
+  return years;
 });
 </script>
 

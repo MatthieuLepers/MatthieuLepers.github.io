@@ -2,9 +2,11 @@ import { markRaw } from 'vue';
 
 import { appStore } from '@/core/stores/appStore';
 import { Uranus } from '@/components/Svg';
+
 import Scene from './Scene.vue';
 
 export const project = {
+  id: 'gravity-simulation',
   name: {
     'fr-FR': 'Gravity Simulation',
     'en-EN': 'Gravity Simulation',

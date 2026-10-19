@@ -11,7 +11,7 @@
 
     <AppProject
       v-for="(project, i) in projects"
-      :key="i"
+      :key="project.id"
       :project="project"
       @showMediaCarousel="actions.handleShowMediaCarousel"
     >
@@ -46,27 +46,27 @@
 
 <script setup lang="ts">
 import {
-  reactive,
   computed,
   onBeforeMount,
   onMounted,
+  reactive,
 } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import AchievementArea from '@/components/Achievements/Area.vue';
+import AchivementMenu from '@/components/Achievements/Menu.vue';
 import AppHeader from '@/components/App/Header.vue';
 import AppHero from '@/components/App/Hero.vue';
+import AppMediaCarousel from '@/components/App/MediaCarousel.vue';
 import AppNavigation from '@/components/App/Navigation.vue';
 import AppProject from '@/components/App/Project.vue';
-import AppMediaCarousel from '@/components/App/MediaCarousel.vue';
 import ScrollIndicator from '@/components/Svg/ScrollIndicator.vue';
-import AchivementMenu from '@/components/Achievements/Menu.vue';
-import AchievementArea from '@/components/Achievements/Area.vue';
 
-import { appStore } from '@/core/stores/appStore';
-import type { IProject } from '@/projects';
-import { achievementsStore } from '@/core/entities/achievement/store';
-import { analyticsStore } from '@/core/analytics/store';
 import { mobileScrollTracker } from '@/core/analytics/MobileScrollTracker';
+import { analyticsStore } from '@/core/analytics/store';
+import { achievementsStore } from '@/core/entities/achievement/store';
+import type { IProject } from '@/core/entities/project/i';
+import { appStore } from '@/core/stores/appStore';
 
 defineOptions({ name: 'HomePage' });
 

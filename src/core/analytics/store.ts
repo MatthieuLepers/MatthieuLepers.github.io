@@ -1,10 +1,11 @@
 import axios from 'axios';
 
-import { getLocalStorage, setLocalStorage } from '@/core/LocalStorage';
 import { EventQueue } from '@/core/analytics/EventQueue';
 import type { AnalyticsEventType, CTAEvent, SectionEvent } from '@/core/analytics/types';
+import { getLocalStorage, setLocalStorage } from '@/core/LocalStorage';
 
 const useAnalyticsStore = () => {
+  const isDisabled = import.meta.env.VITE_TRACKING_DISABLED === 'true';
   let currentSection: SectionEvent | null = null;
 
   const queue = new EventQueue({
@@ -34,7 +35,9 @@ const useAnalyticsStore = () => {
   };
 
   const events = {
-    emit(eventType: AnalyticsEventType, data: Record<string, any> = {}) {
+    emit(eventType: AnalyticsEventType, data: Record<string, unknown> = {}) {
+      if (isDisabled) return;
+
       queue.enqueue({
         eventType,
         sessionId: privates.getSessionId(),
@@ -43,6 +46,8 @@ const useAnalyticsStore = () => {
       });
     },
     onLand() {
+      if (isDisabled) return;
+
       events.emit('land', {
         referrer: document.referrer,
         userAgent: navigator.userAgent,
@@ -50,6 +55,8 @@ const useAnalyticsStore = () => {
       });
     },
     onEnterSection(payload: Omit<SectionEvent, 'enteredAt' | 'duration'>) {
+      if (isDisabled) return;
+
       const now = Date.now();
 
       if (currentSection) {
@@ -67,6 +74,8 @@ const useAnalyticsStore = () => {
       };
     },
     onClickCTA(payload: CTAEvent) {
+      if (isDisabled) return;
+
       events.emit('cta', payload);
     },
   };
@@ -85,6 +94,8 @@ const useAnalyticsStore = () => {
   };
 
   const setup = () => {
+    if (isDisabled) return;
+
     window.addEventListener('load', () => {
       window.setInterval(() => {
         privates.flush();

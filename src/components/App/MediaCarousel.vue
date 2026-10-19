@@ -29,10 +29,11 @@
 
 <script setup lang="ts">
 import { reactive, watch } from 'vue';
-import { Carousel, Slide, Navigation } from 'vue3-carousel';
-import 'vue3-carousel/carousel.css';
+import { Carousel, Navigation,Slide } from 'vue3-carousel';
 
 import MaterialButton from '@/components/Materials/Button/index.vue';
+
+import 'vue3-carousel/carousel.css';
 
 const emit = defineEmits<{
   close: [e: MouseEvent];

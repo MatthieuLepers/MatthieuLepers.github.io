@@ -4,7 +4,7 @@ export type AnalyticsEvent = {
   eventType: AnalyticsEventType;
   sessionId: string;
   timestamp: number;
-  data: Record<string, any>;
+  data: Record<string, unknown>;
 };
 
 export type SectionEventType = 'hero' | 'project';

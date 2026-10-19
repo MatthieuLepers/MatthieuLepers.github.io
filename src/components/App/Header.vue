@@ -54,13 +54,13 @@
 
 <script setup lang="ts">
 import { computed, onBeforeMount } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
+import { useRoute,useRouter } from 'vue-router';
 
 import Container from '@/components/Container.vue';
 
-import { appStore } from '@/core/stores/appStore';
 import { analyticsStore } from '@/core/analytics/store';
+import { appStore } from '@/core/stores/appStore';
 
 defineOptions({ name: 'AppHeader' });
 

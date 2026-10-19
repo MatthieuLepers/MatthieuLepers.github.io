@@ -32,11 +32,11 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, computed, onMounted } from 'vue';
+import { computed, onMounted, reactive } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { achievementsStore } from '@/core/entities/achievement/store';
 import type { IAchievement } from '@/core/entities/achievement/i';
+import { achievementsStore } from '@/core/entities/achievement/store';
 
 defineOptions({ name: 'Achievement' });
 

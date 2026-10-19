@@ -70,17 +70,18 @@
 
 <script setup lang="ts">
 import {
-  reactive,
   computed,
-  watch,
-  ref,
   onMounted,
   onUnmounted,
+  reactive,
+  ref,
+  watch,
 } from 'vue';
 
 import MaterialButton from '@/components/Materials/Button/index.vue';
 
 import { modalStore } from '@/components/Materials/Modal/Store';
+
 import type { IProps, ISlots, IState } from '.';
 
 defineOptions({ name: 'Modal' });

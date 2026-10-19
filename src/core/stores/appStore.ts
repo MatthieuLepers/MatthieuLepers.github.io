@@ -1,11 +1,13 @@
-import { reactive, computed } from 'vue';
 import { gsap } from 'gsap';
+import { computed,reactive } from 'vue';
 
-import { getProjects, type IProject } from '@/projects';
-import i18n from '@/plugins/i18n';
-import { ProcessManager } from '@/core/ProcessManager';
-import { analyticsStore } from '@/core/analytics/store';
 import type { SectionEventOrigin } from '@/core//analytics/types';
+import { analyticsStore } from '@/core/analytics/store';
+import { Project } from '@/core/entities/project';
+import type { IProject } from '@/core/entities/project/i';
+import { ProcessManager } from '@/core/ProcessManager';
+
+import i18n from '@/plugins/i18n';
 
 interface IState {
   projects: Array<IProject>;
@@ -36,7 +38,7 @@ const useAppStore = () => {
 
   const actions = {
     async load() {
-      state.projects = await getProjects();
+      state.projects = await Project.findAll();
     },
     scrollToScreen(screenIndex: number, origin?: SectionEventOrigin) {
       const screens = document.getElementsByClassName('screen');

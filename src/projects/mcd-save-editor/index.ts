@@ -2,6 +2,7 @@ import { appStore } from '@/core/stores/appStore';
 import { Saturn } from '@/components/Svg';
 
 export const project = {
+  id: 'mcd-save-editor',
   name: {
     'fr-FR': 'MCD Save Editor',
     'en-EN': 'MCD Save Editor',

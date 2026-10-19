@@ -61,18 +61,19 @@
 
 <script setup lang="ts">
 import {
+  getCurrentInstance,
+  nextTick,
+  onMounted,
+  onUnmounted,
   reactive,
   ref,
   watch,
-  onMounted,
-  onUnmounted,
-  nextTick,
-  getCurrentInstance,
 } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { appStore } from '@/core/stores/appStore';
 import type { Task } from '@/core/tasks';
+
 import { GravitySimulationTask } from './core';
 import { Vector2D } from './core/geometry/Vector2D';
 

@@ -2,15 +2,13 @@ module.exports = {
   root: true,
   env: {
     es2021: true,
-    jest: true,
   },
   extends: [
     'eslint:recommended',
+    'plugin:vue/vue3-essential',
+    'plugin:@typescript-eslint/recommended',
     'plugin:import/recommended',
     'plugin:import/typescript',
-    'plugin:vue/vue3-essential',
-    'airbnb-base',
-    'airbnb-typescript/base',
   ],
   parser: 'vue-eslint-parser',
   parserOptions: {
@@ -21,8 +19,10 @@ module.exports = {
   },
   plugins: [
     'vue',
-    'import',
     '@typescript-eslint',
+    'import',
+    'simple-import-sort',
+    'unused-imports',
   ],
   globals: {
     localStorage: true,
@@ -34,25 +34,43 @@ module.exports = {
     'import/resolver': {
       typescript: {
         alwaysTryTypes: true,
-        project: 'tsconfig.app.json',
+        project: 'tsconfig.json',
+      },
+      node: {
+        extensions: ['.js', '.ts', '.json', '.vue'],
       },
     },
   },
   rules: {
     'import/extensions': ['error', 'always', {
       js: 'never',
-      jsx: 'never',
       ts: 'never',
+      jsx: 'never',
       tsx: 'never',
     }],
     'import/prefer-default-export': 'off',
     'import/no-cycle': 'off',
-    'object-curly-newline': ['error', {
-      ImportDeclaration: { multiline: true, minProperties: 4 },
+    'simple-import-sort/imports': ['error', {
+      groups: [
+        // 1. Packages externes (node_modules)
+        ['^@?\\w'],
+        // 2. Vue components (.vue uniquement)
+        ['^@/.+\\.vue$'],
+        // 3. core métier & store de composants
+        ['^@/core', '^@/components/(?!.*\\.vue$)', '^@/composables/.+'],
+        // 4. reste du projet
+        ['^@/'],
+        // 5. relatifs
+        ['^\\.'],
+      ],
     }],
+    'simple-import-sort/exports': 'error',
+    'unused-imports/no-unused-imports': 'error',
     'no-param-reassign': 'off',
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'class-methods-use-this': 'off',
+    'func-names': 'off',
     'linebreak-style': ['error', 'unix'],
     'max-len': ['error', {
       code: 512,
@@ -62,11 +80,17 @@ module.exports = {
       ignoreStrings: true,
       ignoreTemplateLiterals: true,
     }],
-    'semi-style': 'off',
-    'class-methods-use-this': 'off',
-    'func-names': 'off',
+    'object-curly-newline': ['error', {
+      ImportDeclaration: {
+        multiline: true,
+        minProperties: 4,
+      },
+    }],
     'vue/multi-word-component-names': 'off',
     'vue/no-multiple-template-root': 'off',
-    'vue/no-mutating-props': 'off',
+    "@typescript-eslint/no-empty-object-type": ['error', {
+      allowInterfaces: 'always',
+      allowObjectTypes: 'always',
+    }],
   },
 };

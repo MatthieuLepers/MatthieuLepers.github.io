@@ -163,13 +163,13 @@
 </template>
 
 <script setup lang="ts">
+import { gsap } from 'gsap';
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { gsap } from 'gsap';
 
+import { achievementsStore } from '@/core/entities/achievement/store';
 import { appStore } from '@/core/stores/appStore';
 import type { ISVGPlanet } from '@/components/Svg';
-import { achievementsStore } from '@/core/entities/achievement/store';
 
 type Trajectory = {
   type: 'prev' | 'next';

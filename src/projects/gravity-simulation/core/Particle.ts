@@ -1,4 +1,5 @@
 import { achievementsStore } from '@/core/entities/achievement/store';
+
 import { Vector2D } from './geometry/Vector2D';
 
 export interface IBody {

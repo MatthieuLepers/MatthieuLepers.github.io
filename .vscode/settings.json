@@ -1,16 +1,6 @@
 {
   "eslint.workingDirectories": [
-    {
-      "directory": ".",
-      "changeProcessCWD": true
-    },
-    {
-      "directory": "./api",
-      "changeProcessCWD": true
-    },
-    {
-      "directory": "./analytics-front",
-      "changeProcessCWD": true
-    }
-  ]
+    { "mode": "auto" }
+  ],
+  "js/ts.tsdk.path": "node_modules\\typescript\\lib"
 }

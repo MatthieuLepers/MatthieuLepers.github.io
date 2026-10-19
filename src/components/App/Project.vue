@@ -155,17 +155,18 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import {
   Carousel,
-  Slide,
-  Pagination,
   Navigation,
+  Pagination,
+  Slide,
 } from 'vue3-carousel';
-import 'vue3-carousel/carousel.css';
 
 import AppTechnologieList from '@/components/App/TechnologieList.vue';
 
-import type { IProject } from '@/projects';
-import { achievementsStore } from '@/core/entities/achievement/store';
 import { analyticsStore } from '@/core/analytics/store';
+import { achievementsStore } from '@/core/entities/achievement/store';
+import type { IProject } from '@/core/entities/project/i';
+
+import 'vue3-carousel/carousel.css';
 
 defineOptions({ name: 'AppProject' });
 

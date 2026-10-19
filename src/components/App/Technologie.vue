@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import type { ITechnologie } from '@/projects';
+import type { ITechnologie } from '@/core/entities/project/i';
 
 defineOptions({ name: 'AppTechnologie' });
 

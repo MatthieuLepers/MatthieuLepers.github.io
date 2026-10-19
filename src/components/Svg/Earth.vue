@@ -39,7 +39,6 @@ onMounted(() => {
     duration: 10,
     repeat: -1,
     ease: 'linear',
-    // eslint-disable-next-line @typescript-eslint/space-before-function-paren, object-shorthand
     onUpdate: function() {
     // theta de 0 à 2π
       const t = this.progress(); // 0 → 1

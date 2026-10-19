@@ -1,7 +1,8 @@
 import { Task } from '@/core/tasks';
-import { Vector2D } from './geometry/Vector2D';
+
 import { QuadTreeNode } from './geometry/QuadTree';
-import { Particle, type IParticle } from './Particle';
+import { Vector2D } from './geometry/Vector2D';
+import { type IParticle,Particle } from './Particle';
 
 export class GravitySimulationTask extends Task {
   public particles: Array<Particle> = [];

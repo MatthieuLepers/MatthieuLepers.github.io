@@ -1,11 +1,11 @@
-import { markRaw, type Component } from 'vue';
+import { type Component,markRaw } from 'vue';
 
 import SVGPathEarth from '@/components/Svg/Earth.vue';
-import SVGPathPlanet2 from '@/components/Svg/Planet2.vue';
+import SVGPathIcyPlanet from '@/components/Svg/Icy.vue';
 import SVGPathJupiter from '@/components/Svg/Jupiter.vue';
+import SVGPathPlanet2 from '@/components/Svg/Planet2.vue';
 import SVGPathSaturn from '@/components/Svg/Saturn.vue';
 import SVPPathUranus from '@/components/Svg/Uranus.vue';
-import SVGPathIcyPlanet from '@/components/Svg/Icy.vue';
 
 export interface ISVGPlanet {
   component: Component;

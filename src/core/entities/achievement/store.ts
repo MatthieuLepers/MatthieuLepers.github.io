@@ -1,9 +1,10 @@
 import { computed, reactive } from 'vue';
 
-import i18n from '@/plugins/i18n';
-import { getAchievements } from '@/projects';
 import type { IAchievement } from '@/core/entities/achievement/i';
 import { getLocalStorage, setLocalStorage } from '@/core/LocalStorage';
+
+import i18n from '@/plugins/i18n';
+import { getAchievements } from '@/projects';
 
 interface IState {
   achievements: Record<string, IAchievement>;

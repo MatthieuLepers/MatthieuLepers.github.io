@@ -1,5 +1,5 @@
-import { serial } from '@/core/utils';
 import type { Task } from '@/core/tasks';
+import { serial } from '@/core/utils';
 
 export class ProcessManager {
   private tasks: Array<Task> = [];

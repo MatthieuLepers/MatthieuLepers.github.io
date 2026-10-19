@@ -2,6 +2,7 @@ import { appStore } from '@/core/stores/appStore';
 import { Earth } from '@/components/Svg';
 
 export const project = {
+  id: 'portfolio',
   name: {
     'fr-FR': 'Présentation',
     'en-EN': 'Presentation',

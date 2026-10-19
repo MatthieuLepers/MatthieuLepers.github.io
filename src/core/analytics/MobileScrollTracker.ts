@@ -1,7 +1,8 @@
-import i18n from '@/plugins/i18n';
-import type { SectionEvent } from '@/core/analytics/types';
 import { analyticsStore } from '@/core/analytics/store';
+import type { SectionEvent } from '@/core/analytics/types';
 import { appStore } from '@/core/stores/appStore';
+
+import i18n from '@/plugins/i18n';
 
 const MOBILE_WIDTH_THRESHOLD = 768;
 

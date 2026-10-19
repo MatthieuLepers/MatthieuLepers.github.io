@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, getCurrentInstance } from 'vue';
+import { getCurrentInstance, reactive } from 'vue';
 
 defineOptions({ name: 'FormToggle' });
 

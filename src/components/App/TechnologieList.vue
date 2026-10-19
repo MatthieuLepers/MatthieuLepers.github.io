@@ -30,7 +30,7 @@ import { useI18n } from 'vue-i18n';
 import AppTechnologie from '@/components/App/Technologie.vue';
 import AppTooltip from '@/components/App/Tooltip.vue';
 
-import type { ITechnologie } from '@/projects';
+import type { ITechnologie } from '@/core/entities/project/i';
 
 const { locale } = useI18n();
 

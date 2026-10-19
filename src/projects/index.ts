@@ -1,33 +1,5 @@
-import type { Component } from 'vue';
-
 import type { IAchievement } from '@/core/entities/achievement/i';
-import type { ISVGPlanet } from '@/components/Svg';
-
-type I18nString = Record<string, string>;
-
-export interface ITechnologie {
-  logo: string;
-  label: string;
-  abbreviation?: string;
-  tooltip?: I18nString;
-}
-
-export interface IProject {
-  name: I18nString;
-  nameOverride?: I18nString;
-  description: I18nString;
-  link: string;
-  scene?: Component;
-  github?: string;
-  medias?: string[];
-  navigationSvg: ISVGPlanet;
-  navigationOnClick: () => void;
-  technologies?: ITechnologie[];
-  deployment?: ITechnologie[];
-  tools?: ITechnologie[];
-  visible?: boolean;
-  order?: number;
-}
+import type { IProject } from '@/core/entities/project/i';
 
 interface IModule {
   project: IProject;
@@ -37,17 +9,30 @@ interface IModule {
 
 const glob = import.meta.glob<boolean, string, IModule>('@/projects/*/index.(ts|js)');
 
-export async function getProjects() {
+export async function getProjectsAsRecord() {
   const modules = await Promise.all(
     Object.values(glob).map((load) => load()),
   );
 
   return modules
-    .map((m) => m.project)
-    .filter((p) => p.visible === undefined || p.visible)
-    .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+    .reduce((acc, m) => ({
+      ...acc,
+      [m.project.id]: m.project,
+    }), {} as Record<string, IProject>)
   ;
 }
+
+// export async function getProjects() {
+//   const modules = await Promise.all(
+//     Object.values(glob).map((load) => load()),
+//   );
+
+//   return modules
+//     .map((m) => m.project)
+//     .filter((p) => p.visible === undefined || p.visible)
+//     .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+//   ;
+// }
 
 export async function getAchievements() {
   const modules = await Promise.all(
