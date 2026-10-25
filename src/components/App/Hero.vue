@@ -16,7 +16,7 @@
             href="https://calendly.com/matthieu-lepers/prise-de-contact"
             target="_blank"
             class="cta cta--filled"
-            @click="analyticsStore.actions.onClickCTA({
+            @click="analyticsStore.actions.onSocialCTAClick({
               type: 'calendly',
             })"
           >

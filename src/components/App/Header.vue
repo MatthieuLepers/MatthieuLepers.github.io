@@ -12,7 +12,7 @@
           href="https://www.linkedin.com/in/matthieu-lepers/"
           target="_blank"
           :title="t('Header.myProfilOnLinkedIn')"
-          @click="analyticsStore.actions.onClickCTA({
+          @click="analyticsStore.actions.onSocialCTAClick({
             type: 'profil_linkedin',
           })"
         >
@@ -22,7 +22,7 @@
           href="https://www.malt.fr/profile/matthieulepers"
           target="_blank"
           :title="t('Header.myProfilOnMalt')"
-          @click="analyticsStore.actions.onClickCTA({
+          @click="analyticsStore.actions.onSocialCTAClick({
             type: 'profil_malt',
           })"
         >
@@ -32,7 +32,7 @@
           href="https://github.com/MatthieuLepers"
           target="_blank"
           :title="t('Header.myProfilOnGitHub')"
-          @click="analyticsStore.actions.onClickCTA({
+          @click="analyticsStore.actions.onSocialCTAClick({
             type: 'profil_github',
           })"
         >
@@ -80,7 +80,7 @@ const actions = {
         lang: iso,
       },
     });
-    analyticsStore.actions.onClickCTA({
+    analyticsStore.actions.onI18nCTAClick({
       type: 'i18n',
       lang: iso,
     });

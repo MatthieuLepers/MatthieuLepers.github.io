@@ -32,7 +32,7 @@ const useMobileScrollTracker = () => {
       if (currentSectionIndex === closestIndex) return;
       currentSectionIndex = closestIndex;
 
-      const payload: Omit<SectionEvent, 'enteredAt' | 'duration'> = closestIndex === 0
+      const payload: Omit<SectionEvent['data'], 'enteredAt' | 'duration'> = closestIndex === 0
         ? { type: 'hero' }
         : {
           type: 'project',

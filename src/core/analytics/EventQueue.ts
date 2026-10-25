@@ -1,10 +1,10 @@
 import { type DBSchema, type IDBPDatabase, openDB } from 'idb';
 
-import type { AnalyticsEvent } from '@/core/analytics/types';
+import type { AnalyticsBaseEvent } from '@/core/analytics/types';
 
 interface EventRecord {
   id?: number;
-  payload: AnalyticsEvent;
+  payload: AnalyticsBaseEvent;
   createdAt: number;
   retryCount: number;
 }
@@ -64,7 +64,7 @@ export class EventQueue {
     });
   }
 
-  async enqueue(payload: AnalyticsEvent) {
+  async enqueue<TEvent extends AnalyticsBaseEvent = AnalyticsBaseEvent>(payload: TEvent) {
     const db = await this.dbPromise;
 
     await db.add('events', {
@@ -84,7 +84,7 @@ export class EventQueue {
     setTimeout(() => this.flush(), delay);
   }
 
-  async flush(sendFn?: (payloads: Array<AnalyticsEvent>) => Promise<void>) {
+  async flush(sendFn?: (payloads: Array<AnalyticsBaseEvent>) => Promise<void>) {
     if (this.isFlushing || !sendFn) return;
 
     this.isFlushing = true;

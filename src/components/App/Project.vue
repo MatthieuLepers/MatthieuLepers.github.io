@@ -59,7 +59,7 @@
               :href="props.project.link"
               target="_blank"
               :title="t('Project.tryProject', [props.project.name[locale]])"
-              @click="analyticsStore.actions.onClickCTA({
+              @click="analyticsStore.actions.onProjectCTAClick({
                 type: 'project_try',
                 projectName: props.project.name[locale],
               })"
@@ -73,7 +73,7 @@
               :href="props.project.github"
               target="_blank"
               :title="t('Project.showOnGitHub', [props.project.name[locale]])"
-              @click="analyticsStore.actions.onClickCTA({
+              @click="analyticsStore.actions.onProjectCTAClick({
                 type: 'project_github',
                 projectName: props.project.name[locale],
               })"

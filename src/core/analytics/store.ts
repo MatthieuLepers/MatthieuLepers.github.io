@@ -1,12 +1,18 @@
 import axios from 'axios';
 
 import { EventQueue } from '@/core/analytics/EventQueue';
-import type { AnalyticsEventType, CTAEvent, SectionEvent } from '@/core/analytics/types';
+import type {
+  AnalyticsBaseEvent,
+  I18nCTAEvent,
+  ProjectCTAEvent,
+  SectionEvent,
+  SocialCTAEvent,
+} from '@/core/analytics/types';
 import { getLocalStorage, setLocalStorage } from '@/core/LocalStorage';
 
 const useAnalyticsStore = () => {
   const isDisabled = import.meta.env.VITE_TRACKING_DISABLED === 'true';
-  let currentSection: SectionEvent | null = null;
+  let currentSection: SectionEvent['data'] | null = null;
 
   const queue = new EventQueue({
     maxBatchSize: 20,
@@ -35,7 +41,10 @@ const useAnalyticsStore = () => {
   };
 
   const events = {
-    emit(eventType: AnalyticsEventType, data: Record<string, unknown> = {}) {
+    emit<TEventType extends AnalyticsBaseEvent = AnalyticsBaseEvent>(
+      eventType: TEventType['eventType'],
+      data?: TEventType['data'],
+    ) {
       if (isDisabled) return;
 
       queue.enqueue({
@@ -54,7 +63,7 @@ const useAnalyticsStore = () => {
         viewport: `${window.innerWidth}x${window.innerHeight}`,
       });
     },
-    onEnterSection(payload: Omit<SectionEvent, 'enteredAt' | 'duration'>) {
+    onEnterSection(payload: Omit<SectionEvent['data'], 'enteredAt' | 'duration'>) {
       if (isDisabled) return;
 
       const now = Date.now();
@@ -73,10 +82,23 @@ const useAnalyticsStore = () => {
         enteredAt: now,
       };
     },
-    onClickCTA(payload: CTAEvent) {
+    onI18nCTAClick(payload: I18nCTAEvent['data']) {
       if (isDisabled) return;
 
-      events.emit('cta', payload);
+      events.emit<I18nCTAEvent>('cta', {
+        ...payload,
+        type: 'i18n',
+      });
+    },
+    onSocialCTAClick(payload: SocialCTAEvent['data']) {
+      if (isDisabled) return;
+
+      events.emit<SocialCTAEvent>('cta', payload);
+    },
+    onProjectCTAClick(payload: ProjectCTAEvent['data']) {
+      if (isDisabled) return;
+
+      events.emit<ProjectCTAEvent>('cta', payload);
     },
   };
 
