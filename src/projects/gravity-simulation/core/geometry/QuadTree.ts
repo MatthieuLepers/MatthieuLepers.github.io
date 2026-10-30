@@ -181,21 +181,25 @@ export class QuadTreeNode {
     return this.centerOfMass;
   }
 
-  private computeGravityForParticle(particle: Particle, theta: number, stats: IGravityTraversalStats): Vector2D {
+  private accumulateGravityForParticle(
+    particle: Particle,
+    theta: number,
+    stats: IGravityTraversalStats,
+    force: { x: number; y: number },
+  ) {
     stats.nodesVisited += 1;
-    let force = new Vector2D();
 
     // Particles retained directly in an internal node (e.g. on a split line)
     // are always evaluated exactly.
     this.particles.forEach((other) => {
       if (particle !== other) {
         stats.exactInteractions += 1;
-        force = force.add(particle.computeGravitationalForce(other));
+        particle.accumulateGravitationalForce(other, force);
       }
     });
 
     if (!this.nodes.length) {
-      return force;
+      return;
     }
 
     const targetChildIndex = this.getChildIndex(particle);
@@ -210,11 +214,13 @@ export class QuadTreeNode {
 
       if (index === targetChildIndex) {
         // Never approximate a subtree containing the target particle.
-        force = force.add(node.computeGravityForParticle(particle, theta, stats));
+        node.accumulateGravityForParticle(particle, theta, stats, force);
         return;
       }
 
-      const distance = node.massCenter.distance(particle.position);
+      const dx = node.massCenter.x - particle.position.x;
+      const dy = node.massCenter.y - particle.position.y;
+      const distance = Math.hypot(dx, dy);
       const size = Math.max(node.bounds.width, node.bounds.height);
       const canApproximate = node.totalMass > 0
         && distance > 0
@@ -222,16 +228,14 @@ export class QuadTreeNode {
 
       if (canApproximate) {
         stats.approximations += 1;
-        force = force.add(particle.computeGravitationalForce({
+        particle.accumulateGravitationalForce({
           position: node.massCenter,
           mass: node.totalMass,
-        }));
+        }, force);
       } else {
-        force = force.add(node.computeGravityForParticle(particle, theta, stats));
+        node.accumulateGravityForParticle(particle, theta, stats, force);
       }
     });
-
-    return force;
   }
 
   computeGravity(theta: number = QuadTreeNode.THETA): IGravityDiagnostics {
@@ -253,7 +257,11 @@ export class QuadTreeNode {
     const flattenMs = performance.now() - startedAt;
 
     startedAt = performance.now();
-    const forces = particles.map((particle) => this.computeGravityForParticle(particle, theta, stats));
+    const forces = particles.map((particle) => {
+      const force = { x: 0, y: 0 };
+      this.accumulateGravityForParticle(particle, theta, stats, force);
+      return new Vector2D(force.x, force.y);
+    });
     const traversalMs = performance.now() - startedAt;
 
     // Applying forces moves particles, so do it only after all forces exist.
