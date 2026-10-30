@@ -84,6 +84,7 @@ export class GravitySimulationTask extends Task {
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
         const frameStartedAt = performance.now();
+        const particlesAtFrameStart = this.particles.length;
         let phaseStartedAt = frameStartedAt;
 
         this.quadTree.clear();
@@ -111,9 +112,15 @@ export class GravitySimulationTask extends Task {
         this.particles = this.quadTree.getParticles();
 
         this.frameCount += 1;
-        if (this.frameCount % 60 === 0) {
+        const shouldLogFrame = this.frameCount <= 10
+          || (this.frameCount <= 100 && this.frameCount % 10 === 0)
+          || this.frameCount % 60 === 0;
+
+        if (shouldLogFrame) {
           console.info('[GravitySimulation] Performance (last frame)', {
-            particles: this.particles.length,
+            frame: this.frameCount,
+            particlesAtFrameStart,
+            particlesAfterCleanup: this.particles.length,
             initialTreeMs,
             gravityMs,
             gravity: gravityDiagnostics,
