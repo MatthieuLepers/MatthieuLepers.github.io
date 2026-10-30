@@ -11,6 +11,8 @@ export class GravitySimulationTask extends Task {
 
   public quadTree!: QuadTreeNode;
 
+  private frameCount = 0;
+
   public options = {
     drawQuadTree: false,
     trackCenterOfMass: false,
@@ -81,19 +83,46 @@ export class GravitySimulationTask extends Task {
         this.ctx.fillStyle = '#000';
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
+        const frameStartedAt = performance.now();
+        let phaseStartedAt = frameStartedAt;
+
         this.quadTree.clear();
         this.quadTree.insertAll(this.particles);
+        const initialTreeMs = performance.now() - phaseStartedAt;
 
-        this.quadTree.computeGravity();
+        phaseStartedAt = performance.now();
+        const gravityDiagnostics = this.quadTree.computeGravity();
+        const gravityMs = performance.now() - phaseStartedAt;
 
         // Gravity moves particles, so rebuild the tree before spatial collision checks.
+        phaseStartedAt = performance.now();
         this.quadTree.clear();
         this.quadTree.insertAll(this.particles);
+        const collisionTreeMs = performance.now() - phaseStartedAt;
 
+        phaseStartedAt = performance.now();
         this.quadTree.computeCollision();
+        const collisionMs = performance.now() - phaseStartedAt;
+
+        phaseStartedAt = performance.now();
         this.quadTree.removeFarParticles(this.canvas.height);
+        const cleanupMs = performance.now() - phaseStartedAt;
 
         this.particles = this.quadTree.getParticles();
+
+        this.frameCount += 1;
+        if (this.frameCount % 60 === 0) {
+          console.info('[GravitySimulation] Performance (last frame)', {
+            particles: this.particles.length,
+            initialTreeMs,
+            gravityMs,
+            gravity: gravityDiagnostics,
+            collisionTreeMs,
+            collisionMs,
+            cleanupMs,
+            frameTotalMs: performance.now() - frameStartedAt,
+          });
+        }
 
         if (this.options.trackCenterOfMass) {
           this.ctx.save();
