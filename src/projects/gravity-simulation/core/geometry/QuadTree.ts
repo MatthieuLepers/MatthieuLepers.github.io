@@ -32,6 +32,14 @@ export class QuadTreeNode {
       ? this.particles.reduce((acc, p) => acc + p.mass, 0)
       : this.nodes.reduce((acc, node) => acc + node.centerOfMass.mass, 0)
     ;
+
+    if (mass === 0) {
+      return {
+        position: new Vector2D(),
+        mass,
+      };
+    }
+
     const position = this.particles.length > 0
       ? this.particles
         .reduce(
@@ -167,20 +175,35 @@ export class QuadTreeNode {
       this.nodes.forEach((node) => {
         node.computeCollision();
       });
-    } else {
-      this.particles.forEach((p1) => {
-        this.particles.forEach((p2) => {
-          if (p1 !== p2 && p1.collideWith(p2)) {
-            if (p1.mass > p2.mass) {
-              p1.mergeWith(p2);
-              this.particles.splice(this.particles.indexOf(p2), 1);
-            } else {
-              p2.mergeWith(p1);
-              this.particles.splice(this.particles.indexOf(p1), 1);
-            }
-          }
-        });
-      });
+      return;
+    }
+
+    // Keep the collision scope local to this leaf, but never mutate an array
+    // while iterating it with forEach.
+    let i = 0;
+    while (i < this.particles.length) {
+      let j = i + 1;
+
+      while (j < this.particles.length) {
+        const p1 = this.particles[i];
+        const p2 = this.particles[j];
+
+        if (!p1.collideWith(p2)) {
+          j += 1;
+          continue;
+        }
+
+        if (p1.mass > p2.mass) {
+          p1.mergeWith(p2);
+        } else {
+          p2.mergeWith(p1);
+          this.particles[i] = p2;
+        }
+
+        this.particles.splice(j, 1);
+      }
+
+      i += 1;
     }
   }
 
