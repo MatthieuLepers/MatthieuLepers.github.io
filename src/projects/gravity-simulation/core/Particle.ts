@@ -105,11 +105,17 @@ export class Particle {
   accumulateGravitationalForce(body: IBody, accumulator: { x: number; y: number }) {
     const dx = body.position.x - this.position.x;
     const dy = body.position.y - this.position.y;
-    const distance = Math.max(Math.hypot(dx, dy), 0.1);
+    const directionLength = Math.hypot(dx, dy);
+    const distance = Math.max(directionLength, 0.1);
+
+    if (directionLength === 0) {
+      return;
+    }
+
     const forceMagnitude = (G * this.mass * body.mass) / (distance ** 2);
 
-    accumulator.x += (dx / distance) * forceMagnitude;
-    accumulator.y += (dy / distance) * forceMagnitude;
+    accumulator.x += (dx / directionLength) * forceMagnitude;
+    accumulator.y += (dy / directionLength) * forceMagnitude;
   }
 
   computeGravitationalForce(body: IBody): Vector2D {
