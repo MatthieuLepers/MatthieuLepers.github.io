@@ -9,16 +9,25 @@ export interface IGravityDiagnostics {
   traversalMs: number;
   applyMs: number;
   nodesVisited: number;
+  internalNodesVisited: number;
+  leafNodesVisited: number;
   emptyNodesSkipped: number;
   approximations: number;
   exactInteractions: number;
+  minExactInteractionsPerParticle: number;
+  maxExactInteractionsPerParticle: number;
+  averageExactInteractionsPerParticle: number;
 }
 
 interface IGravityTraversalStats {
   nodesVisited: number;
+  internalNodesVisited: number;
+  leafNodesVisited: number;
   emptyNodesSkipped: number;
   approximations: number;
   exactInteractions: number;
+  minExactInteractionsPerParticle: number;
+  maxExactInteractionsPerParticle: number;
 }
 
 export interface IQuadTreeOptions {
@@ -189,6 +198,12 @@ export class QuadTreeNode {
   ) {
     stats.nodesVisited += 1;
 
+    if (this.nodes.length) {
+      stats.internalNodesVisited += 1;
+    } else {
+      stats.leafNodesVisited += 1;
+    }
+
     // Particles retained directly in an internal node (e.g. on a split line)
     // are always evaluated exactly.
     this.particles.forEach((other) => {
@@ -243,7 +258,11 @@ export class QuadTreeNode {
       nodesVisited: 0,
       emptyNodesSkipped: 0,
       approximations: 0,
+      internalNodesVisited: 0,
+      leafNodesVisited: 0,
       exactInteractions: 0,
+      minExactInteractionsPerParticle: Number.POSITIVE_INFINITY,
+      maxExactInteractionsPerParticle: 0,
     };
 
     // Aggregate once for the whole tree, then calculate every force against
@@ -259,7 +278,19 @@ export class QuadTreeNode {
     startedAt = performance.now();
     const forces = particles.map((particle) => {
       const force = { x: 0, y: 0 };
+      const exactInteractionsBefore = stats.exactInteractions;
       this.accumulateGravityForParticle(particle, theta, stats, force);
+      const particleExactInteractions = stats.exactInteractions - exactInteractionsBefore;
+
+      stats.minExactInteractionsPerParticle = Math.min(
+        stats.minExactInteractionsPerParticle,
+        particleExactInteractions,
+      );
+      stats.maxExactInteractionsPerParticle = Math.max(
+        stats.maxExactInteractionsPerParticle,
+        particleExactInteractions,
+      );
+
       return new Vector2D(force.x, force.y);
     });
     const traversalMs = performance.now() - startedAt;
@@ -278,6 +309,12 @@ export class QuadTreeNode {
       traversalMs,
       applyMs,
       ...stats,
+      minExactInteractionsPerParticle: particles.length
+        ? stats.minExactInteractionsPerParticle
+        : 0,
+      averageExactInteractionsPerParticle: particles.length
+        ? stats.exactInteractions / particles.length
+        : 0,
     };
   }
 
