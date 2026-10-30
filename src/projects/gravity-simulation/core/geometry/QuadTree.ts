@@ -14,6 +14,10 @@ export class QuadTreeNode {
 
   public particles: Array<Particle> = [];
 
+  private totalMass = 0;
+
+  private massCenter = new Vector2D();
+
   constructor(
     public bounds: Rectangle,
     public depth: number = 0,
@@ -27,36 +31,12 @@ export class QuadTreeNode {
 
   static MAX_DEPTH = 8;
 
+  static THETA = 0.5;
+
   get centerOfMass(): IBody {
-    const mass = this.particles.length > 0
-      ? this.particles.reduce((acc, p) => acc + p.mass, 0)
-      : this.nodes.reduce((acc, node) => acc + node.centerOfMass.mass, 0)
-    ;
-
-    if (mass === 0) {
-      return {
-        position: new Vector2D(),
-        mass,
-      };
-    }
-
-    const position = this.particles.length > 0
-      ? this.particles
-        .reduce(
-          (acc, p) => acc.add(p.position.mult(p.mass)),
-          new Vector2D(),
-        )
-        .div(mass)
-      : this.nodes
-        .reduce(
-          (acc, node) => acc.add(node.centerOfMass.position.mult(node.centerOfMass.mass)),
-          new Vector2D(),
-        )
-        .div(mass)
-    ;
     return {
-      position,
-      mass,
+      position: this.massCenter,
+      mass: this.totalMass,
     };
   }
 
@@ -64,6 +44,8 @@ export class QuadTreeNode {
     this.particles = [];
     this.nodes.forEach((node) => { node.clear(); });
     this.nodes = [];
+    this.totalMass = 0;
+    this.massCenter = new Vector2D();
   }
 
   subdivide() {
@@ -155,19 +137,86 @@ export class QuadTreeNode {
     }
   }
 
-  computeGravity() {
-    if (this.nodes.length) {
-      this.nodes.forEach((node) => node.computeGravity());
-    } else {
-      const forces = this.particles.map((p1) => this.particles.reduce(
-        (acc, p2) => (p1 !== p2 ? acc.add(p1.computeGravitationalForce(p2)) : acc),
-        new Vector2D(),
-      ));
+  /**
+   * Recomputes mass and center of mass from the leaves to the root.
+   * Must run after insertion and before a Barnes-Hut traversal.
+   */
+  updateMassDistribution(): IBody {
+    let mass = 0;
+    let weightedPosition = new Vector2D();
 
-      this.particles.forEach((p1, i) => {
-        p1.applyForce(forces[i]);
-      });
+    this.particles.forEach((particle) => {
+      mass += particle.mass;
+      weightedPosition = weightedPosition.add(particle.position.mult(particle.mass));
+    });
+
+    this.nodes.forEach((node) => {
+      const aggregate = node.updateMassDistribution();
+      mass += aggregate.mass;
+      weightedPosition = weightedPosition.add(aggregate.position.mult(aggregate.mass));
+    });
+
+    this.totalMass = mass;
+    this.massCenter = mass > 0 ? weightedPosition.div(mass) : new Vector2D();
+
+    return this.centerOfMass;
+  }
+
+  private computeGravityForParticle(particle: Particle, theta: number): Vector2D {
+    let force = new Vector2D();
+
+    // Particles retained directly in an internal node (e.g. on a split line)
+    // are always evaluated exactly.
+    this.particles.forEach((other) => {
+      if (particle !== other) {
+        force = force.add(particle.computeGravitationalForce(other));
+      }
+    });
+
+    if (!this.nodes.length) {
+      return force;
     }
+
+    const targetChildIndex = this.getChildIndex(particle);
+
+    this.nodes.forEach((node, index) => {
+      if (index === targetChildIndex) {
+        // Never approximate a subtree containing the target particle.
+        force = force.add(node.computeGravityForParticle(particle, theta));
+        return;
+      }
+
+      const distance = node.massCenter.distance(particle.position);
+      const size = Math.max(node.bounds.width, node.bounds.height);
+      const canApproximate = node.totalMass > 0
+        && distance > 0
+        && size / distance < theta;
+
+      if (canApproximate) {
+        force = force.add(particle.computeGravitationalForce({
+          position: node.massCenter,
+          mass: node.totalMass,
+        }));
+      } else {
+        force = force.add(node.computeGravityForParticle(particle, theta));
+      }
+    });
+
+    return force;
+  }
+
+  computeGravity(theta: number = QuadTreeNode.THETA) {
+    // Aggregate once for the whole tree, then calculate every force against
+    // the same, unchanged particle positions.
+    this.updateMassDistribution();
+
+    const particles = this.getParticles();
+    const forces = particles.map((particle) => this.computeGravityForParticle(particle, theta));
+
+    // Applying forces moves particles, so do it only after all forces exist.
+    particles.forEach((particle, index) => {
+      particle.applyForce(forces[index]);
+    });
   }
 
   computeCollision() {
@@ -207,19 +256,27 @@ export class QuadTreeNode {
     }
   }
 
-  removeFarParticles(maxDistance: number) {
+  private removeFarParticlesFromLeaves(maxDistance: number) {
     if (this.nodes.length) {
       this.nodes.forEach((node) => {
-        node.removeFarParticles(maxDistance);
+        node.removeFarParticlesFromLeaves(maxDistance);
       });
-    } else {
-      this.particles
-        .filter((p) => p.position.distance(this.centerOfMass.position) >= maxDistance)
-        .forEach((p) => {
-          this.particles.splice(this.particles.indexOf(p), 1);
-        })
-      ;
+      return;
     }
+
+    this.particles
+      .filter((particle) => particle.position.distance(this.massCenter) >= maxDistance)
+      .forEach((particle) => {
+        this.particles.splice(this.particles.indexOf(particle), 1);
+      })
+    ;
+  }
+
+  removeFarParticles(maxDistance: number) {
+    // Refresh aggregates after collisions before using each leaf's local COM.
+    this.updateMassDistribution();
+    this.removeFarParticlesFromLeaves(maxDistance);
+    this.updateMassDistribution();
   }
 
   getParticles(): Array<Particle> {
