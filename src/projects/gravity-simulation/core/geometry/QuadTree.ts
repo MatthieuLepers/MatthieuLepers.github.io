@@ -9,12 +9,14 @@ export interface IGravityDiagnostics {
   traversalMs: number;
   applyMs: number;
   nodesVisited: number;
+  emptyNodesSkipped: number;
   approximations: number;
   exactInteractions: number;
 }
 
 interface IGravityTraversalStats {
   nodesVisited: number;
+  emptyNodesSkipped: number;
   approximations: number;
   exactInteractions: number;
 }
@@ -199,6 +201,13 @@ export class QuadTreeNode {
     const targetChildIndex = this.getChildIndex(particle);
 
     this.nodes.forEach((node, index) => {
+      // With non-negative particle masses, a zero-mass subtree is empty and
+      // cannot contribute to the gravitational force.
+      if (node.totalMass === 0) {
+        stats.emptyNodesSkipped += 1;
+        return;
+      }
+
       if (index === targetChildIndex) {
         // Never approximate a subtree containing the target particle.
         force = force.add(node.computeGravityForParticle(particle, theta, stats));
@@ -228,6 +237,7 @@ export class QuadTreeNode {
   computeGravity(theta: number = QuadTreeNode.THETA): IGravityDiagnostics {
     const stats: IGravityTraversalStats = {
       nodesVisited: 0,
+      emptyNodesSkipped: 0,
       approximations: 0,
       exactInteractions: 0,
     };
