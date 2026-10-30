@@ -85,6 +85,11 @@ export class GravitySimulationTask extends Task {
         this.quadTree.insertAll(this.particles);
 
         this.quadTree.computeGravity();
+
+        // Gravity moves particles, so rebuild the tree before spatial collision checks.
+        this.quadTree.clear();
+        this.quadTree.insertAll(this.particles);
+
         this.quadTree.computeCollision();
         this.quadTree.removeFarParticles(this.canvas.height);
 
