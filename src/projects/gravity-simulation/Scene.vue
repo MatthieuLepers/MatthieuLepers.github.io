@@ -104,6 +104,23 @@ const actions = {
   },
 };
 
+const handleMouseDown = (e: MouseEvent) => {
+  e.preventDefault();
+  e.stopPropagation();
+
+  if (!canvas.value || !state.mouseTask) return;
+
+  state.mouseTask.enabled = true;
+  const { x, y } = canvas.value.getBoundingClientRect();
+  state.mousePos = new Vector2D(e.clientX - x, e.clientY - y);
+};
+
+const handleMouseUp = () => {
+  if (state.mouseTask) {
+    state.mouseTask.enabled = false;
+  }
+};
+
 watch(() => state.drawQuadTree, (drawQuadTree) => {
   state.task!.options.drawQuadTree = drawQuadTree;
 });
@@ -133,16 +150,8 @@ onMounted(async () => {
   appStore.processManager.addTask(state.task);
   appStore.processManager.addTask(state.mouseTask);
 
-  canvas.value?.addEventListener('mousedown', (e: MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    state.mouseTask!.enabled = true;
-    const { x, y } = canvas.value!.getBoundingClientRect();
-    state.mousePos = new Vector2D(e.clientX - x, e.clientY - y);
-  });
-  window.addEventListener('mouseup', () => {
-    state.mouseTask!.enabled = false;
-  });
+  canvas.value?.addEventListener('mousedown', handleMouseDown);
+  window.addEventListener('mouseup', handleMouseUp);
 
   await nextTick();
 
@@ -156,6 +165,9 @@ onMounted(async () => {
 });
 
 onUnmounted(() => {
+  canvas.value?.removeEventListener('mousedown', handleMouseDown);
+  window.removeEventListener('mouseup', handleMouseUp);
+
   appStore.processManager.removeTask(state.task!);
   appStore.processManager.removeTask(state.mouseTask!);
 });
