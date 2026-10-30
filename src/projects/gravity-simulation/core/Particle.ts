@@ -102,12 +102,20 @@ export class Particle {
     this.update();
   }
 
-  computeGravitationalForce(body: IBody): Vector2D {
-    const direction = body.position.sub(this.position);
-    const dist = Math.max(direction.length(), 0.1);
-    const forceMagnitude = (G * this.mass * body.mass) / (dist ** 2);
+  accumulateGravitationalForce(body: IBody, accumulator: { x: number; y: number }) {
+    const dx = body.position.x - this.position.x;
+    const dy = body.position.y - this.position.y;
+    const distance = Math.max(Math.hypot(dx, dy), 0.1);
+    const forceMagnitude = (G * this.mass * body.mass) / (distance ** 2);
 
-    return direction.normalize().mult(forceMagnitude);
+    accumulator.x += (dx / distance) * forceMagnitude;
+    accumulator.y += (dy / distance) * forceMagnitude;
+  }
+
+  computeGravitationalForce(body: IBody): Vector2D {
+    const force = { x: 0, y: 0 };
+    this.accumulateGravitationalForce(body, force);
+    return new Vector2D(force.x, force.y);
   }
 
   collideWith(p: Particle): boolean {
