@@ -45,7 +45,8 @@ export class Vector2D {
   }
 
   normalize() {
-    return this.div(this.length());
+    const length = this.length();
+    return length > 0 ? this.div(length) : new Vector2D();
   }
 
   distance(v: Vector2D) {
