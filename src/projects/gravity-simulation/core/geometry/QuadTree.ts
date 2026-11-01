@@ -98,7 +98,10 @@ export class QuadTreeNode {
 
   static MAX_DEPTH = 8;
 
-  static THETA = 0.5;
+  static THETA = 0.7;
+
+  /** Use exact gravity while its measured cost remains competitive. */
+  static EXACT_GRAVITY_THRESHOLD = 2000;
 
   get centerOfMass(): IBody {
     return {
@@ -506,7 +509,10 @@ export class QuadTreeNode {
     };
   }
 
-  computeGravity(theta: number = QuadTreeNode.THETA): IGravityDiagnostics {
+  computeGravity(
+    theta: number = QuadTreeNode.THETA,
+    particlesOverride?: Particle[],
+  ): IGravityDiagnostics {
     const stats: IGravityTraversalStats = {
       nodesVisited: 0,
       emptyNodesSkipped: 0,
@@ -518,15 +524,65 @@ export class QuadTreeNode {
       maxExactInteractionsPerParticle: 0,
     };
 
+    const flattenStartedAt = performance.now();
+    const particles = particlesOverride ?? this.getParticles();
+    const flattenMs = performance.now() - flattenStartedAt;
+
+    // Below the crossover threshold, exact interactions avoid quadtree
+    // aggregation and traversal overhead entirely.
+    if (particles.length <= QuadTreeNode.EXACT_GRAVITY_THRESHOLD) {
+      const startedAt = performance.now();
+      const forces = particles.map((particle) => {
+        const force = { x: 0, y: 0 };
+
+        particles.forEach((other) => {
+          if (particle === other) return;
+
+          stats.exactInteractions += 1;
+          particle.accumulateGravitationalForce(other, force);
+        });
+
+        const particleExactInteractions = Math.max(particles.length - 1, 0);
+        stats.minExactInteractionsPerParticle = Math.min(
+          stats.minExactInteractionsPerParticle,
+          particleExactInteractions,
+        );
+        stats.maxExactInteractionsPerParticle = Math.max(
+          stats.maxExactInteractionsPerParticle,
+          particleExactInteractions,
+        );
+
+        return new Vector2D(force.x, force.y);
+      });
+      const traversalMs = performance.now() - startedAt;
+
+      const applyStartedAt = performance.now();
+      particles.forEach((particle, index) => {
+        particle.applyForce(forces[index]);
+      });
+      const applyMs = performance.now() - applyStartedAt;
+
+      return {
+        particles: particles.length,
+        aggregationMs: 0,
+        flattenMs,
+        traversalMs,
+        applyMs,
+        ...stats,
+        minExactInteractionsPerParticle: particles.length
+          ? stats.minExactInteractionsPerParticle
+          : 0,
+        averageExactInteractionsPerParticle: particles.length
+          ? stats.exactInteractions / particles.length
+          : 0,
+      };
+    }
+
     // Aggregate once for the whole tree, then calculate every force against
     // the same, unchanged particle positions.
     let startedAt = performance.now();
     this.updateMassDistribution();
     const aggregationMs = performance.now() - startedAt;
-
-    startedAt = performance.now();
-    const particles = this.getParticles();
-    const flattenMs = performance.now() - startedAt;
 
     startedAt = performance.now();
     const forces = particles.map((particle) => {
