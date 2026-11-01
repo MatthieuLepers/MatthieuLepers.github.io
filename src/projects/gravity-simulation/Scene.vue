@@ -9,6 +9,7 @@
 
     <div v-if="state.started" class="scene__controls">
       <button
+        v-if="isDevelopment"
         :class="GenerateModifiers('scene__btn', {
           benchmark: true,
         })"
@@ -91,6 +92,7 @@ const { t } = useI18n();
 const scene = ref<HTMLDivElement | null>(null);
 const canvas = ref<HTMLCanvasElement | null>(null);
 const $uid = getCurrentInstance()?.uid;
+const isDevelopment = import.meta.env.DEV;
 
 const state = reactive<{
   task: GravitySimulationTask | null;
@@ -136,8 +138,11 @@ const actions = {
       nodesVisited: result.nodesVisited,
       internalNodesVisited: result.internalNodesVisited,
       leafNodesVisited: result.leafNodesVisited,
+      emptyNodesSkipped: result.emptyNodesSkipped,
       approximations: result.approximations,
       exactInteractions: result.exactInteractions,
+      minExactInteractionsPerParticle: result.minExactInteractionsPerParticle,
+      maxExactInteractionsPerParticle: result.maxExactInteractionsPerParticle,
       averageExactInteractionsPerParticle: result.averageExactInteractionsPerParticle,
       absoluteErrorMean: result.absoluteError.mean,
       absoluteErrorMedian: result.absoluteError.median,
