@@ -104,10 +104,13 @@ const publishSnapshot = (achievements: string[] = [], diagnostics?: unknown) => 
     centerOfMass: snapshot.centerOfMass,
     achievements: [...new Set(achievements)],
     diagnostics,
-  }, [snapshot.particleData.buffer, snapshot.treeData.buffer]);
+  }, [
+    snapshot.particleData.buffer as ArrayBuffer,
+    snapshot.treeData.buffer as ArrayBuffer,
+  ]);
 };
 
-const collectAchievements = () => particles.flatMap((particle) => (
+const collectAchievements = (source: Particle[]) => source.flatMap((particle) => (
   particle.pendingAchievements.splice(0)
 ));
 
@@ -153,6 +156,8 @@ const step = () => {
   startedAt = performance.now();
   quadTree.computeCollision();
   const collisionMs = performance.now() - startedAt;
+  // Read achievement events before cleanup can discard a particle that produced one.
+  const achievements = collectAchievements(quadTree.getParticles());
 
   startedAt = performance.now();
   quadTree.removeFarParticles(height);
@@ -181,7 +186,7 @@ const step = () => {
     console.info('[GravitySimulation Worker] Performance (last frame)', diagnostics);
   }
 
-  publishSnapshot(collectAchievements(), diagnostics);
+  publishSnapshot(achievements);
 };
 
 const spawn = (x: number, y: number, count: number) => {
