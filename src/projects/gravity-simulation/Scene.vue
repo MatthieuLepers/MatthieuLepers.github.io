@@ -111,6 +111,7 @@ const state = reactive<{
 });
 
 let benchmarkSnapshot = 0;
+const benchmarkSnapshots: ReturnType<GravitySimulationTask['benchmarkGravity']>[] = [];
 
 const actions = {
   reset() {
@@ -158,6 +159,22 @@ const actions = {
     });
 
     console.groupEnd();
+
+    benchmarkSnapshots.push(reports);
+
+    navigator.clipboard.writeText(JSON.stringify(benchmarkSnapshots, null, 2))
+      .then(() => {
+        console.info(
+          `Copied ${benchmarkSnapshots.length} benchmark snapshot(s) to clipboard.`,
+        );
+      })
+      .catch((error: unknown) => {
+        console.warn(
+          'Unable to copy benchmark snapshots to clipboard. The snapshots remain available in memory.',
+          error,
+        );
+        console.info('Benchmark snapshots JSON', benchmarkSnapshots);
+      });
   },
 };
 
