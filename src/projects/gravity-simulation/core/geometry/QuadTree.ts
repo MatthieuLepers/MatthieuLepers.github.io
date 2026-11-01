@@ -29,7 +29,10 @@ export interface IGravityBenchmarkErrorStats {
 
 export interface IGravityBenchmarkResult {
   theta: number;
+  treeBuildMs: number;
+  aggregationMs: number;
   traversalMs: number;
+  totalMs: number;
   repetitions: number;
   nodesVisited: number;
   internalNodesVisited: number;
@@ -47,12 +50,15 @@ export interface IGravityBenchmarkResult {
 export interface IGravityBenchmarkReport {
   particles: number;
   exactReferenceMs: number;
+  exactWarmupRuns: number;
+  exactRepetitions: number;
   referenceForceRms: number;
   warmupRuns: number;
   repetitions: number;
   results: IGravityBenchmarkResult[];
 }
-\ninterface IGravityTraversalStats {
+
+interface IGravityTraversalStats {
   nodesVisited: number;
   internalNodesVisited: number;
   leafNodesVisited: number;
@@ -288,16 +294,16 @@ export class QuadTreeNode {
 
 
   /**
-   * Compares Barnes-Hut force estimates with an exact O(N²) reference.
-   * This diagnostic never applies forces or mutates particle state.
+   * Compares exact gravity with Barnes-Hut on the same immutable particle snapshot.
+   * Every Barnes-Hut repetition includes a fresh tree build and mass aggregation.
    */
   benchmarkGravity(
     thetas: number[] = [0.5, 0.6, 0.7, 0.8, 1],
     warmupRuns = 1,
     repetitions = 5,
+    exactWarmupRuns = warmupRuns,
+    exactRepetitions = repetitions,
   ): IGravityBenchmarkReport {
-    this.updateMassDistribution();
-
     const particles = this.getParticles();
     const snapshot = particles.map((particle) => ({
       x: particle.position.x,
@@ -305,8 +311,7 @@ export class QuadTreeNode {
       mass: particle.mass,
     }));
 
-    const exactStartedAt = performance.now();
-    const exactForces = snapshot.map((particle, index) => {
+    const runExact = () => snapshot.map((particle, index) => {
       const force = { x: 0, y: 0 };
 
       for (let otherIndex = 0; otherIndex < snapshot.length; otherIndex += 1) {
@@ -328,7 +333,38 @@ export class QuadTreeNode {
 
       return force;
     });
-    const exactReferenceMs = performance.now() - exactStartedAt;
+
+    for (let run = 0; run < exactWarmupRuns; run += 1) runExact();
+
+    const exactDurations: number[] = [];
+    let exactForces: Array<{ x: number; y: number }> = [];
+
+    for (let run = 0; run < exactRepetitions; run += 1) {
+      const startedAt = performance.now();
+      exactForces = runExact();
+      exactDurations.push(performance.now() - startedAt);
+    }
+
+    const median = (values: number[]) => {
+      if (!values.length) return 0;
+      const sorted = [...values].sort((a, b) => a - b);
+      const middle = Math.floor(sorted.length / 2);
+      return sorted.length % 2
+        ? sorted[middle]
+        : (sorted[middle - 1] + sorted[middle]) / 2;
+    };
+
+    const getErrorStats = (values: number[]): IGravityBenchmarkErrorStats => {
+      if (!values.length) return { mean: 0, median: 0, p95: 0, max: 0 };
+
+      const sorted = [...values].sort((a, b) => a - b);
+      return {
+        mean: values.reduce((sum, value) => sum + value, 0) / values.length,
+        median: median(sorted),
+        p95: sorted[Math.ceil(sorted.length * 0.95) - 1],
+        max: sorted[sorted.length - 1],
+      };
+    };
 
     const referenceForceRms = Math.sqrt(
       exactForces.reduce(
@@ -337,29 +373,23 @@ export class QuadTreeNode {
       ) / Math.max(exactForces.length, 1),
     ) || 1;
 
-    const getErrorStats = (values: number[]): IGravityBenchmarkErrorStats => {
-      if (!values.length) {
-        return { mean: 0, median: 0, p95: 0, max: 0 };
-      }
-
-      const sorted = [...values].sort((a, b) => a - b);
-      const sum = values.reduce((total, value) => total + value, 0);
-
-      const middle = Math.floor(sorted.length / 2);
-      const median = sorted.length % 2
-        ? sorted[middle]
-        : (sorted[middle - 1] + sorted[middle]) / 2;
-
-      return {
-        mean: sum / values.length,
-        median,
-        p95: sorted[Math.ceil(sorted.length * 0.95) - 1],
-        max: sorted[sorted.length - 1],
-      };
-    };
-
     const results = thetas.map((theta) => {
-      const runTraversal = () => {
+      const runBarnesHut = () => {
+        const tree = QuadTreeNode.create({
+          x: this.bounds.x,
+          y: this.bounds.y,
+          width: this.bounds.width,
+          height: this.bounds.height,
+        });
+
+        let startedAt = performance.now();
+        tree.insertAll(particles);
+        const treeBuildMs = performance.now() - startedAt;
+
+        startedAt = performance.now();
+        tree.updateMassDistribution();
+        const aggregationMs = performance.now() - startedAt;
+
         const stats: IGravityTraversalStats = {
           nodesVisited: 0,
           internalNodesVisited: 0,
@@ -371,11 +401,12 @@ export class QuadTreeNode {
           maxExactInteractionsPerParticle: 0,
         };
 
+        startedAt = performance.now();
         const forces = particles.map((particle) => {
           const force = { x: 0, y: 0 };
           const exactInteractionsBefore = stats.exactInteractions;
 
-          this.accumulateGravityForParticle(particle, theta, stats, force);
+          tree.accumulateGravityForParticle(particle, theta, stats, force);
 
           const particleExactInteractions = stats.exactInteractions - exactInteractionsBefore;
           stats.minExactInteractionsPerParticle = Math.min(
@@ -389,41 +420,53 @@ export class QuadTreeNode {
 
           return force;
         });
+        const traversalMs = performance.now() - startedAt;
 
-        return { forces, stats };
+        return {
+          treeBuildMs,
+          aggregationMs,
+          traversalMs,
+          totalMs: treeBuildMs + aggregationMs + traversalMs,
+          forces,
+          stats,
+        };
       };
 
-      for (let run = 0; run < warmupRuns; run += 1) {
-        runTraversal();
-      }
+      for (let run = 0; run < warmupRuns; run += 1) runBarnesHut();
 
-      const durations: number[] = [];
-      let measured = runTraversal();
+      const durations = {
+        treeBuildMs: [] as number[],
+        aggregationMs: [] as number[],
+        traversalMs: [] as number[],
+        totalMs: [] as number[],
+      };
+      let measured = runBarnesHut();
 
       for (let run = 0; run < repetitions; run += 1) {
-        const startedAt = performance.now();
-        measured = runTraversal();
-        durations.push(performance.now() - startedAt);
+        measured = runBarnesHut();
+        durations.treeBuildMs.push(measured.treeBuildMs);
+        durations.aggregationMs.push(measured.aggregationMs);
+        durations.traversalMs.push(measured.traversalMs);
+        durations.totalMs.push(measured.totalMs);
       }
 
-      const absoluteErrors = measured.forces.map((force, index) => {
-        const dx = force.x - exactForces[index].x;
-        const dy = force.y - exactForces[index].y;
-        return Math.hypot(dx, dy);
-      });
+      const absoluteErrors = measured.forces.map((force, index) => (
+        Math.hypot(
+          force.x - exactForces[index].x,
+          force.y - exactForces[index].y,
+        )
+      ));
       const normalizedErrors = absoluteErrors.map(
         (error) => (error / referenceForceRms) * 100,
       );
-
-      const sortedDurations = [...durations].sort((a, b) => a - b);
-      const medianTraversalMs = sortedDurations.length
-        ? sortedDurations[Math.floor((sortedDurations.length - 1) / 2)]
-        : 0;
       const { stats } = measured;
 
       return {
         theta,
-        traversalMs: medianTraversalMs,
+        treeBuildMs: median(durations.treeBuildMs),
+        aggregationMs: median(durations.aggregationMs),
+        traversalMs: median(durations.traversalMs),
+        totalMs: median(durations.totalMs),
         repetitions,
         nodesVisited: stats.nodesVisited,
         internalNodesVisited: stats.internalNodesVisited,
@@ -445,7 +488,9 @@ export class QuadTreeNode {
 
     return {
       particles: particles.length,
-      exactReferenceMs,
+      exactReferenceMs: median(exactDurations),
+      exactWarmupRuns,
+      exactRepetitions,
       referenceForceRms,
       warmupRuns,
       repetitions,
