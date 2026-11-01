@@ -116,7 +116,6 @@ export class GravitySimulationTask extends Task {
         width,
         height,
       });
-      benchmarkTree.insertAll(benchmarkParticles);
 
       return benchmarkTree.benchmarkGravity(
         [0.5, 0.6, 0.7, 0.8, 1],
@@ -124,6 +123,7 @@ export class GravitySimulationTask extends Task {
         repetitions,
         exactWarmupRuns,
         exactRepetitions,
+        benchmarkParticles,
       );
     });
   }
