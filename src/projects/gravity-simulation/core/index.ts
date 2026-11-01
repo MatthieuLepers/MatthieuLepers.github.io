@@ -74,6 +74,24 @@ export class GravitySimulationTask extends Task {
     }
   }
 
+
+  /**
+   * Runs a diagnostic on a separate tree so the live simulation tree is untouched.
+   */
+  benchmarkGravity() {
+    if (!this.canvas) return null;
+
+    const benchmarkTree = QuadTreeNode.create({
+      x: 0,
+      y: 0,
+      width: this.canvas.width,
+      height: this.canvas.height,
+    });
+    benchmarkTree.insertAll([...this.particles]);
+
+    return benchmarkTree.benchmarkGravity();
+  }
+
   async frame() {
     if (this.canvas) {
       if (!this.ctx) {
