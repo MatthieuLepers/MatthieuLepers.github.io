@@ -1,230 +1,229 @@
+import { achievementsStore } from '@/core/entities/achievement/store';
 import { Task } from '@/core/tasks';
 
-import { QuadTreeNode } from './geometry/QuadTree';
+import type { IGravityBenchmarkReport } from './geometry/QuadTree';
 import { Vector2D } from './geometry/Vector2D';
-import { type IParticle,Particle } from './Particle';
+
+interface IWorkerSnapshot {
+  type: 'snapshot';
+  particleCount: number;
+  particleData: Float32Array;
+  treeData: Float32Array;
+  centerOfMass: { x: number; y: number };
+  achievements: string[];
+  diagnostics?: unknown;
+}
+
+interface IWorkerBenchmarkResult {
+  type: 'benchmark-result';
+  reports: IGravityBenchmarkReport[];
+}
+
+interface IWorkerError {
+  type: 'error';
+  message: string;
+}
+
+type IWorkerResponse = IWorkerSnapshot | IWorkerBenchmarkResult | IWorkerError;
 
 export class GravitySimulationTask extends Task {
-  public particles: Array<Particle> = [];
-
   public ctx: CanvasRenderingContext2D | null = null;
-
-  public quadTree!: QuadTreeNode;
-
-  private frameCount = 0;
 
   public options = {
     drawQuadTree: false,
     trackCenterOfMass: false,
   };
 
+  public onBenchmarkResult?: (reports: IGravityBenchmarkReport[]) => void;
+
+  private worker: Worker;
+
+  private running = false;
+
+  private inFlight = false;
+
+  private particleCount = 0;
+
+  private particleData = new Float32Array(0);
+
+  private treeData = new Float32Array(0);
+
+  private centerOfMass = { x: 0, y: 0 };
+
   constructor(
     public canvas: HTMLCanvasElement | null,
     public scene: HTMLDivElement | null,
   ) {
     super();
-    this.enabled = false;
+    this.enabled = true;
+
+    this.worker = new Worker(
+      new URL('./GravitySimulation.worker.ts', import.meta.url),
+      { type: 'module' },
+    );
+
+    this.worker.addEventListener('message', (event: MessageEvent<IWorkerResponse>) => {
+      const message = event.data;
+
+      if (message.type === 'snapshot') {
+        this.inFlight = false;
+        this.particleCount = message.particleCount;
+        this.particleData = message.particleData;
+        this.treeData = message.treeData;
+        this.centerOfMass = message.centerOfMass;
+
+        message.achievements.forEach((achievementId) => {
+          achievementsStore.actions.acquireByProject('Gravity Simulation', achievementId);
+        });
+        return;
+      }
+
+      if (message.type === 'benchmark-result') {
+        this.onBenchmarkResult?.(message.reports);
+        return;
+      }
+
+      this.inFlight = false;
+      console.error('[GravitySimulation Worker]', message.message);
+    });
+
+    this.worker.addEventListener('error', (event) => {
+      this.inFlight = false;
+      console.error('[GravitySimulation Worker] Unhandled error', event);
+    });
   }
 
   setCanvasSize(width: number, height: number) {
-    if (this.canvas) {
-      this.canvas.width = width;
-      this.canvas.height = height;
+    if (!this.canvas) return;
 
-      if (!this.quadTree) {
-        this.quadTree = QuadTreeNode.create({
-          x: 0,
-          y: 0,
-          width,
-          height,
-        });
-      }
-    }
-  }
-
-  createParticleAt(pos: Vector2D, options: Partial<IParticle> = {}) {
-    return new Particle({
-      position: pos,
-      velocity: new Vector2D(
-        Math.random() * 2 - 1,
-        Math.random() * 2 - 1,
-      ),
-      color: '#fff',
-      mass: Math.random() * 1e3,
-      size: 1,
-      canvas: this.canvas!,
-      ...options,
-    });
+    this.canvas.width = width;
+    this.canvas.height = height;
   }
 
   init() {
-    if (this.canvas) {
-      const { width, height } = this.canvas;
-      // const center = new Vector2D(width / 2, height / 2);
+    if (!this.canvas) return;
 
-      this.particles = [...Array(1000).keys()]
-        .map(() => this.createParticleAt(
-          Vector2D.generatePoint(width, height),
-          // Vector2D.generateGaussianPoint(
-          //   center,
-          //   Math.random() * (height / 2),
-          // ),
-        ))
-      ;
-    }
-  }
-
-
-  /**
-   * Benchmarks deterministic synthetic populations without touching live particles
-   * or consuming the simulation's Math.random() sequence.
-   */
-  benchmarkGravity() {
-    if (!this.canvas) return null;
-
-    const { width, height } = this.canvas;
-    const populations = [1000, 2000, 5000, 10000];
-
-    return populations.map((count) => {
-      // Adapt repetitions to keep the exact O(N²) reference reasonably bounded.
-      const warmupRuns = count <= 5000 ? 1 : 0;
-      const repetitions = count <= 2000 ? 5 : (count <= 5000 ? 2 : 1);
-      const exactWarmupRuns = warmupRuns;
-      const exactRepetitions = repetitions;
-
-      // xorshift32: deterministic and entirely independent from Math.random().
-      let seed = (0x9e3779b9 ^ count) >>> 0;
-      const random = () => {
-        seed ^= seed << 13;
-        seed ^= seed >>> 17;
-        seed ^= seed << 5;
-        return (seed >>> 0) / 0x100000000;
-      };
-
-      const benchmarkParticles = Array.from({ length: count }, () => new Particle({
-        position: new Vector2D(random() * width, random() * height),
-        velocity: new Vector2D(),
-        color: '#fff',
-        mass: random() * 1e3,
-        size: 1,
-        canvas: this.canvas!,
-      }));
-
-      const benchmarkTree = QuadTreeNode.create({
-        x: 0,
-        y: 0,
-        width,
-        height,
-      });
-
-      return benchmarkTree.benchmarkGravity(
-        [0.5, 0.6, 0.7, 0.8, 1],
-        warmupRuns,
-        repetitions,
-        exactWarmupRuns,
-        exactRepetitions,
-        benchmarkParticles,
-      );
+    this.worker.postMessage({
+      type: 'init',
+      width: this.canvas.width,
+      height: this.canvas.height,
     });
   }
 
-  async frame() {
-    if (this.canvas) {
-      if (!this.ctx) {
-        this.ctx = this.canvas.getContext('2d');
+  setRunning(running: boolean) {
+    this.running = running;
+  }
+
+  setOptions(options: Partial<typeof this.options>) {
+    this.options = { ...this.options, ...options };
+    this.worker.postMessage({ type: 'options', options: this.options });
+  }
+
+  spawnParticlesAt(position: Vector2D, count = 3) {
+    this.worker.postMessage({
+      type: 'spawn',
+      x: position.x,
+      y: position.y,
+      count,
+    });
+  }
+
+  benchmarkGravity() {
+    this.worker.postMessage({ type: 'benchmark' });
+  }
+
+  private render() {
+    if (!this.canvas || !this.ctx) return;
+
+    const ctx = this.ctx;
+    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+    ctx.save();
+    if (this.options.trackCenterOfMass) {
+      ctx.translate(
+        this.canvas.width / 2 - this.centerOfMass.x,
+        this.canvas.height / 2 - this.centerOfMass.y,
+      );
+    }
+
+    for (let index = 0; index < this.particleCount; index += 1) {
+      const offset = index * 5;
+      const x = this.particleData[offset];
+      const y = this.particleData[offset + 1];
+      const radius = this.particleData[offset + 2];
+      const colorCode = this.particleData[offset + 3];
+      const hasStroke = this.particleData[offset + 4] === 1;
+
+      ctx.beginPath();
+      ctx.arc(x, y, radius, 0, 2 * Math.PI);
+
+      if (colorCode === 1 || colorCode === 2) {
+        const color = colorCode === 1 ? '#ff4d3b' : '#ff0';
+        const gradient = ctx.createRadialGradient(x, y, 0, x, y, radius * 2);
+        gradient.addColorStop(0, color);
+        gradient.addColorStop(1, 'transparent');
+        ctx.fillStyle = gradient;
       } else {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.ctx.fillStyle = '#000';
-        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        ctx.fillStyle = colorCode === 3 ? '#000' : '#fff';
+      }
 
-        const frameStartedAt = performance.now();
-        const particlesAtFrameStart = this.particles.length;
-        let phaseStartedAt = frameStartedAt;
-
-        const useBarnesHut = this.particles.length > QuadTreeNode.EXACT_GRAVITY_THRESHOLD;
-        let initialTreeMs = 0;
-
-        if (useBarnesHut) {
-          this.quadTree.clear();
-          this.quadTree.insertAll(this.particles);
-          initialTreeMs = performance.now() - phaseStartedAt;
-        }
-
-        phaseStartedAt = performance.now();
-        const gravityDiagnostics = this.quadTree.computeGravity(
-          QuadTreeNode.THETA,
-          this.particles,
-        );
-        const gravityMs = performance.now() - phaseStartedAt;
-
-        // Gravity moves particles, so rebuild the tree before spatial collision checks.
-        phaseStartedAt = performance.now();
-        this.quadTree.clear();
-        this.quadTree.insertAll(this.particles);
-        const collisionTreeMs = performance.now() - phaseStartedAt;
-
-        phaseStartedAt = performance.now();
-        this.quadTree.computeCollision();
-        const collisionMs = performance.now() - phaseStartedAt;
-
-        phaseStartedAt = performance.now();
-        this.quadTree.removeFarParticles(this.canvas.height);
-        const cleanupMs = performance.now() - phaseStartedAt;
-
-        this.particles = this.quadTree.getParticles();
-
-        this.frameCount += 1;
-        const shouldLogFrame = this.frameCount <= 10
-          || (this.frameCount <= 100 && this.frameCount % 10 === 0)
-          || this.frameCount % 60 === 0;
-
-        if (shouldLogFrame) {
-          console.info('[GravitySimulation] Performance (last frame)', {
-            frame: this.frameCount,
-            particlesAtFrameStart,
-            particlesAfterCleanup: this.particles.length,
-            initialTreeMs,
-            gravityMs,
-            gravity: gravityDiagnostics,
-            collisionTreeMs,
-            collisionMs,
-            cleanupMs,
-            frameTotalMs: performance.now() - frameStartedAt,
-          });
-        }
-
-        if (this.options.trackCenterOfMass) {
-          this.ctx.save();
-          this.ctx.translate(
-            this.canvas.width / 2 - this.quadTree.centerOfMass.position.x,
-            this.canvas.height / 2 - this.quadTree.centerOfMass.position.y,
-          );
-        }
-
-        this.particles.forEach((p) => {
-          p.render(this.ctx!);
-        });
-
-        if (this.options.trackCenterOfMass) {
-          this.ctx.restore();
-        }
-
-        if (this.options.drawQuadTree) {
-          this.quadTree.render(this.ctx);
-        }
-
-        // if (this.particles.length < 25) {
-        //   const currentCenter = this.quadTree.centerOfMass.position;
-        //   const newParticles = [...Array(25 - this.particles.length).keys()].map(() => {
-        //     const position = new Vector2D(
-        //       Math.random() * this.canvas!.width,
-        //       Math.random() * this.canvas!.height,
-        //     );
-        //     return this.createParticleAt(position.add(currentCenter));
-        //   });
-        //   this.particles.push(...newParticles);
-        // }
+      ctx.fill();
+      if (hasStroke) {
+        ctx.strokeStyle = '#fff';
+        ctx.stroke();
       }
     }
+
+    if (this.options.drawQuadTree) {
+      for (let index = 0; index < this.treeData.length; index += 7) {
+        const x = this.treeData[index];
+        const y = this.treeData[index + 1];
+        const width = this.treeData[index + 2];
+        const height = this.treeData[index + 3];
+        const count = this.treeData[index + 4];
+        const centerX = this.treeData[index + 5];
+        const centerY = this.treeData[index + 6];
+
+        ctx.strokeStyle = '#f00';
+        ctx.strokeRect(x, y, width, height);
+
+        if (count > 0) {
+          ctx.fillStyle = '#00f';
+          ctx.font = '10px sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText(count.toString(), x + width / 2, y + height / 2, width);
+          ctx.beginPath();
+          ctx.arc(centerX, centerY, 2, 0, 2 * Math.PI);
+          ctx.fill();
+        }
+      }
+    }
+
+    ctx.restore();
+  }
+
+  async frame() {
+    if (!this.canvas) return;
+
+    if (!this.ctx) {
+      this.ctx = this.canvas.getContext('2d');
+      return;
+    }
+
+    this.render();
+
+    // Never queue multiple physics steps: the worker stays the source of truth,
+    // while the main thread keeps rendering the most recently received snapshot.
+    if (this.running && !this.inFlight) {
+      this.inFlight = true;
+      this.worker.postMessage({ type: 'step' });
+    }
+  }
+
+  dispose() {
+    this.running = false;
+    this.worker.terminate();
   }
 }
