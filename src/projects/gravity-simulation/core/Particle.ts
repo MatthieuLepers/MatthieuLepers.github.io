@@ -1,5 +1,3 @@
-import { achievementsStore } from '@/core/entities/achievement/store';
-
 import { Vector2D } from './geometry/Vector2D';
 
 export interface IBody {
@@ -69,6 +67,9 @@ export class Particle {
   public type: ParticleType = ParticleType.PARTICLE;
 
   public draw: (ctx: CanvasRenderingContext2D, particle: Particle) => void;
+
+  /** Achievement identifiers produced by physical events; consumed by the main thread. */
+  public pendingAchievements: string[] = [];
 
   constructor({
     position,
@@ -155,7 +156,7 @@ export class Particle {
         this.size += Math.cbrt(p.size) / p.mass;
 
         if (this.size >= this.canvas.height - 20) {
-          achievementsStore.actions.acquireByProject('Gravity Simulation', 'gargantua');
+          this.pendingAchievements.push('gargantua');
         }
       }
     }
@@ -197,7 +198,7 @@ export class Particle {
       this.size = 3;
       this.color = '#ff4d3b';
       this.draw = DRAW.STAR;
-      achievementsStore.actions.acquireByProject('Gravity Simulation', 'red_dwarf');
+      this.pendingAchievements.push('red_dwarf');
     }
   }
 
@@ -206,7 +207,7 @@ export class Particle {
       this.size = 5;
       this.color = '#ff0';
       this.draw = DRAW.STAR;
-      achievementsStore.actions.acquireByProject('Gravity Simulation', 'yellow_dwarf');
+      this.pendingAchievements.push('yellow_dwarf');
     }
   }
 
@@ -216,7 +217,7 @@ export class Particle {
       this.color = '#000';
       this.strokeColor = '#fff';
       this.draw = DRAW.BLACK_HOLE;
-      achievementsStore.actions.acquireByProject('Gravity Simulation', 'black_hole');
+      this.pendingAchievements.push('black_hole');
     }
   }
 
