@@ -118,9 +118,43 @@ const actions = {
     if (state.task) state.task.init();
   },
   benchmark() {
-    const reports = state.task?.benchmarkGravity();
-    if (!reports) return;
+    state.task?.benchmarkGravity();
+  },
+};
 
+const handleMouseDown = (e: MouseEvent) => {
+  e.preventDefault();
+  e.stopPropagation();
+
+  if (!canvas.value || !state.mouseTask) return;
+
+  state.mouseTask.enabled = true;
+  const { x, y } = canvas.value.getBoundingClientRect();
+  state.mousePos = new Vector2D(e.clientX - x, e.clientY - y);
+};
+
+const handleMouseUp = () => {
+  if (state.mouseTask) {
+    state.mouseTask.enabled = false;
+  }
+};
+
+watch(() => state.drawQuadTree, (drawQuadTree) => {
+  state.task!.setOptions({ drawQuadTree });
+});
+
+watch(() => state.trackCenterOfMass, (trackCenterOfMass) => {
+  state.task!.setOptions({ trackCenterOfMass });
+});
+
+watch(() => state.started, (started) => {
+  state.task!.setRunning(started);
+});
+
+onMounted(async () => {
+  state.task = new GravitySimulationTask(canvas.value, scene.value);
+
+  state.task.onBenchmarkResult = (reports) => {
     benchmarkSnapshot += 1;
     console.groupCollapsed(
       `[GravitySimulation] Barnes-Hut benchmark — synthetic snapshot ${benchmarkSnapshot}`,
@@ -159,7 +193,6 @@ const actions = {
     });
 
     console.groupEnd();
-
     benchmarkSnapshots.push(reports);
 
     navigator.clipboard.writeText(JSON.stringify(benchmarkSnapshots, null, 2))
@@ -175,48 +208,14 @@ const actions = {
         );
         console.info('Benchmark snapshots JSON', benchmarkSnapshots);
       });
-  },
-};
-
-const handleMouseDown = (e: MouseEvent) => {
-  e.preventDefault();
-  e.stopPropagation();
-
-  if (!canvas.value || !state.mouseTask) return;
-
-  state.mouseTask.enabled = true;
-  const { x, y } = canvas.value.getBoundingClientRect();
-  state.mousePos = new Vector2D(e.clientX - x, e.clientY - y);
-};
-
-const handleMouseUp = () => {
-  if (state.mouseTask) {
-    state.mouseTask.enabled = false;
-  }
-};
-
-watch(() => state.drawQuadTree, (drawQuadTree) => {
-  state.task!.options.drawQuadTree = drawQuadTree;
-});
-
-watch(() => state.trackCenterOfMass, (trackCenterOfMass) => {
-  state.task!.options.trackCenterOfMass = trackCenterOfMass;
-});
-
-watch(() => state.started, (started) => {
-  state.task!.enabled = started;
-});
-
-onMounted(async () => {
-  state.task = new GravitySimulationTask(canvas.value, scene.value);
+  };
 
   state.mouseTask = {
     id: `mousetask${$uid}`,
     enabled: false,
     async frame() {
       if (this.enabled) {
-        const particles = [...Array(3).keys()].map(() => state.task!.createParticleAt(Vector2D.randomPointAround(state.mousePos, 10)));
-        state.task!.particles.push(...particles);
+        state.task!.spawnParticlesAt(state.mousePos, 3);
       }
     },
   } as Task;
@@ -234,8 +233,7 @@ onMounted(async () => {
   state.task!.init();
 
   // Run first 2 frames then wait for user to click "start"
-  await state.task!.frame();
-  await state.task!.frame();
+  state.task!.init();
 });
 
 onUnmounted(() => {
@@ -244,6 +242,7 @@ onUnmounted(() => {
 
   appStore.processManager.removeTask(state.task!);
   appStore.processManager.removeTask(state.mouseTask!);
+  state.task!.dispose();
 });
 </script>
 
