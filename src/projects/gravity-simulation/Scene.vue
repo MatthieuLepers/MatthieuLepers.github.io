@@ -76,6 +76,7 @@ import {
   nextTick,
   onMounted,
   onUnmounted,
+  markRaw,
   reactive,
   ref,
   watch,
@@ -87,6 +88,7 @@ import type { Task } from '@/core/tasks';
 
 import { GravitySimulationTask } from './core';
 import { Vector2D } from './core/geometry/Vector2D';
+import type { IGravityBenchmarkReport } from './core/geometry/QuadTree';
 
 const { t } = useI18n();
 const scene = ref<HTMLDivElement | null>(null);
@@ -111,7 +113,7 @@ const state = reactive<{
 });
 
 let benchmarkSnapshot = 0;
-const benchmarkSnapshots: ReturnType<GravitySimulationTask['benchmarkGravity']>[] = [];
+const benchmarkSnapshots: IGravityBenchmarkReport[][] = [];
 
 const actions = {
   reset() {
@@ -152,7 +154,7 @@ watch(() => state.started, (started) => {
 });
 
 onMounted(async () => {
-  state.task = new GravitySimulationTask(canvas.value, scene.value);
+  state.task = markRaw(new GravitySimulationTask(canvas.value, scene.value));
 
   state.task.onBenchmarkResult = (reports) => {
     benchmarkSnapshot += 1;
@@ -232,8 +234,7 @@ onMounted(async () => {
   state.task!.setCanvasSize(width, height);
   state.task!.init();
 
-  // Run first 2 frames then wait for user to click "start"
-  state.task!.init();
+
 });
 
 onUnmounted(() => {
