@@ -303,8 +303,9 @@ export class QuadTreeNode {
     repetitions = 5,
     exactWarmupRuns = warmupRuns,
     exactRepetitions = repetitions,
+    particlesOverride?: Particle[],
   ): IGravityBenchmarkReport {
-    const particles = this.getParticles();
+    const particles = particlesOverride ?? this.getParticles();
     const snapshot = particles.map((particle) => ({
       x: particle.position.x,
       y: particle.position.y,
@@ -375,6 +376,7 @@ export class QuadTreeNode {
 
     const results = thetas.map((theta) => {
       const runBarnesHut = () => {
+        const totalStartedAt = performance.now();
         const tree = QuadTreeNode.create({
           x: this.bounds.x,
           y: this.bounds.y,
@@ -426,7 +428,7 @@ export class QuadTreeNode {
           treeBuildMs,
           aggregationMs,
           traversalMs,
-          totalMs: treeBuildMs + aggregationMs + traversalMs,
+          totalMs: performance.now() - totalStartedAt,
           forces,
           stats,
         };
@@ -440,7 +442,7 @@ export class QuadTreeNode {
         traversalMs: [] as number[],
         totalMs: [] as number[],
       };
-      let measured = runBarnesHut();
+      let measured: ReturnType<typeof runBarnesHut>;
 
       for (let run = 0; run < repetitions; run += 1) {
         measured = runBarnesHut();
