@@ -11,7 +11,6 @@ interface IWorkerSnapshot {
   treeData: Float32Array;
   centerOfMass: { x: number; y: number };
   achievements: string[];
-  diagnostics?: unknown;
 }
 
 interface IWorkerBenchmarkResult {
