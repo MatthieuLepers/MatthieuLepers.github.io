@@ -117,42 +117,46 @@ const actions = {
     if (state.task) state.task.init();
   },
   benchmark() {
-    const report = state.task?.benchmarkGravity();
-    if (!report) return;
+    const reports = state.task?.benchmarkGravity();
+    if (!reports) return;
 
     benchmarkSnapshot += 1;
     console.groupCollapsed(
-      `[GravitySimulation] Barnes-Hut benchmark — snapshot ${benchmarkSnapshot}`,
+      `[GravitySimulation] Barnes-Hut benchmark — synthetic snapshot ${benchmarkSnapshot}`,
     );
-    console.info('Reference snapshot', {
-      particles: report.particles,
-      exactReferenceMs: report.exactReferenceMs,
-      referenceForceRms: report.referenceForceRms,
-      normalizedError: 'absolute force error / global RMS exact force × 100',
-      warmupRuns: report.warmupRuns,
-      repetitions: report.repetitions,
+
+    reports.forEach((report) => {
+      console.group(`${report.particles} particles`);
+      console.info('Benchmark protocol', {
+        particles: report.particles,
+        exactReferenceMs: report.exactReferenceMs,
+        exactWarmupRuns: report.exactWarmupRuns,
+        exactRepetitions: report.exactRepetitions,
+        barnesHutWarmupRuns: report.warmupRuns,
+        barnesHutRepetitions: report.repetitions,
+        referenceForceRms: report.referenceForceRms,
+        normalizedError: 'absolute force error / global RMS exact force × 100',
+      });
+      console.table(report.results.map((result) => ({
+        theta: result.theta,
+        exactReferenceMs: report.exactReferenceMs,
+        treeBuildMs: result.treeBuildMs,
+        aggregationMs: result.aggregationMs,
+        traversalMs: result.traversalMs,
+        barnesHutTotalMs: result.totalMs,
+        speedup: report.exactReferenceMs / result.totalMs,
+        nodesVisited: result.nodesVisited,
+        approximations: result.approximations,
+        exactInteractions: result.exactInteractions,
+        averageExactInteractionsPerParticle: result.averageExactInteractionsPerParticle,
+        normalizedErrorMeanPercent: result.normalizedErrorPercent.mean,
+        normalizedErrorMedianPercent: result.normalizedErrorPercent.median,
+        normalizedErrorP95Percent: result.normalizedErrorPercent.p95,
+        normalizedErrorMaxPercent: result.normalizedErrorPercent.max,
+      })));
+      console.groupEnd();
     });
-    console.table(report.results.map((result) => ({
-      theta: result.theta,
-      traversalMs: result.traversalMs,
-      nodesVisited: result.nodesVisited,
-      internalNodesVisited: result.internalNodesVisited,
-      leafNodesVisited: result.leafNodesVisited,
-      emptyNodesSkipped: result.emptyNodesSkipped,
-      approximations: result.approximations,
-      exactInteractions: result.exactInteractions,
-      minExactInteractionsPerParticle: result.minExactInteractionsPerParticle,
-      maxExactInteractionsPerParticle: result.maxExactInteractionsPerParticle,
-      averageExactInteractionsPerParticle: result.averageExactInteractionsPerParticle,
-      absoluteErrorMean: result.absoluteError.mean,
-      absoluteErrorMedian: result.absoluteError.median,
-      absoluteErrorP95: result.absoluteError.p95,
-      absoluteErrorMax: result.absoluteError.max,
-      normalizedErrorMeanPercent: result.normalizedErrorPercent.mean,
-      normalizedErrorMedianPercent: result.normalizedErrorPercent.median,
-      normalizedErrorP95Percent: result.normalizedErrorPercent.p95,
-      normalizedErrorMaxPercent: result.normalizedErrorPercent.max,
-    })));
+
     console.groupEnd();
   },
 };
