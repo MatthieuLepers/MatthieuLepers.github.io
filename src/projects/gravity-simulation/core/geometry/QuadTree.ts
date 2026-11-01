@@ -1,4 +1,4 @@
-import type { IBody, Particle } from '../Particle';
+import { G, type IBody, type Particle } from '../Particle';
 import { Rectangle } from './Rectangle';
 import { Vector2D } from './Vector2D';
 
@@ -19,7 +19,37 @@ export interface IGravityDiagnostics {
   averageExactInteractionsPerParticle: number;
 }
 
-interface IGravityTraversalStats {
+
+export interface IGravityBenchmarkErrorStats {
+  mean: number;
+  median: number;
+  p95: number;
+  max: number;
+}
+
+export interface IGravityBenchmarkResult {
+  theta: number;
+  traversalMs: number;
+  repetitions: number;
+  nodesVisited: number;
+  internalNodesVisited: number;
+  leafNodesVisited: number;
+  approximations: number;
+  exactInteractions: number;
+  averageExactInteractionsPerParticle: number;
+  absoluteError: IGravityBenchmarkErrorStats;
+  normalizedErrorPercent: IGravityBenchmarkErrorStats;
+}
+
+export interface IGravityBenchmarkReport {
+  particles: number;
+  exactReferenceMs: number;
+  referenceForceRms: number;
+  warmupRuns: number;
+  repetitions: number;
+  results: IGravityBenchmarkResult[];
+}
+\ninterface IGravityTraversalStats {
   nodesVisited: number;
   internalNodesVisited: number;
   leafNodesVisited: number;
@@ -251,6 +281,163 @@ export class QuadTreeNode {
         node.accumulateGravityForParticle(particle, theta, stats, force);
       }
     });
+  }
+
+
+  /**
+   * Compares Barnes-Hut force estimates with an exact O(N²) reference.
+   * This diagnostic never applies forces or mutates particle state.
+   */
+  benchmarkGravity(
+    thetas: number[] = [0.5, 0.6, 0.7, 0.8, 1],
+    warmupRuns = 1,
+    repetitions = 5,
+  ): IGravityBenchmarkReport {
+    this.updateMassDistribution();
+
+    const particles = this.getParticles();
+    const snapshot = particles.map((particle) => ({
+      x: particle.position.x,
+      y: particle.position.y,
+      mass: particle.mass,
+    }));
+
+    const exactStartedAt = performance.now();
+    const exactForces = snapshot.map((particle, index) => {
+      const force = { x: 0, y: 0 };
+
+      for (let otherIndex = 0; otherIndex < snapshot.length; otherIndex += 1) {
+        if (index === otherIndex) continue;
+
+        const other = snapshot[otherIndex];
+        const dx = other.x - particle.x;
+        const dy = other.y - particle.y;
+        const directionLength = Math.hypot(dx, dy);
+
+        if (directionLength === 0) continue;
+
+        const distance = Math.max(directionLength, 0.1);
+        const forceMagnitude = (G * particle.mass * other.mass) / (distance ** 2);
+
+        force.x += (dx / directionLength) * forceMagnitude;
+        force.y += (dy / directionLength) * forceMagnitude;
+      }
+
+      return force;
+    });
+    const exactReferenceMs = performance.now() - exactStartedAt;
+
+    const referenceForceRms = Math.sqrt(
+      exactForces.reduce(
+        (sum, force) => sum + (force.x * force.x) + (force.y * force.y),
+        0,
+      ) / Math.max(exactForces.length, 1),
+    ) || 1;
+
+    const getErrorStats = (values: number[]): IGravityBenchmarkErrorStats => {
+      if (!values.length) {
+        return { mean: 0, median: 0, p95: 0, max: 0 };
+      }
+
+      const sorted = [...values].sort((a, b) => a - b);
+      const sum = values.reduce((total, value) => total + value, 0);
+
+      return {
+        mean: sum / values.length,
+        median: sorted[Math.floor((sorted.length - 1) / 2)],
+        p95: sorted[Math.ceil(sorted.length * 0.95) - 1],
+        max: sorted[sorted.length - 1],
+      };
+    };
+
+    const results = thetas.map((theta) => {
+      const runTraversal = () => {
+        const stats: IGravityTraversalStats = {
+          nodesVisited: 0,
+          internalNodesVisited: 0,
+          leafNodesVisited: 0,
+          emptyNodesSkipped: 0,
+          approximations: 0,
+          exactInteractions: 0,
+          minExactInteractionsPerParticle: Number.POSITIVE_INFINITY,
+          maxExactInteractionsPerParticle: 0,
+        };
+
+        const forces = particles.map((particle) => {
+          const force = { x: 0, y: 0 };
+          const exactInteractionsBefore = stats.exactInteractions;
+
+          this.accumulateGravityForParticle(particle, theta, stats, force);
+
+          const particleExactInteractions = stats.exactInteractions - exactInteractionsBefore;
+          stats.minExactInteractionsPerParticle = Math.min(
+            stats.minExactInteractionsPerParticle,
+            particleExactInteractions,
+          );
+          stats.maxExactInteractionsPerParticle = Math.max(
+            stats.maxExactInteractionsPerParticle,
+            particleExactInteractions,
+          );
+
+          return force;
+        });
+
+        return { forces, stats };
+      };
+
+      for (let run = 0; run < warmupRuns; run += 1) {
+        runTraversal();
+      }
+
+      const durations: number[] = [];
+      let measured = runTraversal();
+
+      for (let run = 0; run < repetitions; run += 1) {
+        const startedAt = performance.now();
+        measured = runTraversal();
+        durations.push(performance.now() - startedAt);
+      }
+
+      const absoluteErrors = measured.forces.map((force, index) => {
+        const dx = force.x - exactForces[index].x;
+        const dy = force.y - exactForces[index].y;
+        return Math.hypot(dx, dy);
+      });
+      const normalizedErrors = absoluteErrors.map(
+        (error) => (error / referenceForceRms) * 100,
+      );
+
+      const sortedDurations = [...durations].sort((a, b) => a - b);
+      const medianTraversalMs = sortedDurations.length
+        ? sortedDurations[Math.floor((sortedDurations.length - 1) / 2)]
+        : 0;
+      const { stats } = measured;
+
+      return {
+        theta,
+        traversalMs: medianTraversalMs,
+        repetitions,
+        nodesVisited: stats.nodesVisited,
+        internalNodesVisited: stats.internalNodesVisited,
+        leafNodesVisited: stats.leafNodesVisited,
+        approximations: stats.approximations,
+        exactInteractions: stats.exactInteractions,
+        averageExactInteractionsPerParticle: particles.length
+          ? stats.exactInteractions / particles.length
+          : 0,
+        absoluteError: getErrorStats(absoluteErrors),
+        normalizedErrorPercent: getErrorStats(normalizedErrors),
+      };
+    });
+
+    return {
+      particles: particles.length,
+      exactReferenceMs,
+      referenceForceRms,
+      warmupRuns,
+      repetitions,
+      results,
+    };
   }
 
   computeGravity(theta: number = QuadTreeNode.THETA): IGravityDiagnostics {
