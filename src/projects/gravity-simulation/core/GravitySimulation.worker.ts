@@ -1,18 +1,6 @@
-import { Particle, ParticleType } from './Particle';
+import { Particle } from './Particle';
 import { QuadTreeNode } from './geometry/QuadTree';
 import { Vector2D } from './geometry/Vector2D';
-
-interface IWorkerParticle {
-  x: number;
-  y: number;
-  vx: number;
-  vy: number;
-  mass: number;
-  size: number;
-  color: string;
-  strokeColor?: string;
-  type: ParticleType;
-}
 
 interface IWorkerOptions {
   drawQuadTree: boolean;
