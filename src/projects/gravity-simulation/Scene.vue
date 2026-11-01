@@ -75,8 +75,8 @@ import {
   getCurrentInstance,
   nextTick,
   onMounted,
-  onUnmounted,
   markRaw,
+  onUnmounted,
   reactive,
   ref,
   watch,
@@ -233,8 +233,6 @@ onMounted(async () => {
   const { width, height } = scene.value!.closest('.carousel__slide')!.getBoundingClientRect();
   state.task!.setCanvasSize(width, height);
   state.task!.init();
-
-
 });
 
 onUnmounted(() => {
