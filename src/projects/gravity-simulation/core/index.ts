@@ -76,20 +76,56 @@ export class GravitySimulationTask extends Task {
 
 
   /**
-   * Runs a diagnostic on a separate tree so the live simulation tree is untouched.
+   * Benchmarks deterministic synthetic populations without touching live particles
+   * or consuming the simulation's Math.random() sequence.
    */
   benchmarkGravity() {
     if (!this.canvas) return null;
 
-    const benchmarkTree = QuadTreeNode.create({
-      x: 0,
-      y: 0,
-      width: this.canvas.width,
-      height: this.canvas.height,
-    });
-    benchmarkTree.insertAll([...this.particles]);
+    const { width, height } = this.canvas;
+    const populations = [1000, 2000, 5000, 10000];
 
-    return benchmarkTree.benchmarkGravity();
+    return populations.map((count) => {
+      // Adapt repetitions to keep the exact O(N²) reference reasonably bounded.
+      const warmupRuns = count <= 5000 ? 1 : 0;
+      const repetitions = count <= 2000 ? 5 : (count <= 5000 ? 2 : 1);
+      const exactWarmupRuns = warmupRuns;
+      const exactRepetitions = repetitions;
+
+      // xorshift32: deterministic and entirely independent from Math.random().
+      let seed = (0x9e3779b9 ^ count) >>> 0;
+      const random = () => {
+        seed ^= seed << 13;
+        seed ^= seed >>> 17;
+        seed ^= seed << 5;
+        return (seed >>> 0) / 0x100000000;
+      };
+
+      const benchmarkParticles = Array.from({ length: count }, () => new Particle({
+        position: new Vector2D(random() * width, random() * height),
+        velocity: new Vector2D(),
+        color: '#fff',
+        mass: random() * 1e3,
+        size: 1,
+        canvas: this.canvas!,
+      }));
+
+      const benchmarkTree = QuadTreeNode.create({
+        x: 0,
+        y: 0,
+        width,
+        height,
+      });
+      benchmarkTree.insertAll(benchmarkParticles);
+
+      return benchmarkTree.benchmarkGravity(
+        [0.5, 0.6, 0.7, 0.8, 1],
+        warmupRuns,
+        repetitions,
+        exactWarmupRuns,
+        exactRepetitions,
+      );
+    });
   }
 
   async frame() {
