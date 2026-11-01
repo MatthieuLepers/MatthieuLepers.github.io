@@ -94,7 +94,7 @@ const createSnapshot = () => {
   };
 };
 
-const publishSnapshot = (achievements: string[] = [], diagnostics?: unknown) => {
+const publishSnapshot = (achievements: string[] = []) => {
   const snapshot = createSnapshot();
   scope.postMessage({
     type: 'snapshot',
@@ -103,7 +103,6 @@ const publishSnapshot = (achievements: string[] = [], diagnostics?: unknown) => 
     treeData: snapshot.treeData,
     centerOfMass: snapshot.centerOfMass,
     achievements: [...new Set(achievements)],
-    diagnostics,
   }, [
     snapshot.particleData.buffer as ArrayBuffer,
     snapshot.treeData.buffer as ArrayBuffer,
