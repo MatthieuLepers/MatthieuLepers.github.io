@@ -305,6 +305,10 @@ export class QuadTreeNode {
     exactRepetitions = repetitions,
     particlesOverride?: Particle[],
   ): IGravityBenchmarkReport {
+    if (repetitions < 1 || exactRepetitions < 1) {
+      throw new Error('Benchmark repetitions must be greater than zero.');
+    }
+
     const particles = particlesOverride ?? this.getParticles();
     const snapshot = particles.map((particle) => ({
       x: particle.position.x,
@@ -442,7 +446,7 @@ export class QuadTreeNode {
         traversalMs: [] as number[],
         totalMs: [] as number[],
       };
-      let measured: ReturnType<typeof runBarnesHut>;
+      let measured: ReturnType<typeof runBarnesHut> | undefined;
 
       for (let run = 0; run < repetitions; run += 1) {
         measured = runBarnesHut();
@@ -451,6 +455,8 @@ export class QuadTreeNode {
         durations.traversalMs.push(measured.traversalMs);
         durations.totalMs.push(measured.totalMs);
       }
+
+      if (!measured) throw new Error('Barnes-Hut benchmark produced no measurements.');
 
       const absoluteErrors = measured.forces.map((force, index) => (
         Math.hypot(
