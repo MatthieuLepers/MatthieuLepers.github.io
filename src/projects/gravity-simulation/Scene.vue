@@ -10,6 +10,16 @@
     <div v-if="state.started" class="scene__controls">
       <button
         :class="GenerateModifiers('scene__btn', {
+          benchmark: true,
+        })"
+        type="button"
+        title="Benchmark Barnes-Hut sur l'instantané actuel"
+        @click.prevent.stop="actions.benchmark"
+      >
+        <span>BH</span>
+      </button>
+      <button
+        :class="GenerateModifiers('scene__btn', {
           reset: true,
         })"
         type="button"
@@ -98,9 +108,47 @@ const state = reactive<{
   started: false,
 });
 
+let benchmarkSnapshot = 0;
+
 const actions = {
   reset() {
     if (state.task) state.task.init();
+  },
+  benchmark() {
+    const report = state.task?.benchmarkGravity();
+    if (!report) return;
+
+    benchmarkSnapshot += 1;
+    console.groupCollapsed(
+      `[GravitySimulation] Barnes-Hut benchmark — snapshot ${benchmarkSnapshot}`,
+    );
+    console.info('Reference snapshot', {
+      particles: report.particles,
+      exactReferenceMs: report.exactReferenceMs,
+      referenceForceRms: report.referenceForceRms,
+      normalizedError: 'absolute force error / global RMS exact force × 100',
+      warmupRuns: report.warmupRuns,
+      repetitions: report.repetitions,
+    });
+    console.table(report.results.map((result) => ({
+      theta: result.theta,
+      traversalMs: result.traversalMs,
+      nodesVisited: result.nodesVisited,
+      internalNodesVisited: result.internalNodesVisited,
+      leafNodesVisited: result.leafNodesVisited,
+      approximations: result.approximations,
+      exactInteractions: result.exactInteractions,
+      averageExactInteractionsPerParticle: result.averageExactInteractionsPerParticle,
+      absoluteErrorMean: result.absoluteError.mean,
+      absoluteErrorMedian: result.absoluteError.median,
+      absoluteErrorP95: result.absoluteError.p95,
+      absoluteErrorMax: result.absoluteError.max,
+      normalizedErrorMeanPercent: result.normalizedErrorPercent.mean,
+      normalizedErrorMedianPercent: result.normalizedErrorPercent.median,
+      normalizedErrorP95Percent: result.normalizedErrorPercent.p95,
+      normalizedErrorMaxPercent: result.normalizedErrorPercent.max,
+    })));
+    console.groupEnd();
   },
 };
 
