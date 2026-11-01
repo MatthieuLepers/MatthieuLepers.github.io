@@ -34,8 +34,11 @@ export interface IGravityBenchmarkResult {
   nodesVisited: number;
   internalNodesVisited: number;
   leafNodesVisited: number;
+  emptyNodesSkipped: number;
   approximations: number;
   exactInteractions: number;
+  minExactInteractionsPerParticle: number;
+  maxExactInteractionsPerParticle: number;
   averageExactInteractionsPerParticle: number;
   absoluteError: IGravityBenchmarkErrorStats;
   normalizedErrorPercent: IGravityBenchmarkErrorStats;
@@ -342,9 +345,14 @@ export class QuadTreeNode {
       const sorted = [...values].sort((a, b) => a - b);
       const sum = values.reduce((total, value) => total + value, 0);
 
+      const middle = Math.floor(sorted.length / 2);
+      const median = sorted.length % 2
+        ? sorted[middle]
+        : (sorted[middle - 1] + sorted[middle]) / 2;
+
       return {
         mean: sum / values.length,
-        median: sorted[Math.floor((sorted.length - 1) / 2)],
+        median,
         p95: sorted[Math.ceil(sorted.length * 0.95) - 1],
         max: sorted[sorted.length - 1],
       };
@@ -420,8 +428,13 @@ export class QuadTreeNode {
         nodesVisited: stats.nodesVisited,
         internalNodesVisited: stats.internalNodesVisited,
         leafNodesVisited: stats.leafNodesVisited,
+        emptyNodesSkipped: stats.emptyNodesSkipped,
         approximations: stats.approximations,
         exactInteractions: stats.exactInteractions,
+        minExactInteractionsPerParticle: particles.length
+          ? stats.minExactInteractionsPerParticle
+          : 0,
+        maxExactInteractionsPerParticle: stats.maxExactInteractionsPerParticle,
         averageExactInteractionsPerParticle: particles.length
           ? stats.exactInteractions / particles.length
           : 0,
