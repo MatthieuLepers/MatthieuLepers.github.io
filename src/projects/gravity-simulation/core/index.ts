@@ -141,12 +141,20 @@ export class GravitySimulationTask extends Task {
         const particlesAtFrameStart = this.particles.length;
         let phaseStartedAt = frameStartedAt;
 
-        this.quadTree.clear();
-        this.quadTree.insertAll(this.particles);
-        const initialTreeMs = performance.now() - phaseStartedAt;
+        const useBarnesHut = this.particles.length > QuadTreeNode.EXACT_GRAVITY_THRESHOLD;
+        let initialTreeMs = 0;
+
+        if (useBarnesHut) {
+          this.quadTree.clear();
+          this.quadTree.insertAll(this.particles);
+          initialTreeMs = performance.now() - phaseStartedAt;
+        }
 
         phaseStartedAt = performance.now();
-        const gravityDiagnostics = this.quadTree.computeGravity();
+        const gravityDiagnostics = this.quadTree.computeGravity(
+          QuadTreeNode.THETA,
+          this.particles,
+        );
         const gravityMs = performance.now() - phaseStartedAt;
 
         // Gravity moves particles, so rebuild the tree before spatial collision checks.
