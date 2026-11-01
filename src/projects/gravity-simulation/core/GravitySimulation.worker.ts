@@ -190,7 +190,13 @@ const step = () => {
 
 const spawn = (x: number, y: number, count: number) => {
   for (let index = 0; index < count; index += 1) {
-    particles.push(createParticle(x + (Math.random() * 20 - 10), y + (Math.random() * 20 - 10)));
+    // Match Vector2D.randomPointAround: a uniform distribution inside a radius-10 disk.
+    const angle = 2 * Math.PI * Math.random();
+    const radius = Math.sqrt(Math.random()) * 10;
+    particles.push(createParticle(
+      x + radius * Math.cos(angle),
+      y + radius * Math.sin(angle),
+    ));
   }
 };
 
